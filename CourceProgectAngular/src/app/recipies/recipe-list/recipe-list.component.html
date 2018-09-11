@@ -1,0 +1,30 @@
+<!--<div class="card">-->
+<!--<div class="card-header">-->
+<!--<h3>recipie item</h3>-->
+<!--</div>-->
+<!--<div class="card-body">-->
+<!--<app-recipie-item></app-recipie-item>-->
+<!--</div>-->
+<!--</div>-->
+
+<div class="row">
+  <div class="col-md-12">
+    <button class="btn-success">New recipe</button>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+    <a href="#" class="list-group-item clearfix" *ngFor="let recipeItem of recipies">
+      <div class="float-left">
+        <h4 class="list-group-item-heading">{{recipeItem.name}}</h4>
+        <p class="list-group-item-text">{{recipeItem.description}}</p>
+      </div>
+      <span class="float-right">
+        <img [src]="recipeItem.imagePath"
+             alt="{{recipeItem.name}}" class="img-fluid"
+             style="max-height: 50px">
+      </span>
+    </a>
+  </div>
+</div>
