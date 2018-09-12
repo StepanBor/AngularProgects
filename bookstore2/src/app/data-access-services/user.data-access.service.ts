@@ -3,6 +3,7 @@ import {User} from '../data-models/User';
 import {Http} from '@angular/http';
 import {Response} from '@angular/http';
 import {Subject} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class UserDataAccessService {
@@ -26,16 +27,28 @@ export class UserDataAccessService {
   }
 
   getUsersFromDb(reqUrl: string) {
-    this.http.get(reqUrl).subscribe((response: Response) => {
-      const data1: User[] = response.json();
-      this.setUsers(data1);
+    this.http.get(reqUrl)/*.pipe(map((responce: Response) => {
+    console.log(responce);
+    responce.json();
+    return uers: User[];
+    }))*/.subscribe((response: Response) => {
+      console.log(response);
+      const data = response.json();
+      // this.setUsers(data1);
+      this.users = data;
+      console.log('from get users ' + data);
+      console.log('from get users ' + this.users);
+      this.usersChanged.next(data);
     });
   }
 
   getTotalUsersCount() {
     this.http.get('http://localhost:8080/usersCount').subscribe((responce: Response) => {
       const data: number = responce.json();
-      this.setTotalUserCount(data);
+      // this.setTotalUserCount(data);
+      this.totalUserCount = data;
+      console.log('from get totalUserCount ' + data);
+      this.totalUserCountChanged.next(this.totalUserCount);
     });
   }
 

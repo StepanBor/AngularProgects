@@ -10,6 +10,11 @@ export class NavigationSidebarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+
+
   }
+
+
 
 }

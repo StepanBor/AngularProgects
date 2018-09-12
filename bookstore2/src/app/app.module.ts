@@ -11,6 +11,9 @@ import { NavigationSidebarComponent } from './navigation-sidebar/navigation-side
 import { UsersComponent } from './users/users.component';
 import { UsersDetailsComponent } from './users-details/users-details.component';
 import {UserDataAccessService} from './data-access-services/user.data-access.service';
+import {MyProbeDirective} from './my-directives/my-probe-directive';
+import { NewProbeDirectiveDirective } from './my-directives/new-probe-directive.directive';
+import { DropdownDirectiveDirective } from './my-directives/dropdown-directive.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import {UserDataAccessService} from './data-access-services/user.data-access.ser
     NavigationBarComponent,
     NavigationSidebarComponent,
     UsersComponent,
-    UsersDetailsComponent
+    UsersDetailsComponent,
+    MyProbeDirective,
+    NewProbeDirectiveDirective,
+    DropdownDirectiveDirective
   ],
   imports: [
     BrowserModule,

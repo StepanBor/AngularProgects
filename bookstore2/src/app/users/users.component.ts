@@ -29,9 +29,11 @@ export class UsersComponent implements OnInit {
 
     this.subscriptionUsers = this.userService.usersChanged.subscribe((tempUsers: User[]) => {
       this.users = tempUsers;
+      console.log('users changed from subscription ' + this.users);
     });
     this.subscriptionUsersCount = this.userService.totalUserCountChanged.subscribe((count: number) => {
       this.totalUserCount = count;
+      console.log('user count changed subscription ' + this.totalUserCount);
     });
 
     this.users = this.userService.getUsers();
@@ -63,4 +65,7 @@ export class UsersComponent implements OnInit {
     console.log('total user count ' + this.totalUserCount);
     console.log('pagination arr ' + this.paginationArr);
   }
+
+
 }
+

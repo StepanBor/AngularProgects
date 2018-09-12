@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -7,9 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationBarComponent implements OnInit {
 
-  constructor() { }
+  navbarDropdownToggle: boolean;
+  dropdownShow: string;
+
+  constructor() {
+  }
 
   ngOnInit() {
+    this.dropdownShow = '';
+    this.navbarDropdownToggle = false;
   }
+
+  onnavbarDropdownToggle() {
+    this.navbarDropdownToggle = !this.navbarDropdownToggle;
+    if (this.navbarDropdownToggle) {
+      this.dropdownShow = 'show';
+    } else {
+      this.dropdownShow = '';
+    }
+
+  }
+
 
 }
