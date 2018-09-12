@@ -1,15 +1,16 @@
-<app-navigation-bar></app-navigation-bar>
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2">
-      <app-navigation-sidebar></app-navigation-sidebar>
-    </div>
-    <div class="col-md-6">
-      <app-users></app-users>
-    </div>
-    <div class="col-md-4">
-      <app-users-details></app-users-details>
+<app-navigation-bar (sidebarToggled)="onSidebarOn()"></app-navigation-bar>
+<div class="page-content d-flex align-items-stretch">
+  <app-navigation-sidebar [isSidebarOnSidebar]="isSidebarOn"></app-navigation-sidebar>
+  <div class="content-inner" [ngClass]="{active: isSidebarOn}">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-8">
+          <app-users></app-users>
+        </div>
+        <div class="col-md-4">
+          <app-users-details></app-users-details>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-navigation-sidebar',
@@ -7,14 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationSidebarComponent implements OnInit {
 
-  constructor() { }
+  @Input() isSidebarOnSidebar: boolean;
+
+  constructor() {
+  }
 
   ngOnInit() {
 
-
+    this.isSidebarOnSidebar = false;
 
   }
-
 
 
 }

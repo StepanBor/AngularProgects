@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -7,8 +7,10 @@ import {Component, OnInit} from '@angular/core';
 })
 export class NavigationBarComponent implements OnInit {
 
+  @Output() sidebarToggled = new EventEmitter<boolean>();
   navbarDropdownToggle: boolean;
   dropdownShow: string;
+  sidebarToggle: boolean;
 
   constructor() {
   }
@@ -16,6 +18,7 @@ export class NavigationBarComponent implements OnInit {
   ngOnInit() {
     this.dropdownShow = '';
     this.navbarDropdownToggle = false;
+    this.sidebarToggle = false;
   }
 
   onnavbarDropdownToggle() {
@@ -26,6 +29,11 @@ export class NavigationBarComponent implements OnInit {
       this.dropdownShow = '';
     }
 
+  }
+
+  onSidebarToggle() {
+    this.sidebarToggle = !this.sidebarToggle;
+    this.sidebarToggled.emit(this.sidebarToggle);
   }
 
 
