@@ -10,7 +10,7 @@ export class NavigationBarComponent implements OnInit {
   @Output() sidebarToggled = new EventEmitter<boolean>();
   navbarDropdownToggle: boolean;
   dropdownShow: string;
-  sidebarToggle: boolean;
+  // sidebarToggle: boolean;
 
   constructor() {
   }
@@ -18,7 +18,7 @@ export class NavigationBarComponent implements OnInit {
   ngOnInit() {
     this.dropdownShow = '';
     this.navbarDropdownToggle = false;
-    this.sidebarToggle = false;
+    // this.sidebarToggle = false;
   }
 
   onnavbarDropdownToggle() {
@@ -32,8 +32,8 @@ export class NavigationBarComponent implements OnInit {
   }
 
   onSidebarToggle() {
-    this.sidebarToggle = !this.sidebarToggle;
-    this.sidebarToggled.emit(this.sidebarToggle);
+    // this.sidebarToggle = !this.sidebarToggle;
+    this.sidebarToggled.emit();
   }
 
 

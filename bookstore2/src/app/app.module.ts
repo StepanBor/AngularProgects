@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { NavigationSidebarComponent } from './navigation-sidebar/navigation-sidebar.component';
 import { UsersComponent } from './users/users.component';
-import { UsersDetailsComponent } from './users-details/users-details.component';
+import { UsersDetailsComponent } from './users/users-details/users-details.component';
 import {UserDataAccessService} from './data-access-services/user.data-access.service';
 import {MyProbeDirective} from './my-directives/my-probe-directive';
 import { NewProbeDirectiveDirective } from './my-directives/new-probe-directive.directive';

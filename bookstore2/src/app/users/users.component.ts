@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {User} from '../data-models/User';
 import {Subscription} from 'rxjs';
 import {UserDataAccessService} from '../data-access-services/user.data-access.service';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-users',
@@ -18,17 +19,22 @@ export class UsersComponent implements OnInit {
   sortBy: string;
   url: string;
   changeSortDirect: boolean;
+  activeRow: number;
+  activeUserId: number;
+  activeUser: User;
 
   subscriptionUsers: Subscription;
   subscriptionUsersCount: Subscription;
+
+  @Output() userActivated = new EventEmitter<User>();
 
   constructor(private userService: UserDataAccessService) {
   }
 
   ngOnInit() {
-
     this.subscriptionUsers = this.userService.usersChanged.subscribe((tempUsers: User[]) => {
       this.users = tempUsers;
+      this.activeUser = this.users[0];
       console.log('users changed from subscription ' + this.users);
     });
     this.subscriptionUsersCount = this.userService.totalUserCountChanged.subscribe((count: number) => {
@@ -39,15 +45,18 @@ export class UsersComponent implements OnInit {
     this.users = this.userService.getUsers();
     this.totalUserCount = this.userService.getTotalUserCount();
 
+
+
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.totalUserCount / this.itemsPerPage)).fill(0).map((x, i) => i);
     this.currentPage = 1;
     this.sortBy = 'id';
     this.url = '';
     this.changeSortDirect = false;
+    this.activeRow = -1;
+    this.activeUserId = 0;
     console.log('total user count ngOninit method ' + this.totalUserCount);
     console.log('pagination arr ' + this.paginationArr);
-
   }
 
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
@@ -66,6 +75,17 @@ export class UsersComponent implements OnInit {
     console.log('pagination arr ' + this.paginationArr);
   }
 
-
+  setActiveRow(index: number, userId: number) {
+    this.activeRow = index;
+    this.activeUserId = userId;
+    this.userActivated.emit(this.activeUser);
+    for (const user of this.users) {
+      if (user.id === userId) {
+        this.activeUser = user;
+        console.log(this.activeUser);
+      }
+    }
+    // console.log(userId);
+  }
 }
 

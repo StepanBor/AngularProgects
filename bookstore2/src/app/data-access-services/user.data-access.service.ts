@@ -71,4 +71,5 @@ export class UserDataAccessService {
     console.log('from set totalUserCount ' + value);
     this.totalUserCountChanged.next(this.totalUserCount);
   }
+
 }
