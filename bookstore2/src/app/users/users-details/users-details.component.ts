@@ -9,6 +9,7 @@ import {User} from '../../data-models/User';
 export class UsersDetailsComponent implements OnInit {
 
   @Input() activeUserDetails: User;
+  
 
   constructor() {
   }
