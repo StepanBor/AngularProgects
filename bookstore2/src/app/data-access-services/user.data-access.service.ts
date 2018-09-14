@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {User} from '../data-models/User';
 import {Http} from '@angular/http';
 import {Response} from '@angular/http';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Order} from '../data-models/Order';
 import {BookItem} from '../data-models/BookItem';
@@ -12,19 +12,24 @@ export class UserDataAccessService {
 
   usersChanged = new Subject<User[]>();
   totalUserCountChanged = new Subject<number>();
-  userDetailsOrdersChanged = new Subject<Order>();
+  userDetailsOrdersChanged = new Subject<Order[]>();
 
 
   private totalUserCount = 12;
+
   private users: User[] = [new User(100500, 'login1', 'email1',
     '111-000', 'adress1', 'name1', 'lastname1',
     'CUSTOMER', 'group1', 'avatarUrl'),
     new User(100500, 'login2', 'email1',
       '111-000', 'adress2', 'name2', 'lastname2',
       'CUSTOMER', 'group2', 'avatarUrl')];
+
   private userDetailsId = -1;
-  private userDetailsOrders: Order[] = [new Order(-1, [], -1, [], -1,
-    '', '')];
+
+  private userDetailsOrders: Order[] = [new Order(-1,
+    [new BookItem(-1, '', '', '', '', '', -1, -1)],
+    -1, new User(100500, 'login2', 'email1', '111-000', 'adress2', 'name2', 'lastname2',
+      'CUSTOMER', 'group2', 'avatarUrl'), -1, '', new Date())];
 
   constructor(private http: Http) {
     this.getUsersFromDb('http://localhost:8080/userPage');
@@ -37,8 +42,8 @@ export class UserDataAccessService {
       console.log(response);
       const data = response.json();
       this.users = data;
-      console.log('from get users ' + data);
-      console.log('from get users ' + this.users);
+      // console.log('from get users ' + data);
+      // console.log('from get users ' + this.users);
       this.usersChanged.next(data);
     });
   }
@@ -47,7 +52,7 @@ export class UserDataAccessService {
     this.http.get('http://localhost:8080/usersCount').subscribe((responce: Response) => {
       const data: number = responce.json();
       this.totalUserCount = data;
-      console.log('from get totalUserCount ' + data);
+      // console.log('from get totalUserCount ' + data);
       this.totalUserCountChanged.next(this.totalUserCount);
     });
   }
@@ -59,6 +64,14 @@ export class UserDataAccessService {
       this.userDetailsOrdersChanged.next(data);
       console.log(data);
     });
+  }
+
+  getUserDetailsOrders2(reqUrl: string): Observable<Order[]> {
+    return this.http.get(reqUrl).pipe(map((response: Response) => {
+      const orders: Order[] = response.json();
+      console.log(orders);
+      return orders;
+    }));
   }
 
   getUsers(): User[] {

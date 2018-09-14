@@ -45,8 +45,6 @@ export class UsersComponent implements OnInit {
     this.users = this.userService.getUsers();
     this.totalUserCount = this.userService.getTotalUserCount();
 
-
-
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.totalUserCount / this.itemsPerPage)).fill(0).map((x, i) => i);
     this.currentPage = 1;
@@ -78,13 +76,14 @@ export class UsersComponent implements OnInit {
   setActiveRow(index: number, userId: number) {
     this.activeRow = index;
     this.activeUserId = userId;
-    this.userActivated.emit(this.activeUser);
     for (const user of this.users) {
       if (user.id === userId) {
         this.activeUser = user;
         console.log(this.activeUser);
       }
     }
+    this.userActivated.emit(this.activeUser);
+    this.userService.getUserDetailsOrders('http://localhost:8080/orders?userId=' + this.activeUser.id);
     // console.log(userId);
   }
 }
