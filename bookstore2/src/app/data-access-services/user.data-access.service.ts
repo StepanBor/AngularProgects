@@ -14,6 +14,11 @@ export class UserDataAccessService {
   totalUserCountChanged = new Subject<number>();
   userDetailsOrdersChanged = new Subject<Order[]>();
 
+  ordersChanged = new Subject<Order[]>();
+  totalOrderCountChanged = new Subject<number>();
+
+  orders: Order[];
+  totalOrderCount: number;
 
   private totalUserCount = 12;
 
@@ -35,16 +40,16 @@ export class UserDataAccessService {
     this.getUsersFromDb('http://localhost:8080/userPage');
     this.getTotalUsersCount();
     this.getUserDetailsOrders('http://localhost:8080/orders');
+    this.getOrders('http://localhost:8080/orders');
+    this.getTotalOrderCount();
   }
 
   getUsersFromDb(reqUrl: string) {
     this.http.get(reqUrl).subscribe((response: Response) => {
-      console.log(response);
+      // console.log(response);
       const data = response.json();
       this.users = data;
-      // console.log('from get users ' + data);
-      // console.log('from get users ' + this.users);
-      this.usersChanged.next(data);
+      this.usersChanged.next(this.users);
     });
   }
 
@@ -62,19 +67,20 @@ export class UserDataAccessService {
       const data = response.json();
       this.userDetailsOrders = data;
       this.userDetailsOrdersChanged.next(data);
-      console.log(data);
     });
   }
 
   getUserDetailsOrders2(reqUrl: string): Observable<Order[]> {
+    console.log(reqUrl + '  get user orders!!!!!!!!');
     return this.http.get(reqUrl).pipe(map((response: Response) => {
+      console.log(response + '  get orders');
       const orders: Order[] = response.json();
-      console.log(orders);
       return orders;
     }));
   }
 
   getUsers(): User[] {
+    console.log(this.users.slice() + 'from get users');
     return this.users.slice();
   }
 
@@ -94,4 +100,21 @@ export class UserDataAccessService {
     this.totalUserCountChanged.next(this.totalUserCount);
   }
 
+  getOrders(reqUrl: string) {
+    this.http.get(reqUrl).subscribe((response: Response) => {
+      console.log(response + ' from get orders');
+      const data = response.json();
+      this.orders = data;
+      this.ordersChanged.next(this.orders);
+    });
+  }
+
+  getTotalOrderCount() {
+    this.http.get('http://localhost:8080/orderCount').subscribe((responce: Response) => {
+      const data: number = responce.json();
+      this.totalOrderCount = data;
+      // console.log('from get totalUserCount ' + data);
+      this.totalOrderCountChanged.next(this.totalOrderCount);
+    });
+  }
 }

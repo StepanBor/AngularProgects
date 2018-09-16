@@ -30,43 +30,39 @@
         <div class="col-md-8">
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"
-                 role="tab"
-                 aria-controls="home" aria-selected="true">User orders</a>
+              <a class="nav-link" id="home-tab" data-toggle="tab" role="tab"
+              [ngClass]="{active:activeTabNum==0}" (click)="setActiveTabNum(0)">User orders</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile"
-                 role="tab"
-                 aria-controls="profile" aria-selected="false">Profile</a>
+              <a class="nav-link" id="profile-tab" data-toggle="tab" role="tab"
+                 [ngClass]="{active:activeTabNum==1}" (click)="setActiveTabNum(1)">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact"
-                 role="tab"
-                 aria-controls="contact" aria-selected="false">Contact</a>
+              <a class="nav-link" id="contact-tab" data-toggle="tab" role="tab"
+                 [ngClass]="{active:activeTabNum==2}" (click)="setActiveTabNum(2)">Contact</a>
             </li>
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel"
-                 aria-labelledby="home-tab">
+                 [ngClass]="{'active , show':activeTabNum==0}">
               <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>order Id</th>
-                  <th>sum</th>
-                  <th>order list</th>
-                  <th>status</th>
+                  <th class="text-primary">order Id</th>
+                  <th class="text-primary">sum</th>
+                  <th class="text-primary">order list</th>
+                  <th class="text-primary">status</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let order of userDetailOrders, let i=index" [ngClass]="{collapse:((i+1)%2==0),
-                show: ((i)==activeRowOrderTable), 'bg-secondary': ((i)==activeRowOrderTable-1)}" (click)="setActiveRowOrderTable(i+1)">
-                  <td *ngIf="((i+1)%2!==0)">{{order.id}}</td>
-                  <td *ngIf="(i+1)%2!==0">{{order.orderPrice}}</td>
-                  <td *ngIf="(i+1)%2!==0" >Show order list
+                <tr *ngFor="let num of iteratArray, let i=index" [ngClass]="{collapse:(i%2!==0), show: ((i)==activeRowOrderTable), 'bg-secondary': ((i)==activeRowOrderTable-1)}" (click)="setActiveRowOrderTable(i+1)">
+                  <td *ngIf="(i)%2==0">{{userDetailOrders[i/2].id}}</td>
+                  <td *ngIf="(i)%2==0">{{userDetailOrders[i/2].orderPrice}}</td>
+                  <td *ngIf="(i)%2==0" >Show order list
                     <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
                   </td>
-                  <td *ngIf="(i+1)%2!==0">{{order.status}}</td>
-                  <td *ngIf="((i+1)%2==0)" colspan="4">
+                  <td *ngIf="(i)%2==0">{{userDetailOrders[i/2].status}}</td>
+                  <td *ngIf="((i)%2!==0)" colspan="4">
                     <div style="overflow: scroll; height: 300px">
                       <table class="table table-bordered table-hover">
                         <thead>
@@ -77,31 +73,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let bookItem of order.orderList, let i=index" [ngClass]="{collapse:((i+1)%2==0),
+                        <tr *ngFor="let bookItem of userDetailOrders[(i-1)/2].orderList, let j=index" [ngClass]="{collapse:((i+1)%2==0),
                           show: ((i)==activeRowOrderTable)}">
-                          <td>{{bookItem.id}}</td>
-                          <td>{{bookItem.bookName}}</td>
-                          <td>{{bookItem.price}}</td>
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="collapse" [ngClass]="{show: ((userDetailOrders.length)==activeRowOrderTable)}">
-                  <td colspan="4">
-                    <div style="overflow: scroll; height: 300px">
-                      <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                          <td>Book id</td>
-                          <td>Book name</td>
-                          <td>Book prise</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let bookItem of userDetailOrders[userDetailOrders.length-1].orderList, let i=index"
-                            [ngClass]="{collapse:((i+1)%2==0), show: ((i)==activeRowOrderTable)}">
                           <td>{{bookItem.id}}</td>
                           <td>{{bookItem.bookName}}</td>
                           <td>{{bookItem.price}}</td>
@@ -115,7 +88,7 @@
               </table>
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel"
-                 aria-labelledby="profile-tab">
+                 [ngClass]="{'active , show':activeTabNum==1}">
               <ol class="list-unstyled mb-4">
                 <li>Login:</li>
                 <hr>
@@ -136,16 +109,12 @@
               </ol>
             </div>
             <div class="tab-pane fade" id="contact" role="tabpanel"
-                 aria-labelledby="contact-tab">
-              <form action="/sendEmail" method="post">
+                 [ngClass]="{'active , show':activeTabNum==2}">
+              <form>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1"
-                         aria-describedby="emailHelp"
-                         placeholder="yyyy"/>"
-                  readonly
-                  name="toClient"
-                  value="email">
+                  <input type="email" class="form-control " readonly = "true" id="exampleInputEmail1"
+                         aria-describedby="emailHelp" placeholder="yyyy"  name="toClient" value="email">
                   <small id="emailHelp" class="form-text text-muted">We'll never
                     share your email with anyone else.
                   </small>

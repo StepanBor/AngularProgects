@@ -13,7 +13,7 @@ export class Order implements OnInit {
 
   private _client: User;
 
-  private _shipmentId: number;
+  private _shipment: number;
 
   private _status: string;
 
@@ -25,7 +25,7 @@ export class Order implements OnInit {
     this._orderList = orderList;
     this._orderPrice = orderPrice;
     this._client = client;
-    this._shipmentId = shipmentId;
+    this._shipment = shipmentId;
     this._status = status;
     this._orderDate = orderDate;
   }
@@ -66,12 +66,12 @@ export class Order implements OnInit {
     this._client = value;
   }
 
-  get shipmentId(): number {
-    return this._shipmentId;
+  get shipment(): number {
+    return this._shipment;
   }
 
-  set shipmentId(value: number) {
-    this._shipmentId = value;
+  set shipment(value: number) {
+    this._shipment = value;
   }
 
   get status(): string {

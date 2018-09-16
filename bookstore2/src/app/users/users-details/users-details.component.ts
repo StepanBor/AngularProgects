@@ -19,6 +19,9 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
 
   activeRowOrderTable: number;
 
+  activeTabNum: number;
+
+  iteratArray: number[];
 
   constructor(private userService: UserDataAccessService) {
   }
@@ -29,17 +32,21 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
       '', '', '');
 
     this.activeRowOrderTable = -1;
+
+    this.activeTabNum = 0;
     // this.userDetailsOrdersSubscription = this.userService.userDetailsOrdersChanged.subscribe((orders: Order[]) => {
     //   this.userDetailOrders = orders;
     // });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
-    this.userService.getUserDetailsOrders2('http://localhost:8080/orders?userId=' + this.activeUserDetails.id).subscribe(
+    const activeUsId: number = this.activeUserDetails.id;
+    const reqUrl = 'http://localhost:8080/orders?userId=' + activeUsId;
+    this.userService.getUserDetailsOrders2(reqUrl).subscribe(
       (orders: Order[]) => {
         this.userDetailOrders = orders;
-        // console.log(orders);
+        this.iteratArray = Array(this.userDetailOrders.length * 2).fill(0).map((x, i) => i);
+        console.log(this.iteratArray);
       }
     );
   }
@@ -50,6 +57,10 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
     } else {
       this.activeRowOrderTable = rowIndex;
     }
+  }
+
+  setActiveTabNum(tabNum: number) {
+    this.activeTabNum = tabNum;
   }
 
 }
