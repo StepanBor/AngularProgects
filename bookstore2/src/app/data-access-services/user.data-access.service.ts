@@ -6,6 +6,7 @@ import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Order} from '../data-models/Order';
 import {BookItem} from '../data-models/BookItem';
+import {Shipment2} from '../data-models/Shipment2';
 
 @Injectable()
 export class UserDataAccessService {
@@ -34,7 +35,7 @@ export class UserDataAccessService {
   private userDetailsOrders: Order[] = [new Order(-1,
     [new BookItem(-1, '', '', '', '', '', -1, -1)],
     -1, new User(100500, 'login2', 'email1', '111-000', 'adress2', 'name2', 'lastname2',
-      'CUSTOMER', 'group2', 'avatarUrl'), -1, '', new Date())];
+      'CUSTOMER', 'group2', 'avatarUrl'), new Shipment2(-1, '', '', -1), '', new Date())];
 
   constructor(private http: Http) {
     this.getUsersFromDb('http://localhost:8080/userPage');

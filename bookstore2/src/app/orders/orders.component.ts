@@ -40,7 +40,7 @@ export class OrdersComponent implements OnInit {
 
     this.orderService.getOrders('http://localhost:8080/orders');
     this.orderService.getTotalOrderCount();
-
+    this.activeOrder = this.orders[0];
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.totalOrderCount % this.itemsPerPage) === 0 ?
       Math.floor(this.totalOrderCount / this.itemsPerPage) : Math.floor(this.totalOrderCount / this.itemsPerPage) + 1)
@@ -75,7 +75,5 @@ export class OrdersComponent implements OnInit {
         this.activeOrder = order;
       }
     }
-    // this.userActivated.emit(this.activeUser);
-    // this.userService.getUserDetailsOrders('http://localhost:8080/orders?userId=' + this.activeUser.id);
   }
 }

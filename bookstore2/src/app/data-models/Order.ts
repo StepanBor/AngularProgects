@@ -1,6 +1,7 @@
 import {BookItem} from './BookItem';
 import {User} from './User';
 import {OnInit} from '@angular/core';
+import {Shipment2} from './Shipment2';
 
 
 export class Order implements OnInit {
@@ -13,19 +14,19 @@ export class Order implements OnInit {
 
   private _client: User;
 
-  private _shipment: number;
+  private _shipment: Shipment2;
 
   private _status: string;
 
   private _orderDate: Date;
 
   constructor(id: number, orderList: [BookItem], orderPrice: number,
-              client: User, shipmentId: number, status: string, orderDate: Date) {
+              client: User, shipment: Shipment2, status: string, orderDate: Date) {
     this._id = id;
     this._orderList = orderList;
     this._orderPrice = orderPrice;
     this._client = client;
-    this._shipment = shipmentId;
+    this._shipment = shipment;
     this._status = status;
     this._orderDate = orderDate;
   }
@@ -66,11 +67,11 @@ export class Order implements OnInit {
     this._client = value;
   }
 
-  get shipment(): number {
+  get shipment(): Shipment2 {
     return this._shipment;
   }
 
-  set shipment(value: number) {
+  set shipment(value: Shipment2) {
     this._shipment = value;
   }
 

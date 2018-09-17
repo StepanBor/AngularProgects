@@ -47,7 +47,7 @@ export class UsersComponent implements OnInit {
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.totalUserCount % this.itemsPerPage) === 0 ?
       Math.floor(this.totalUserCount / this.itemsPerPage) : Math.floor(this.totalUserCount / this.itemsPerPage) + 1)
-      .fill(0).map((x, i) => i);;
+      .fill(0).map((x, i) => i);
     this.currentPage = 1;
     this.sortBy = 'id';
     // this.url = '';

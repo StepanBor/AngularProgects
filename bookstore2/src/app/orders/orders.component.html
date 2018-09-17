@@ -34,7 +34,7 @@
               <td style="word-break: break-all">{{order.id}}</td>
               <td style="word-break: break-all">{{order.orderPrice}}</td>
               <td style="word-break: break-all">{{order.client.login}}</td>
-              <td style="word-break: break-all">{{order.shipment}}</td>
+              <td style="word-break: break-all">{{order.shipment.id}}</td>
               <td style="word-break: break-all">{{order.status}}</td>
               <td style="word-break: break-all">{{order.orderDate}}</td>
             </tr>
@@ -57,3 +57,8 @@
         </div>
       </div>
     </div>
+    <div class="col-md-6">
+      <app-order-detail [activeOrder]="activeOrder"></app-order-detail>
+    </div>
+  </div>
+</div>

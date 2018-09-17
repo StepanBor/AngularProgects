@@ -52,8 +52,8 @@ nav.side-navbar .sidebar-header {
 }
 
 nav.side-navbar .avatar {
-  width: 55px;
-  height: 55px;
+  width: 70px;
+  height: 70px;
 }
 
 nav.side-navbar .title {
@@ -61,14 +61,14 @@ nav.side-navbar .title {
 }
 
 nav.side-navbar .title h1 {
-  color: #333;
+  color: white;
 }
 
 nav.side-navbar .title p {
   font-size: 0.9em;
   font-weight: 200;
   margin-bottom: 0;
-  color: #aaa;
+  color: white;
 }
 
 nav.side-navbar span.heading {

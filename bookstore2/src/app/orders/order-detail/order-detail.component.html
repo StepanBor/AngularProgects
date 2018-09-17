@@ -1,3 +1,29 @@
-<p>
-  order-detail works!
-</p>
+<div class="card">
+  <div class="card-header">
+    Order details
+  </div>
+  <div class="card-body">
+    <!--<div style="overflow: scroll; height: 300px">-->
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+          <th>Book id</th>
+          <th>Book name</th>
+          <th>Book price</th>
+        </tr>
+        </thead>
+        <tbody >
+        <!--<div style="overflow: scroll; height: 300px">-->
+        <tr *ngFor="let book of activeOrder.orderList, let i=index">
+          <td>{{book.id}}</td>
+          <td>{{book.bookName}}</td>
+          <td>{{book.price}}</td>
+        </tr>
+        <!--</div>-->
+        </tbody>
+      </table>
+    <hr>
+    <p style="text-align: right">Total price:{{activeOrder.orderPrice}}</p>
+    <hr>
+  </div>
+</div>
