@@ -18,6 +18,8 @@ export class OrderDetailComponent implements OnInit, OnChanges {
   itemsPerPage: number;
   paginationArr: number[];
 
+  activeTabNum: number;
+
   constructor(private orderService: UserDataAccessService) {
   }
 
@@ -28,8 +30,9 @@ export class OrderDetailComponent implements OnInit, OnChanges {
 
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.activeOrder.orderList.length % this.itemsPerPage) === 0 ?
-Math.floor(this.activeOrder.orderList.length % this.itemsPerPage) : Math.floor(this.activeOrder.orderList.length % this.itemsPerPage) + 1)
+      Math.floor(this.activeOrder.orderList.length % this.itemsPerPage) : Math.floor(this.activeOrder.orderList.length % this.itemsPerPage) + 1)
       .fill(0).map((x, i) => i);
+    this.activeTabNum = 0;
 
   }
 
@@ -45,6 +48,10 @@ Math.floor(this.activeOrder.orderList.length % this.itemsPerPage) : Math.floor(t
     } else {
       this.activeRowOrderTable = rowIndex;
     }
+  }
+
+  setActiveTabNum(tabNum: number) {
+    this.activeTabNum = tabNum;
   }
 
 }
