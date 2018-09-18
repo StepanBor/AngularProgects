@@ -2,18 +2,17 @@ import {BookItem} from './BookItem';
 import {User} from './User';
 import {OnInit} from '@angular/core';
 import {Shipment2} from './Shipment2';
-import {Dictionary} from 'typescript-collections';
 
 
 export class Order implements OnInit {
 
   private _id: number;
 
-  // private _orderMap: [BookItem];
+  // private _orderSet: [BookItem];
 
-  // private orderMap: Dictionary<BookItem, number>;
+  // private orderSet: Dictionary<BookItem, number>;
 
-  private _orderMap: Dictionary<BookItem, number>;
+  private _orderSet: [{ key: BookItem, value: number }];
 
   private _orderPrice: number;
 
@@ -25,9 +24,9 @@ export class Order implements OnInit {
 
   private _orderDate: Date;
 
-  constructor(orderMap: Dictionary<BookItem, number>, orderPrice: number,
+  constructor(orderSet: [{ key: BookItem, value: number }], orderPrice: number,
               client: User, shipment: Shipment2, status: string, orderDate: Date) {
-    this._orderMap = orderMap;
+    this._orderSet = orderSet;
     this._orderPrice = orderPrice;
     this._client = client;
     this._shipment = shipment;
@@ -47,12 +46,12 @@ export class Order implements OnInit {
     this._id = value;
   }
 
-  get orderMap(): Dictionary<BookItem, number> {
-    return this._orderMap;
+  get orderSet(): [{ key: BookItem, value: number }] {
+    return this._orderSet;
   }
 
-  set orderMap(value: Dictionary<BookItem, number>) {
-    this._orderMap = value;
+  set orderSet(value: [{ key: BookItem, value: number }]) {
+    this._orderSet = value;
   }
 
   get orderPrice(): number {

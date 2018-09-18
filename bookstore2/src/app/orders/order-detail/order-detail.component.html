@@ -18,11 +18,11 @@
     <div style="overflow-y: scroll; height: 300px">
       <table class="table table-bordered  table-striped table-hover" style="margin-top: 0px">
         <tbody>
-        <tr *ngFor="let book of activeOrder.orderMap.keys(), let i=index">
+        <tr *ngFor="let book of activeOrder.orderSet.keys, let i=index">
           <td>{{book.id}}</td>
           <td>{{book.bookName}}</td>
           <td>{{book.price}}</td>
-          <td>{{activeOrder.orderMap.getValue(book)}}</td>
+          <td>{{activeOrder.orderSet.getValue(book)}}</td>
         </tr>
         </tbody>
       </table>

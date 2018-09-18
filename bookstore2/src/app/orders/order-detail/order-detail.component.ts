@@ -26,20 +26,20 @@ export class OrderDetailComponent implements OnInit, OnChanges {
   ngOnInit() {
 
     this.activeRowOrderTable = -1;
-    this.iteratArray = Array(this.activeOrder.orderMap.keys().length * 2).fill(0).map((x, i) => i);
+    this.iteratArray = Array(this.activeOrder.orderSet.length * 2).fill(0).map((x, i) => i);
 
     this.itemsPerPage = 6;
-    this.paginationArr = Array((this.activeOrder.orderMap.keys().length % this.itemsPerPage) === 0
-      ? Math.floor(this.activeOrder.orderMap.keys().length % this.itemsPerPage)
-      : Math.floor(this.activeOrder.orderMap.keys().length % this.itemsPerPage) + 1)
+    this.paginationArr = Array((this.activeOrder.orderSet.length % this.itemsPerPage) === 0
+      ? Math.floor(this.activeOrder.orderSet.length % this.itemsPerPage)
+      : Math.floor(this.activeOrder.orderSet.length % this.itemsPerPage) + 1)
       .fill(0).map((x, i) => i);
     this.activeTabNum = 0;
-
+    console.log(this.activeOrder.orderSet + 'HHHHHHHHHHHHHHHHH');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    this.iteratArray = Array(this.activeOrder.orderMap.keys().length * 2).fill(0).map((x, i) => i);
+    this.iteratArray = Array(this.activeOrder.orderSet.length * 2).fill(0).map((x, i) => i);
     this.activeTabNum = 0;
 
   }

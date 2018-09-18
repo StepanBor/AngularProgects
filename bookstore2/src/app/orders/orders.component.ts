@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
+
 import {Order} from '../data-models/Order';
 import {UserDataAccessService} from '../data-access-services/user.data-access.service';
 
@@ -32,6 +33,7 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
     this.subscriptionOrders = this.orderService.ordersChanged.subscribe((ordersTemp: Order[]) => {
       this.orders = ordersTemp;
+
     });
 
     this.subscriptionOrdersCount = this.orderService.totalOrderCountChanged.subscribe((count: number) => {
@@ -52,6 +54,7 @@ export class OrdersComponent implements OnInit {
     this.activeOrderId = 0;
     this.url = 'http://localhost:8080/orders?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
+
   }
 
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
@@ -73,6 +76,7 @@ export class OrdersComponent implements OnInit {
     for (const order of this.orders) {
       if (order.id === orderId) {
         this.activeOrder = order;
+        console.log(this.activeOrder.orderSet);
       }
     }
   }
