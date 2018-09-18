@@ -73,7 +73,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let bookItem of userDetailOrders[(i-1)/2].orderList, let j=index" [ngClass]="{collapse:((i+1)%2==0),
+                        <tr *ngFor="let bookItem of userDetailOrders[(i-1)/2].orderMap, let j=index" [ngClass]="{collapse:((i+1)%2==0),
                           show: ((i)==activeRowOrderTable)}">
                           <td>{{bookItem.id}}</td>
                           <td>{{bookItem.bookName}}</td>

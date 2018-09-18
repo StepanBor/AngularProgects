@@ -32,10 +32,11 @@ export class UserDataAccessService {
 
   private userDetailsId = -1;
 
-  private userDetailsOrders: Order[] = [new Order(-1,
-    [new BookItem(-1, '', '', '', '', '', -1, -1)],
-    -1, new User(100500, 'login2', 'email1', '111-000', 'adress2', 'name2', 'lastname2',
-      'CUSTOMER', 'group2', 'avatarUrl'), new Shipment2(-1, '', '', -1), '', new Date())];
+  // private userDetailsOrders: Order[] = [new Order([new BookItem(-1, '', '', '', '', '', -1, -1)],
+  //   -1, new User(100500, 'login2', 'email1', '111-000', 'adress2', 'name2', 'lastname2',
+  //     'CUSTOMER', 'group2', 'avatarUrl'), new Shipment2(-1, '', '', -1), '', new Date())];
+
+  private userDetailsOrders: Order[];
 
   constructor(private http: Http) {
     this.getUsersFromDb('http://localhost:8080/userPage');
