@@ -33,7 +33,7 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
     this.subscriptionOrders = this.orderService.ordersChanged.subscribe((ordersTemp: Order[]) => {
       this.orders = ordersTemp;
-
+      this.activeOrder = ordersTemp[0];
     });
 
     this.subscriptionOrdersCount = this.orderService.totalOrderCountChanged.subscribe((count: number) => {
@@ -42,7 +42,7 @@ export class OrdersComponent implements OnInit {
 
     this.orderService.getOrders('http://localhost:8080/orders');
     this.orderService.getTotalOrderCount();
-    this.activeOrder = this.orders[0];
+    // this.activeOrder = this.orders[0];
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.totalOrderCount % this.itemsPerPage) === 0 ?
       Math.floor(this.totalOrderCount / this.itemsPerPage) : Math.floor(this.totalOrderCount / this.itemsPerPage) + 1)
@@ -76,7 +76,7 @@ export class OrdersComponent implements OnInit {
     for (const order of this.orders) {
       if (order.id === orderId) {
         this.activeOrder = order;
-        console.log(this.activeOrder.orderSet);
+        console.log(this.activeOrder.orderList[0]);
       }
     }
   }

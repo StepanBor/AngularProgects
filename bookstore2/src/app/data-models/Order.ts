@@ -2,17 +2,18 @@ import {BookItem} from './BookItem';
 import {User} from './User';
 import {OnInit} from '@angular/core';
 import {Shipment2} from './Shipment2';
+import {ItemEntry} from './ItemEntry';
 
 
 export class Order implements OnInit {
 
   private _id: number;
 
-  // private _orderSet: [BookItem];
+  // private _orderList: [BookItem];
 
-  // private orderSet: Dictionary<BookItem, number>;
+  // private orderList: Dictionary<BookItem, number>;
 
-  private _orderSet: [{ key: BookItem, value: number }];
+  private _orderList: [ItemEntry];
 
   private _orderPrice: number;
 
@@ -24,9 +25,9 @@ export class Order implements OnInit {
 
   private _orderDate: Date;
 
-  constructor(orderSet: [{ key: BookItem, value: number }], orderPrice: number,
+  constructor(orderSet: [ItemEntry], orderPrice: number,
               client: User, shipment: Shipment2, status: string, orderDate: Date) {
-    this._orderSet = orderSet;
+    this._orderList = orderSet;
     this._orderPrice = orderPrice;
     this._client = client;
     this._shipment = shipment;
@@ -37,7 +38,6 @@ export class Order implements OnInit {
   ngOnInit(): void {
   }
 
-
   get id(): number {
     return this._id;
   }
@@ -46,12 +46,12 @@ export class Order implements OnInit {
     this._id = value;
   }
 
-  get orderSet(): [{ key: BookItem, value: number }] {
-    return this._orderSet;
+  get orderList(): [ItemEntry] {
+    return this._orderList;
   }
 
-  set orderSet(value: [{ key: BookItem, value: number }]) {
-    this._orderSet = value;
+  set orderList(value: [ItemEntry]) {
+    this._orderList = value;
   }
 
   get orderPrice(): number {

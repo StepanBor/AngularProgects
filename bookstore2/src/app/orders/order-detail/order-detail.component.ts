@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Order} from '../../data-models/Order';
 import {UserDataAccessService} from '../../data-access-services/user.data-access.service';
+import {ItemEntry} from '../../data-models/ItemEntry';
 
 @Component({
   selector: 'app-order-detail',
@@ -26,20 +27,20 @@ export class OrderDetailComponent implements OnInit, OnChanges {
   ngOnInit() {
 
     this.activeRowOrderTable = -1;
-    this.iteratArray = Array(this.activeOrder.orderSet.length * 2).fill(0).map((x, i) => i);
+    this.iteratArray = Array(this.activeOrder.orderList.length * 2).fill(0).map((x, i) => i);
 
     this.itemsPerPage = 6;
-    this.paginationArr = Array((this.activeOrder.orderSet.length % this.itemsPerPage) === 0
-      ? Math.floor(this.activeOrder.orderSet.length % this.itemsPerPage)
-      : Math.floor(this.activeOrder.orderSet.length % this.itemsPerPage) + 1)
+    this.paginationArr = Array((this.activeOrder.orderList.length % this.itemsPerPage) === 0
+      ? Math.floor(this.activeOrder.orderList.length % this.itemsPerPage)
+      : Math.floor(this.activeOrder.orderList.length % this.itemsPerPage) + 1)
       .fill(0).map((x, i) => i);
     this.activeTabNum = 0;
-    console.log(this.activeOrder.orderSet + 'HHHHHHHHHHHHHHHHH');
+    console.log(this.activeOrder.orderList + 'HHHHHHHHHHHHHHHHH');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    this.iteratArray = Array(this.activeOrder.orderSet.length * 2).fill(0).map((x, i) => i);
+    this.iteratArray = Array(this.activeOrder.orderList.length * 2).fill(0).map((x, i) => i);
     this.activeTabNum = 0;
 
   }
@@ -54,6 +55,11 @@ export class OrderDetailComponent implements OnInit, OnChanges {
 
   setActiveTabNum(tabNum: number) {
     this.activeTabNum = tabNum;
+  }
+
+  setValue(value: number, itemEntry: ItemEntry) {
+    console.log((itemEntry.value = itemEntry.value + 1) + 'HHHHH');
+    // itemEntry.setValue(value);
   }
 
 }
