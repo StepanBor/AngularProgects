@@ -21,6 +21,16 @@
   float: left;
 }
 
+.item-deleted{
+  text-decoration:line-through;
+  opacity: 0.5;
+}
+
+.modal-active{
+  display: block !important;
+  padding-right: 15px !important;
+}
+
 /*.table > thead > tr > th,*/
 /*.table > thead > tr > td {*/
   /*font-size: .9em;*/

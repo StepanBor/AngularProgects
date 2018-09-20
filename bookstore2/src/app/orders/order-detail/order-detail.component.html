@@ -1,6 +1,10 @@
 <div class="card">
   <div class="card-header">
-    Order {{activeOrder.id}} details
+    Edit order {{activeOrder.id}}
+    <div class="btn-group btn-group-sm">
+      <div class="btn btn-primary btn-sm">new item</div>
+      <div class="btn btn-primary btn-sm">save chages</div>
+    </div>
   </div>
   <div class="card-body">
 
@@ -8,38 +12,37 @@
       <table class="table table-bordered  table-striped table-hover" style="margin-bottom: 0px">
         <thead class="thead-light">
         <tr>
+          <th class="text-primary">#</th>
           <th class="text-primary">Book id</th>
           <th class="text-primary">Book name</th>
           <th class="text-primary">Book price</th>
           <th class="text-primary">Book quantity</th>
         </tr>
         </thead>
-        <!--</table>-->
-
-        <!--<table class="table table-bordered  table-striped table-hover" style="margin-top: 0px">-->
         <tbody>
         <tr *ngFor="let entry of activeOrder.orderList, let i=index">
-          <td>{{entry.key.id}}</td>
-          <td>{{entry.key.bookName}}</td>
-          <td>{{entry.key.price}}</td>
+          <td [ngClass]="{'item-deleted': entry.value==0}">{{i+1}}</td>
+          <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.id}}</td>
+          <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.bookName}}</td>
+          <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.price}}</td>
           <td>{{entry.value}}
             <div class="btn-group btn-group-sm">
-              <div class="btn btn-outline-primary btn-sm" (click)="entry.value=entry.value+1"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>
-              <div class="btn btn-outline-danger btn-sm" (click)="entry.value=entry.value-1"><i class="fa fa-minus-circle" aria-hidden="true"></i></div>
+              <div class="btn btn-outline-primary btn-sm" (click)="setItemEntryValue(entry.value+1,entry)"><i
+                class="fa fa-plus-circle" aria-hidden="true"></i></div>
+              <div class="btn btn-outline-danger btn-sm" [ngClass]="{'disabled':entry.value==0}"
+                   (click)="setItemEntryValue(entry.value-1,entry)">
+                <i class="fa fa-minus-circle" aria-hidden="true"></i></div>
             </div>
           </td>
         </tr>
         </tbody>
-        <!--</table>-->
-
-        <!--<table class="table table-bordered  table-striped table-hover">-->
-          <tfoot>
-          <tr>
-            <td colspan="3"><h5 style="text-align: right">Total price:</h5></td>
-            <td><h5>{{activeOrder.orderPrice}}</h5></td>
-          </tr>
-          </tfoot>
-        </table>
+        <tfoot>
+        <tr>
+          <td colspan="3"><h5 style="text-align: right">Total price:</h5></td>
+          <td><h5>{{activeOrder.orderPrice}}</h5></td>
+        </tr>
+        </tfoot>
+      </table>
     </div>
     <hr>
     <ul class="nav nav-tabs" role="tablist">
@@ -105,24 +108,25 @@
     </div>
   </div>
 </div>
+
 <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true"
-     style="display: block; padding-right: 15px;" [ngStyle]="display: block; padding-right: 15px;">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+     [ngStyle]="{'display': (isModalActive?'block':''), 'padding-right': (isModalActive?'15px':'')}">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <!--<div class="modal-header">-->
+      <!--<h5 class="modal-title" id="exampleModalLabel">Remove item</h5>-->
+      <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+        <!--<span aria-hidden="true">&times;</span>-->
+      <!--</button>-->
+    <!--</div>-->
+    <div class="modal-body">
+     Remove item from order list?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeOrderListItem()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="isModalActive=false">No</button>
     </div>
   </div>
+</div>
 </div>

@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {Order} from '../../data-models/Order';
 import {UserDataAccessService} from '../../data-access-services/user.data-access.service';
 import {ItemEntry} from '../../data-models/ItemEntry';
+import {forEach} from 'typescript-collections/dist/lib/arrays';
 
 @Component({
   selector: 'app-order-detail',
@@ -17,9 +18,14 @@ export class OrderDetailComponent implements OnInit, OnChanges {
   activeRowOrderTable: number;
 
   itemsPerPage: number;
+
   paginationArr: number[];
 
   activeTabNum: number;
+
+  isModalActive: boolean;
+
+  itemToRemove: ItemEntry;
 
   constructor(private orderService: UserDataAccessService) {
   }
@@ -28,7 +34,7 @@ export class OrderDetailComponent implements OnInit, OnChanges {
 
     this.activeRowOrderTable = -1;
     this.iteratArray = Array(this.activeOrder.orderList.length * 2).fill(0).map((x, i) => i);
-
+    this.isModalActive = false;
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.activeOrder.orderList.length % this.itemsPerPage) === 0
       ? Math.floor(this.activeOrder.orderList.length % this.itemsPerPage)
@@ -57,9 +63,27 @@ export class OrderDetailComponent implements OnInit, OnChanges {
     this.activeTabNum = tabNum;
   }
 
-  setValue(value: number, itemEntry: ItemEntry) {
-    console.log((itemEntry.value = itemEntry.value + 1) + 'HHHHH');
-    // itemEntry.setValue(value);
+  setItemEntryValue(value: number, itemEntry: ItemEntry) {
+
+    if (value <= 0) {
+      this.itemToRemove = itemEntry;
+      this.isModalActive = true;
+      itemEntry.value = 0;
+    } else {
+      itemEntry.value = value;
+    }
+
+  }
+
+  removeOrderListItem(itemEntry: ItemEntry) {
+    // this.activeOrder.orderList.;
+    let i;
+    for (i = 0; i < this.activeOrder.orderList.length; i++) {
+      if (this.activeOrder.orderList[i] === itemEntry) {
+        this.activeOrder.orderList[i];
+      }
+    }
+
   }
 
 }

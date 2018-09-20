@@ -18,6 +18,7 @@ import {OrdersComponent} from './orders/orders.component';
 import {BooksComponent} from './books/books.component';
 import {UserCabinetComponent} from './user-cabinet/user-cabinet.component';
 import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
+import { OrderDetailModalComponent } from './orders/order-detail/order-detail-modal/order-detail-modal.component';
 
 
 const appRoutes: Routes = [
@@ -42,7 +43,8 @@ const appRoutes: Routes = [
     OrdersComponent,
     BooksComponent,
     UserCabinetComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    OrderDetailModalComponent
   ],
   imports: [
     BrowserModule,
