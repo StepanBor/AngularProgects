@@ -30,7 +30,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let order of orders, let i = index" (click)="setActiveRow(i, order.id)"
-                [ngClass]="{'bg-secondary': i == activeRow}">
+                [ngClass]="{'bg-info': i == activeRow, 'bg-warning': ((order.status=='unProcessed') && (i != activeRow))}">
               <td style="word-break: break-all">{{order.id}}</td>
               <td style="word-break: break-all">{{order.orderPrice}}</td>
               <td style="word-break: break-all">{{order.client.login}}</td>
@@ -43,7 +43,7 @@
           <nav aria-label="tablePagination">
             <ul class="pagination">
               <li class="page-item" [ngClass]="{disabled: currentPage==1}">
-                <a class="page-link"  (click)="onSortGet(sortBy,false,currentPage-1)">Previous</a>
+                <a class="page-link" (click)="onSortGet(sortBy,false,currentPage-1)">Previous</a>
               </li>
               <li *ngFor="let int of paginationArr; index as i"
                   class="page-item" [ngClass]="{active: currentPage==(i+1)}">

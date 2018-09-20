@@ -124,8 +124,8 @@
      Remove item from order list?
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeOrderListItem()">Yes</button>
-      <button type="button" class="btn btn-primary" (click)="isModalActive=false">No</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeOrderListItem(itemToRemove)">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="setItemEntryValue(1,itemToRemove)">No</button>
     </div>
   </div>
 </div>

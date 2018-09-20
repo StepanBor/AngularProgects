@@ -2,7 +2,6 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {Order} from '../../data-models/Order';
 import {UserDataAccessService} from '../../data-access-services/user.data-access.service';
 import {ItemEntry} from '../../data-models/ItemEntry';
-import {forEach} from 'typescript-collections/dist/lib/arrays';
 
 @Component({
   selector: 'app-order-detail',
@@ -64,26 +63,26 @@ export class OrderDetailComponent implements OnInit, OnChanges {
   }
 
   setItemEntryValue(value: number, itemEntry: ItemEntry) {
-
+    this.activeOrder.orderPrice = this.activeOrder.orderPrice - itemEntry.value * itemEntry.key.price;
     if (value <= 0) {
       this.itemToRemove = itemEntry;
       this.isModalActive = true;
       itemEntry.value = 0;
     } else {
       itemEntry.value = value;
+      this.isModalActive = false;
     }
-
+    this.activeOrder.orderPrice = this.activeOrder.orderPrice + itemEntry.value * itemEntry.key.price;
   }
 
   removeOrderListItem(itemEntry: ItemEntry) {
-    // this.activeOrder.orderList.;
-    let i;
-    for (i = 0; i < this.activeOrder.orderList.length; i++) {
-      if (this.activeOrder.orderList[i] === itemEntry) {
-        this.activeOrder.orderList[i];
+    for (let i = 0; i < this.activeOrder.orderList.length; i++) {
+      if (this.activeOrder.orderList[i].key.id === itemEntry.key.id) {
+        this.activeOrder.orderList.splice(i, 1);
+        // this.activeOrder.orderPrice = this.activeOrder.orderPrice - itemEntry.key.price;
       }
+      this.isModalActive = false;
     }
-
   }
 
 }
