@@ -1,10 +1,12 @@
 <div class="card">
   <div class="card-header">
     Edit order {{activeOrder.id}}
-    <div class="btn-group btn-group-sm">
-      <div class="btn btn-primary btn-sm">new item</div>
-      <div class="btn btn-primary btn-sm">save chages</div>
-    </div>
+    <!--<div class="btn-group btn-group-sm">-->
+      <div class="btn btn-primary btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>
+       new item </div>
+      <div class="btn btn-primary btn-sm"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+      </div>
+    <!--</div>-->
   </div>
   <div class="card-body">
 
@@ -25,13 +27,15 @@
           <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.id}}</td>
           <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.bookName}}</td>
           <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.price}}</td>
+
           <td>{{entry.value}}
             <div class="btn-group btn-group-sm">
-              <div class="btn btn-outline-primary btn-sm" (click)="setItemEntryValue(entry.value+1,entry)"><i
-                class="fa fa-plus-circle" aria-hidden="true"></i></div>
+              <div class="btn btn-outline-primary btn-sm" (click)="setItemEntryValue(entry.value+1,entry)"><i class="fa fa-plus-square" aria-hidden="true"></i>
+              </div>
               <div class="btn btn-outline-danger btn-sm" [ngClass]="{'disabled':entry.value==0}"
                    (click)="setItemEntryValue(entry.value-1,entry)">
-                <i class="fa fa-minus-circle" aria-hidden="true"></i></div>
+                <i class="fa fa-minus-square" aria-hidden="true"></i>
+              </div>
             </div>
           </td>
         </tr>

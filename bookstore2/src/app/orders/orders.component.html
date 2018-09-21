@@ -37,6 +37,8 @@
               <td style="word-break: break-all">{{order.shipment.id}}</td>
               <td style="word-break: break-all">{{order.status}}</td>
               <td style="word-break: break-all">{{order.orderDate}}</td>
+              <td *ngIf="isOrderChanged(order.id)"><div class="btn btn-outline-primary btn-sm" (click)="onSaveOrder(order)"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+              </div></td>
             </tr>
             </tbody>
           </table>
@@ -59,7 +61,7 @@
       <!--<app-users-details [activeUserDetails]="activeOrder.client" *ngIf="activeOrder!=null"></app-users-details>-->
     </div>
     <div class="col-md-6">
-      <app-order-detail [activeOrder]="activeOrder"></app-order-detail>
+      <app-order-detail [activeOrder]="activeOrder" (orderChanged)="setChangedOrderId($event)"></app-order-detail>
     </div>
   </div>
 </div>

@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 
 import {Order} from '../data-models/Order';
 import {UserDataAccessService} from '../data-access-services/user.data-access.service';
+import {forEach} from 'typescript-collections/dist/lib/arrays';
 
 @Component({
   selector: 'app-orders',
@@ -23,6 +24,7 @@ export class OrdersComponent implements OnInit {
   activeRow: number;
   activeOrderId: number;
   activeOrder: Order;
+  changedOrdersId: number[] = [-1];
 
   subscriptionOrders: Subscription;
   subscriptionOrdersCount: Subscription;
@@ -55,6 +57,7 @@ export class OrdersComponent implements OnInit {
     this.url = 'http://localhost:8080/orders?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
 
+
   }
 
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
@@ -79,5 +82,24 @@ export class OrdersComponent implements OnInit {
         console.log(this.activeOrder.orderList[0]);
       }
     }
+  }
+
+  setChangedOrderId(id: number) {
+    this.changedOrdersId.push(id);
+  }
+
+  isOrderChanged(id: number): boolean {
+
+    for (const num of this.changedOrdersId) {
+      if (num === id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  onSaveOrder(orderToSave: Order) {
+    this.orderService.saveOrder(orderToSave).subscribe((response) => (
+      console.log(response)));
   }
 }

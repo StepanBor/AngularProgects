@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Order} from '../../data-models/Order';
 import {UserDataAccessService} from '../../data-access-services/user.data-access.service';
 import {ItemEntry} from '../../data-models/ItemEntry';
@@ -26,6 +26,10 @@ export class OrderDetailComponent implements OnInit, OnChanges {
 
   itemToRemove: ItemEntry;
 
+  isActiveOrderChanged: boolean;
+
+  @Output() orderChanged = new EventEmitter<number>();
+
   constructor(private orderService: UserDataAccessService) {
   }
 
@@ -35,6 +39,7 @@ export class OrderDetailComponent implements OnInit, OnChanges {
     this.iteratArray = Array(this.activeOrder.orderList.length * 2).fill(0).map((x, i) => i);
     this.isModalActive = false;
     this.itemsPerPage = 6;
+    this.isActiveOrderChanged = false;
     this.paginationArr = Array((this.activeOrder.orderList.length % this.itemsPerPage) === 0
       ? Math.floor(this.activeOrder.orderList.length % this.itemsPerPage)
       : Math.floor(this.activeOrder.orderList.length % this.itemsPerPage) + 1)
@@ -73,6 +78,7 @@ export class OrderDetailComponent implements OnInit, OnChanges {
       this.isModalActive = false;
     }
     this.activeOrder.orderPrice = this.activeOrder.orderPrice + itemEntry.value * itemEntry.key.price;
+    this.orderChanged.emit(this.activeOrder.id);
   }
 
   removeOrderListItem(itemEntry: ItemEntry) {
@@ -83,6 +89,7 @@ export class OrderDetailComponent implements OnInit, OnChanges {
       }
       this.isModalActive = false;
     }
+    this.orderChanged.emit(this.activeOrder.id);
   }
 
 }
