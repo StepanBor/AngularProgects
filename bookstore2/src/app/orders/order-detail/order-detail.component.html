@@ -2,10 +2,11 @@
   <div class="card-header">
     Edit order {{activeOrder.id}}
     <!--<div class="btn-group btn-group-sm">-->
-      <div class="btn btn-primary btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>
-       new item </div>
-      <div class="btn btn-primary btn-sm"><i class="fa fa-floppy-o" aria-hidden="true"></i>
-      </div>
+    <div class="btn btn-primary btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>
+      new item
+    </div>
+    <div class="btn btn-primary btn-sm"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+    </div>
     <!--</div>-->
   </div>
   <div class="card-body">
@@ -30,7 +31,8 @@
 
           <td>{{entry.value}}
             <div class="btn-group btn-group-sm">
-              <div class="btn btn-outline-primary btn-sm" (click)="setItemEntryValue(entry.value+1,entry)"><i class="fa fa-plus-square" aria-hidden="true"></i>
+              <div class="btn btn-outline-primary btn-sm" (click)="setItemEntryValue(entry.value+1,entry)"><i
+                class="fa fa-plus-square" aria-hidden="true"></i>
               </div>
               <div class="btn btn-outline-danger btn-sm" [ngClass]="{'disabled':entry.value==0}"
                    (click)="setItemEntryValue(entry.value-1,entry)">
@@ -116,21 +118,23 @@
 <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true"
      [ngStyle]="{'display': (isModalActive?'block':''), 'padding-right': (isModalActive?'15px':'')}">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <!--<div class="modal-header">-->
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--<div class="modal-header">-->
       <!--<h5 class="modal-title" id="exampleModalLabel">Remove item</h5>-->
       <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-        <!--<span aria-hidden="true">&times;</span>-->
+      <!--<span aria-hidden="true">&times;</span>-->
       <!--</button>-->
-    <!--</div>-->
-    <div class="modal-body">
-     Remove item from order list?
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeOrderListItem(itemToRemove)">Yes</button>
-      <button type="button" class="btn btn-primary" (click)="setItemEntryValue(1,itemToRemove)">No</button>
+      <!--</div>-->
+      <div class="modal-body">
+        Remove item from order list?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                (click)="removeOrderListItem(itemToRemove)">Yes
+        </button>
+        <button type="button" class="btn btn-primary" (click)="setItemEntryValue(1,itemToRemove)">No</button>
+      </div>
     </div>
   </div>
-</div>
 </div>

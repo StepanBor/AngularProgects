@@ -4,6 +4,8 @@ import {Subscription} from 'rxjs';
 import {Order} from '../data-models/Order';
 import {UserDataAccessService} from '../data-access-services/user.data-access.service';
 import {forEach} from 'typescript-collections/dist/lib/arrays';
+import index from '@angular/cli/lib/cli';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-orders',
@@ -73,8 +75,8 @@ export class OrdersComponent implements OnInit {
       .fill(0).map((x, i) => i);
   }
 
-  setActiveRow(index: number, orderId: number) {
-    this.activeRow = index;
+  setActiveRow(index1: number, orderId: number) {
+    this.activeRow = index1;
     this.activeOrderId = orderId;
     for (const order of this.orders) {
       if (order.id === orderId) {
@@ -99,7 +101,12 @@ export class OrdersComponent implements OnInit {
   }
 
   onSaveOrder(orderToSave: Order) {
-    this.orderService.saveOrder(orderToSave).subscribe((response) => (
-      console.log(response)));
+    this.orderService.saveOrder(orderToSave).subscribe((response) => {
+      console.log(response);
+      if(response.status==200){
+        
+      }
+    });
+    this.changedOrdersId.splice(this.changedOrdersId.indexOf(orderToSave.id), 1);
   }
 }
