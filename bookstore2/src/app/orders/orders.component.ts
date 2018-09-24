@@ -31,6 +31,8 @@ export class OrdersComponent implements OnInit {
   subscriptionOrders: Subscription;
   subscriptionOrdersCount: Subscription;
 
+  isModalActive: boolean;
+
   constructor(private orderService: UserDataAccessService) {
   }
 
@@ -59,7 +61,7 @@ export class OrdersComponent implements OnInit {
     this.url = 'http://localhost:8080/orders?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
 
-
+    this.isModalActive = false;
   }
 
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
@@ -103,10 +105,14 @@ export class OrdersComponent implements OnInit {
   onSaveOrder(orderToSave: Order) {
     this.orderService.saveOrder(orderToSave).subscribe((response) => {
       console.log(response);
-      if(response.status==200){
-        
+      if (response.status === 200) {
+        this.isModalActive = true;
       }
     });
     this.changedOrdersId.splice(this.changedOrdersId.indexOf(orderToSave.id), 1);
+  }
+
+  closeModal() {
+    this.isModalActive = false;
   }
 }
