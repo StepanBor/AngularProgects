@@ -6,6 +6,7 @@ import {UserDataAccessService} from '../data-access-services/user.data-access.se
 import {forEach} from 'typescript-collections/dist/lib/arrays';
 import index from '@angular/cli/lib/cli';
 import {HttpResponse} from '@angular/common/http';
+import {NavigationStart, Router, RouterEvent} from '@angular/router';
 
 @Component({
   selector: 'app-orders',
@@ -32,8 +33,14 @@ export class OrdersComponent implements OnInit {
   subscriptionOrdersCount: Subscription;
 
   isModalActive: boolean;
+  isExitModalActive: boolean;
 
-  constructor(private orderService: UserDataAccessService) {
+  constructor(private orderService: UserDataAccessService, private router: Router) {
+    router.events.subscribe((event: RouterEvent) => {
+      if (event instanceof NavigationStart) {
+        // Show loading indicator
+      }
+    });
   }
 
   ngOnInit() {
@@ -62,6 +69,7 @@ export class OrdersComponent implements OnInit {
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
 
     this.isModalActive = false;
+    this.isExitModalActive = false;
   }
 
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
@@ -89,7 +97,9 @@ export class OrdersComponent implements OnInit {
   }
 
   setChangedOrderId(id: number) {
-    this.changedOrdersId.push(id);
+    if (this.changedOrdersId.indexOf(id) === -1) {
+      this.changedOrdersId.push(id);
+    }
   }
 
   isOrderChanged(id: number): boolean {
@@ -109,7 +119,10 @@ export class OrdersComponent implements OnInit {
         this.isModalActive = true;
       }
     });
+    console.log(this.changedOrdersId);
+    console.log(this.changedOrdersId.indexOf(orderToSave.id) + ' ggggggggggggg');
     this.changedOrdersId.splice(this.changedOrdersId.indexOf(orderToSave.id), 1);
+    console.log(this.changedOrdersId);
   }
 
   closeModal() {
