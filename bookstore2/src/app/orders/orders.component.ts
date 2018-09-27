@@ -1,19 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 import {Order} from '../data-models/Order';
 import {UserDataAccessService} from '../data-access-services/user.data-access.service';
 import {forEach} from 'typescript-collections/dist/lib/arrays';
 import index from '@angular/cli/lib/cli';
 import {HttpResponse} from '@angular/common/http';
-import {NavigationStart, Router, RouterEvent} from '@angular/router';
+import {NavigationEnd, NavigationStart, Router, RouterEvent} from '@angular/router';
+import {CanComponentDeactivate} from '../can-deactivate-guard.service';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css']
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, CanComponentDeactivate {
 
   orders: Order[] = [];
   totalOrderCount = 12;
@@ -35,15 +36,17 @@ export class OrdersComponent implements OnInit {
   isModalActive: boolean;
   isExitModalActive: boolean;
 
-  constructor(private orderService: UserDataAccessService, private router: Router) {
-    router.events.subscribe((event: RouterEvent) => {
+  constructor(private orderService: UserDataAccessService, private router1: Router) {
+    this.router1.events.forEach((event: RouterEvent) => {
+      console.log('hdhdhd');
       if (event instanceof NavigationStart) {
-        // Show loading indicator
+        // confirm('Quit?');
       }
     });
   }
 
   ngOnInit() {
+
     this.subscriptionOrders = this.orderService.ordersChanged.subscribe((ordersTemp: Order[]) => {
       this.orders = ordersTemp;
       this.activeOrder = ordersTemp[0];
@@ -127,5 +130,9 @@ export class OrdersComponent implements OnInit {
 
   closeModal() {
     this.isModalActive = false;
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    return true;
   }
 }

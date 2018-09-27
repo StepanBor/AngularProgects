@@ -2,13 +2,15 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Order} from '../../data-models/Order';
 import {UserDataAccessService} from '../../data-access-services/user.data-access.service';
 import {ItemEntry} from '../../data-models/ItemEntry';
+import {CanComponentDeactivate} from '../../can-deactivate-guard.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.css']
 })
-export class OrderDetailComponent implements OnInit, OnChanges {
+export class OrderDetailComponent implements OnInit, OnChanges{
 
   @Input() activeOrder: Order;
 
@@ -91,5 +93,6 @@ export class OrderDetailComponent implements OnInit, OnChanges {
     }
     this.orderChanged.emit(this.activeOrder.id);
   }
+
 
 }

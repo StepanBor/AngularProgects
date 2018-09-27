@@ -17,14 +17,15 @@ import {HomeComponent} from './home/home.component';
 import {OrdersComponent} from './orders/orders.component';
 import {BooksComponent} from './books/books.component';
 import {UserCabinetComponent} from './user-cabinet/user-cabinet.component';
-import { OrderDetailComponent } from './orders/order-detail/order-detail.component';
-import { OrderDetailModalComponent } from './orders/order-detail/order-detail-modal/order-detail-modal.component';
+import {OrderDetailComponent} from './orders/order-detail/order-detail.component';
+import {OrderDetailModalComponent} from './orders/order-detail/order-detail-modal/order-detail-modal.component';
+import {CanDeactivateGuard} from './can-deactivate-guard.service';
 
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'users', component: UsersComponent},
-  {path: 'orders', component: OrdersComponent},
+  {path: 'orders', component: OrdersComponent, canDeactivate: [CanDeactivateGuard]},
   {path: 'bookItems', component: BooksComponent},
   {path: 'userCabinet', component: UserCabinetComponent},
 ];
@@ -52,7 +53,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [UserDataAccessService],
+  providers: [UserDataAccessService, CanDeactivateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
