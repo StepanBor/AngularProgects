@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {User} from '../../data-models/User';
 import {Order} from '../../data-models/Order';
-import {UserDataAccessService} from '../../data-access-services/user.data-access.service';
+import {DataAccessService} from '../../data-access-services/data-access.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -23,7 +23,7 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
 
   iteratArray: number[];
 
-  constructor(private userService: UserDataAccessService) {
+  constructor(private userService: DataAccessService) {
   }
 
   ngOnInit() {

@@ -1,29 +1,28 @@
 import {BookItem} from './BookItem';
 
 export class ItemEntry {
-  private _key: BookItem;
-  private _value: number;
+  public key: BookItem;
+  public value: number;
 
 
   constructor(key: BookItem, value: number) {
-    this._key = key;
-    this._value = value;
+    this.key = key;
+    this.value = value;
   }
 
-
-  get key(): BookItem {
-    return this._key;
-  }
-
-  set key(value: BookItem) {
-    this._key = value;
-  }
-
-  get value(): number {
-    return this._value;
-  }
-
-  set value(value: number) {
-    this._value = value;
-  }
+  // getKey(): BookItem {
+  //   return this.key;
+  // }
+  //
+  // setKey(value: BookItem) {
+  //   this.key = value;
+  // }
+  //
+  // getValue(): number {
+  //   return this.value;
+  // }
+  //
+  // setValue(value: number) {
+  //   this.value = value;
+  // }
 }

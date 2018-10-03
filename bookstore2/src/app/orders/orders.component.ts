@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {Order} from '../data-models/Order';
-import {UserDataAccessService} from '../data-access-services/user.data-access.service';
+import {DataAccessService} from '../data-access-services/data-access.service';
 import {forEach} from 'typescript-collections/dist/lib/arrays';
 import index from '@angular/cli/lib/cli';
 import {HttpResponse} from '@angular/common/http';
 import {NavigationEnd, NavigationStart, Router, RouterEvent} from '@angular/router';
 import {CanComponentDeactivate} from '../can-deactivate-guard.service';
+import {BookItem} from '../data-models/BookItem';
 
 @Component({
   selector: 'app-orders',
@@ -18,6 +20,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
 
   orders: Order[] = [];
   totalOrderCount = 12;
+  bookItems: BookItem[] = [];
 
   itemsPerPage: number;
   paginationArr: number[];
@@ -32,17 +35,15 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
 
   subscriptionOrders: Subscription;
   subscriptionOrdersCount: Subscription;
+  subscriptionBookItems: Subscription;
 
   isModalActive: boolean;
   isExitModalActive: boolean;
+  isDeleteModalActive: boolean;
 
-  constructor(private orderService: UserDataAccessService, private router1: Router) {
-    this.router1.events.forEach((event: RouterEvent) => {
-      console.log('hdhdhd');
-      if (event instanceof NavigationStart) {
-        // confirm('Quit?');
-      }
-    });
+  constructor(private orderService: DataAccessService,
+              private router1: Router,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -56,6 +57,11 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
       this.totalOrderCount = count;
     });
 
+    this.subscriptionBookItems = this.orderService.bookItemsChanged.subscribe((bookItemsTemp: BookItem[]) => {
+      this.bookItems = bookItemsTemp;
+      console.log(this.bookItems);
+    });
+    this.orderService.getBookItems('http://localhost:8080/bookItems');
     this.orderService.getOrders('http://localhost:8080/orders');
     this.orderService.getTotalOrderCount();
     // this.activeOrder = this.orders[0];
@@ -73,6 +79,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
 
     this.isModalActive = false;
     this.isExitModalActive = false;
+    this.isDeleteModalActive = false;
   }
 
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
@@ -123,7 +130,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
       }
     });
     console.log(this.changedOrdersId);
-    console.log(this.changedOrdersId.indexOf(orderToSave.id) + ' ggggggggggggg');
+    console.log(this.changedOrdersId.indexOf(orderToSave.id));
     this.changedOrdersId.splice(this.changedOrdersId.indexOf(orderToSave.id), 1);
     console.log(this.changedOrdersId);
   }
@@ -133,6 +140,41 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
   }
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.changedOrdersId.length >= 2) {
+      return confirm('Do you want discard changes?');
+    }
     return true;
   }
+
+  deleteOrder(orderToDelete: Order) {
+    if (confirm('Delete order' + orderToDelete.id)) {
+      for (let i = 0; i < this.orders.length; i++) {
+        if (this.orders[i].id === orderToDelete.id) {
+          this.orders.splice(i, 1);
+          this.orderService.deleteOrder(orderToDelete).subscribe((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              this.isDeleteModalActive = true;
+            }
+          });
+        }
+      }
+    }
+  }
+
+  saveAllChanges() {
+    for (let i = 0; i < this.orders.length; i++) {
+      for (let j = 0; j < this.changedOrdersId.length; j++) {
+        if (this.orders[i].id === this.changedOrdersId[j]) {
+          this.onSaveOrder(this.orders[i]);
+        }
+      }
+    }
+  }
+
+  addNewOrder() {
+
+  }
+
+
 }

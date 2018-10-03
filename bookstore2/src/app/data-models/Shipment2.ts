@@ -1,50 +1,50 @@
 export class Shipment2 {
-  private _id: number;
+  public id: number;
 
-  private _shippingAddress: string;
+  public shippingAddress: string;
 
-  private _shipmentStatus: string;
+  public shipmentStatus: string;
 
-  private _order: number;
+  public order: number;
 
 
   constructor(id: number, shippingAddress: string, shipmentStatus: string, order: number) {
-    this._id = id;
-    this._shippingAddress = shippingAddress;
-    this._shipmentStatus = shipmentStatus;
-    this._order = order;
+    this.id = id;
+    this.shippingAddress = shippingAddress;
+    this.shipmentStatus = shipmentStatus;
+    this.order = order;
   }
 
 
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
-  }
-
-  get shippingAddress(): string {
-    return this._shippingAddress;
-  }
-
-  set shippingAddress(value: string) {
-    this._shippingAddress = value;
-  }
-
-  get shipmentStatus(): string {
-    return this._shipmentStatus;
-  }
-
-  set shipmentStatus(value: string) {
-    this._shipmentStatus = value;
-  }
-
-  get order(): number {
-    return this._order;
-  }
-
-  set order(value: number) {
-    this._order = value;
-  }
+  // getId(): number {
+  //   return this.id;
+  // }
+  //
+  // setId(value: number) {
+  //   this.id = value;
+  // }
+  //
+  // getShippingAddress(): string {
+  //   return this.shippingAddress;
+  // }
+  //
+  // setShippingAddress(value: string) {
+  //   this.shippingAddress = value;
+  // }
+  //
+  // getShipmentStatus(): string {
+  //   return this.shipmentStatus;
+  // }
+  //
+  // setShipmentStatus(value: string) {
+  //   this.shipmentStatus = value;
+  // }
+  //
+  // getOrder(): number {
+  //   return this.order;
+  // }
+  //
+  // setOrder(value: number) {
+  //   this.order = value;
+  // }
 }

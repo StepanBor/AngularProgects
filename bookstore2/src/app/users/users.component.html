@@ -1,6 +1,7 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div
+    [ngClass]="{'col-md-6':showUserDetails, 'col-md-12': !showUserDetails}">
       <div class="card">
         <div class="card-header">
           User list
@@ -57,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" *ngIf="showUserDetails">
       <app-users-details [activeUserDetails]="activeUser"></app-users-details>
     </div>
   </div>

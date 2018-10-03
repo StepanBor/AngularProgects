@@ -6,10 +6,9 @@ import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Order} from '../data-models/Order';
 import {BookItem} from '../data-models/BookItem';
-import {Shipment2} from '../data-models/Shipment2';
 
 @Injectable()
-export class UserDataAccessService {
+export class DataAccessService {
 
   usersChanged = new Subject<User[]>();
   totalUserCountChanged = new Subject<number>();
@@ -17,6 +16,12 @@ export class UserDataAccessService {
 
   ordersChanged = new Subject<Order[]>();
   totalOrderCountChanged = new Subject<number>();
+
+  bookItemsChanged = new Subject<BookItem[]>();
+  totalBookItemCountChanged = new Subject<number>();
+
+  bookItems: BookItem[];
+  totalBookItemCount: number;
 
   orders: Order[];
   totalOrderCount: number;
@@ -44,6 +49,8 @@ export class UserDataAccessService {
     this.getUserDetailsOrders('http://localhost:8080/orders');
     this.getOrders('http://localhost:8080/orders');
     this.getTotalOrderCount();
+    this.getBookItems('http://localhost:8080/bookItems');
+    this.getTotalBookItemsCount();
   }
 
   getUsersFromDb(reqUrl: string) {
@@ -121,7 +128,29 @@ export class UserDataAccessService {
   }
 
   saveOrder(orderToSave: Order): Observable<Response> {
+    // console.log(orderToSave.orderList + 'WWWWWWWWWWWWWWWWWWWW');
     return this.http.post('http://localhost:8080/saveOrder', orderToSave);
+  }
+
+  getBookItems(reqUrl: string) {
+    this.http.get(reqUrl).subscribe((response: Response) => {
+      console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
+      const data = response.json();
+      this.bookItems = data;
+      this.bookItemsChanged.next(this.bookItems);
+    });
+  }
+
+  getTotalBookItemsCount() {
+    this.http.get('http://localhost:8080/bookCount').subscribe((responce: Response) => {
+      const data: number = responce.json();
+      this.totalBookItemCount = data;
+      this.totalBookItemCountChanged.next(this.totalBookItemCount);
+    });
+  }
+
+  deleteOrder(orderToDelete: Order): Observable<Response> {
+   return this.http.post('http://localhost:8080/deleteOrder', orderToDelete);
   }
 
 }

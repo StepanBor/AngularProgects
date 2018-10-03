@@ -1,18 +1,24 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Order} from '../../data-models/Order';
-import {UserDataAccessService} from '../../data-access-services/user.data-access.service';
+import {DataAccessService} from '../../data-access-services/data-access.service';
 import {ItemEntry} from '../../data-models/ItemEntry';
 import {CanComponentDeactivate} from '../../can-deactivate-guard.service';
 import {Observable} from 'rxjs';
+import {BookItem} from '../../data-models/BookItem';
+import {NgForm} from '@angular/forms';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {User} from '../../data-models/User';
 
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.css']
 })
-export class OrderDetailComponent implements OnInit, OnChanges{
+export class OrderDetailComponent implements OnInit, OnChanges {
 
   @Input() activeOrder: Order;
+
+  @Input() bookItems: BookItem[];
 
   iteratArray: number[];
 
@@ -30,9 +36,18 @@ export class OrderDetailComponent implements OnInit, OnChanges{
 
   isActiveOrderChanged: boolean;
 
+  isModalBookListActive: boolean;
+
+  // isModalSaveActive: boolean;
+
   @Output() orderChanged = new EventEmitter<number>();
 
-  constructor(private orderService: UserDataAccessService) {
+  @Output() activeOrderSaved = new EventEmitter<Order>();
+
+  itemEntry5: ItemEntry;
+
+  constructor(private orderService: DataAccessService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -47,7 +62,8 @@ export class OrderDetailComponent implements OnInit, OnChanges{
       : Math.floor(this.activeOrder.orderList.length % this.itemsPerPage) + 1)
       .fill(0).map((x, i) => i);
     this.activeTabNum = 0;
-    console.log(this.activeOrder.orderList + 'HHHHHHHHHHHHHHHHH');
+    this.isModalBookListActive = false;
+    // this.isModalSaveActive = false;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -79,6 +95,8 @@ export class OrderDetailComponent implements OnInit, OnChanges{
       itemEntry.value = value;
       this.isModalActive = false;
     }
+    console.log(this.activeOrder.orderList + '!!!!!!!!!!!');
+    // this.activeOrder.setOrderPrice(this.activeOrder.getOrderPrice() + itemEntry.getValue() * itemEntry.getKey().getPrice());
     this.activeOrder.orderPrice = this.activeOrder.orderPrice + itemEntry.value * itemEntry.key.price;
     this.orderChanged.emit(this.activeOrder.id);
   }
@@ -94,5 +112,65 @@ export class OrderDetailComponent implements OnInit, OnChanges{
     this.orderChanged.emit(this.activeOrder.id);
   }
 
+  openBooklistModal() {
+    this.isModalBookListActive = true;
+  }
 
+
+  addItemToOrder(bookItem: BookItem) {
+
+    for (const itemEntry of this.activeOrder.orderList) {
+      if (itemEntry.key.id === bookItem.id) {
+        itemEntry.value++;
+        this.activeOrder.orderPrice = this.activeOrder.orderPrice + bookItem.price;
+        this.orderChanged.emit(this.activeOrder.id);
+        return;
+      }
+    }
+    const itemEntry2 = new ItemEntry(bookItem, 1);
+    this.itemEntry5 = itemEntry2;
+    this.activeOrder.orderList.push(itemEntry2);
+    this.activeOrder.orderPrice = this.activeOrder.orderPrice + bookItem.price;
+    this.orderChanged.emit(this.activeOrder.id);
+  }
+
+  onSaveOrder(orderToSave: Order) {
+    this.activeOrderSaved.emit(orderToSave);
+  }
+
+  // probe(dropInp: HTMLButtonElement) {
+  //   console.log(dropInp.attributes.dropdownShow.nodeValue);
+  //   dropInp.attributes.dropdownShow.nodeValue = 'true';
+  //   console.log(dropInp.attributes.dropdownShow.nodeValue);
+  // }
+
+  changeOrderStatus(status: string) {
+    this.activeOrder.status = status;
+    this.orderChanged.emit(this.activeOrder.id);
+  }
+
+  changeShipment(formElement: NgForm) {
+    this.activeOrder.shipment.shippingAddress = formElement.value.deliveryAdress;
+    this.activeOrder.shipment.shipmentStatus = formElement.value.deliveryStatus;
+    this.orderChanged.emit(this.activeOrder.id);
+  }
+
+  togglePopover(popover, id?: number) {
+    if (id == null) {
+      popover.close();
+    } else if (popover.isOpen()) {
+      popover.close();
+    } else {
+      popover.open({id});
+    }
+  }
+
+  openAddOrderModal(editOrderUser) {
+    this.modalService.open(editOrderUser, {size: 'lg'});
+  }
+
+  setUserInActiveOrder(user: User) {
+    this.activeOrder.client = user;
+    this.orderChanged.emit(this.activeOrder.id);
+  }
 }

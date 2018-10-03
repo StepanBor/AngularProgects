@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {User} from '../data-models/User';
 import {Subscription} from 'rxjs';
-import {UserDataAccessService} from '../data-access-services/user.data-access.service';
+import {DataAccessService} from '../data-access-services/data-access.service';
 import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
@@ -27,9 +27,9 @@ export class UsersComponent implements OnInit {
   subscriptionUsersCount: Subscription;
 
   @Output() userActivated = new EventEmitter<User>();
+  @Input() showUserDetails = true;
 
-  constructor(private userService: UserDataAccessService) {
-    // console.log(this.userService.getUsers() + 'WWWWWWWWWWWWWWWWW');
+  constructor(private userService: DataAccessService) {
   }
 
   ngOnInit() {

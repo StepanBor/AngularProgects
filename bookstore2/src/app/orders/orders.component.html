@@ -4,6 +4,23 @@
       <div class="card">
         <div class="card-header">
           Orders list
+          <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="openAddOrderModal(addOrderModal)">
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              new order
+            </button>
+            <ng-template #saveTipContent>Save all changes</ng-template>
+            <button type="button" class="btn btn-outline-primary btn-sm" placement="right" [ngbTooltip]="saveTipContent"
+                    tooltipClass="custom-tooltip-class" (click)="saveAllChanges()">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            </button>
+            <ng-template #delTipContent>Delete order {{activeOrder.id}}</ng-template>
+            <button type="button" class="btn btn-outline-danger btn-sm" placement="right" [ngbTooltip]="delTipContent"
+                    tooltipClass="custom-tooltip-class" [ngClass]="{'disabled':activeOrder.status=='closed'}"
+            (click)="deleteOrder(activeOrder)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <table class="table table-striped table-bordered table-hover" id="dataTable">
@@ -61,7 +78,10 @@
       <!--<app-users-details [activeUserDetails]="activeOrder.client" *ngIf="activeOrder!=null"></app-users-details>-->
     </div>
     <div class="col-md-6">
-      <app-order-detail [activeOrder]="activeOrder" (orderChanged)="setChangedOrderId($event)"></app-order-detail>
+      <app-order-detail [activeOrder]="activeOrder"
+                        [bookItems]="bookItems"
+                        (orderChanged)="setChangedOrderId($event)"
+                        (activeOrderSaved)="onSaveOrder($event)"></app-order-detail>
     </div>
   </div>
 </div>
@@ -71,12 +91,7 @@
      [ngStyle]="{'display': (isModalActive?'block':''), 'padding-right': (isModalActive?'15px':'')}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <!--<div class="modal-header">-->
-      <!--<h5 class="modal-title" id="exampleModalLabel">Remove item</h5>-->
-      <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-      <!--<span aria-hidden="true">&times;</span>-->
-      <!--</button>-->
-      <!--</div>-->
+
       <div class="modal-body">
         Order {{activeOrder.id}} has been saved.
       </div>
@@ -93,12 +108,7 @@
      [ngStyle]="{'display': (isExitModalActive?'block':''), 'padding-right': (isExitModalActive?'15px':'')}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <!--<div class="modal-header">-->
-      <!--<h5 class="modal-title" id="exampleModalLabel">Remove item</h5>-->
-      <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-      <!--<span aria-hidden="true">&times;</span>-->
-      <!--</button>-->
-      <!--</div>-->
+
       <div class="modal-body">
         Save changes?
       </div>
@@ -113,3 +123,22 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade show" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true"
+     [ngStyle]="{'display': (isDeleteModalActive?'block':''), 'padding-right': (isDeleteModalActive?'15px':'')}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-body">
+        Order was successfully deleted?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                (click)="isDeleteModalActive=false">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

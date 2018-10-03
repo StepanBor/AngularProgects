@@ -5,92 +5,89 @@ import {Shipment2} from './Shipment2';
 import {ItemEntry} from './ItemEntry';
 
 
-export class Order implements OnInit {
+export class Order {
 
-  private _id: number;
+  public id: number;
 
   // private _orderList: [BookItem];
 
   // private orderList: Dictionary<BookItem, number>;
 
-  private _orderList: [ItemEntry];
+  public orderList: ItemEntry[];
 
-  private _orderPrice: number;
+  public orderPrice: number;
 
-  private _client: User;
+  public client: User;
 
-  private _shipment: Shipment2;
+  public shipment: Shipment2;
 
-  private _status: string;
+  public status: string;
 
-  private _orderDate: Date;
+  public orderDate: Date;
 
-  constructor(orderSet: [ItemEntry], orderPrice: number,
+  constructor(orderSet: ItemEntry[], orderPrice: number,
               client: User, shipment: Shipment2, status: string, orderDate: Date) {
-    this._orderList = orderSet;
-    this._orderPrice = orderPrice;
-    this._client = client;
-    this._shipment = shipment;
-    this._status = status;
-    this._orderDate = orderDate;
+    this.orderList = orderSet;
+    this.orderPrice = orderPrice;
+    this.client = client;
+    this.shipment = shipment;
+    this.status = status;
+    this.orderDate = orderDate;
   }
 
-  ngOnInit(): void {
-  }
-
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
-  }
-
-  get orderList(): [ItemEntry] {
-    return this._orderList;
-  }
-
-  set orderList(value: [ItemEntry]) {
-    this._orderList = value;
-  }
-
-  get orderPrice(): number {
-    return this._orderPrice;
-  }
-
-  set orderPrice(value: number) {
-    this._orderPrice = value;
-  }
-
-  get client(): User {
-    return this._client;
-  }
-
-  set client(value: User) {
-    this._client = value;
-  }
-
-  get shipment(): Shipment2 {
-    return this._shipment;
-  }
-
-  set shipment(value: Shipment2) {
-    this._shipment = value;
-  }
-
-  get status(): string {
-    return this._status;
-  }
-
-  set status(value: string) {
-    this._status = value;
-  }
-
-  get orderDate(): Date {
-    return this._orderDate;
-  }
-
-  set orderDate(value: Date) {
-    this._orderDate = value;
-  }
+  // getId(): number {
+  //   return this.id;
+  // }
+  //
+  // setId(value: number) {
+  //   this.id = value;
+  // }
+  //
+  // getOrderList(): ItemEntry[] {
+  //   return this.orderList;
+  // }
+  //
+  // setOrderList(value: ItemEntry[]) {
+  //   this.orderList = value;
+  // }
+  //
+  // getOrderPrice(): number {
+  //   return this.orderPrice;
+  // }
+  //
+  // setOrderPrice(value: number) {
+  //   this.orderPrice = value;
+  // }
+  //
+  // getClient(): User {
+  //   return this.client;
+  // }
+  //
+  // setClient(value: User) {
+  //   this.client = value;
+  // }
+  //
+  // getShipment(): Shipment2 {
+  //   return this.shipment;
+  // }
+  //
+  // setShipment(value: Shipment2) {
+  //   this.shipment = value;
+  // }
+  //
+  // getStatus(): string {
+  //   return this.status;
+  // }
+  //
+  // setStatus(value: string) {
+  //   this.status = value;
+  // }
+  //
+  // getOrderDate(): Date {
+  //   return this.orderDate;
+  // }
+  //
+  // setOrderDate(value: Date) {
+  //   this.orderDate = value;
+  // }
 }

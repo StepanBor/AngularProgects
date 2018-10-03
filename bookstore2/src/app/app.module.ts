@@ -1,15 +1,17 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {HttpModule} from '@angular/http';
 import {RouterModule, Routes} from '@angular/router';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {AppComponent} from './app.component';
 import {NavigationBarComponent} from './navigation-bar/navigation-bar.component';
 import {NavigationSidebarComponent} from './navigation-sidebar/navigation-sidebar.component';
 import {UsersComponent} from './users/users.component';
 import {UsersDetailsComponent} from './users/users-details/users-details.component';
-import {UserDataAccessService} from './data-access-services/user.data-access.service';
+import {DataAccessService} from './data-access-services/data-access.service';
 import {MyProbeDirective} from './my-directives/my-probe-directive';
 import {NewProbeDirectiveDirective} from './my-directives/new-probe-directive.directive';
 import {DropdownDirectiveDirective} from './my-directives/dropdown-directive.directive';
@@ -49,11 +51,13 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AngularFontAwesomeModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    NgbModule
   ],
-  providers: [UserDataAccessService, CanDeactivateGuard],
+  providers: [DataAccessService, CanDeactivateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
