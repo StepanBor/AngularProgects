@@ -22,6 +22,7 @@ import {UserCabinetComponent} from './user-cabinet/user-cabinet.component';
 import {OrderDetailComponent} from './orders/order-detail/order-detail.component';
 import {OrderDetailModalComponent} from './orders/order-detail/order-detail-modal/order-detail-modal.component';
 import {CanDeactivateGuard} from './can-deactivate-guard.service';
+import {PasswordValidatorDirective} from './my-directives/password-validator.directive';
 
 
 const appRoutes: Routes = [
@@ -47,7 +48,8 @@ const appRoutes: Routes = [
     BooksComponent,
     UserCabinetComponent,
     OrderDetailComponent,
-    OrderDetailModalComponent
+    OrderDetailModalComponent,
+    PasswordValidatorDirective
   ],
   imports: [
     BrowserModule,

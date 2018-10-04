@@ -1,8 +1,9 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {User} from '../data-models/User';
 import {Subscription} from 'rxjs';
 import {DataAccessService} from '../data-access-services/data-access.service';
-import {forEach} from '@angular/router/src/utils/collection';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-users',
@@ -25,11 +26,14 @@ export class UsersComponent implements OnInit {
 
   subscriptionUsers: Subscription;
   subscriptionUsersCount: Subscription;
+  files: any;
 
   @Output() userActivated = new EventEmitter<User>();
   @Input() showUserDetails = true;
+  confirmPasswordProp = '1';
 
-  constructor(private userService: DataAccessService) {
+  constructor(private userService: DataAccessService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -82,6 +86,47 @@ export class UsersComponent implements OnInit {
     }
     this.userActivated.emit(this.activeUser);
     this.userService.getUserDetailsOrders('http://localhost:8080/orders?userId=' + this.activeUser.id);
+  }
+
+  openAddUserModal(addUserModal) {
+    this.modalService.open(addUserModal, {size: 'lg'});
+  }
+
+  onSubmitUser(form: HTMLFormElement) {
+    console.log(form);
+    let final_data;
+    let newUserData: string[];
+    const formData = new FormData();
+    if (this.files != null) {
+      const files: FileList = this.files;
+      for (let i = 0; i < files.length; i++) {
+        formData.append('photo', files[i]);
+      }
+    }
+    formData.append('login', form.value.login);
+    formData.append('email', form.value.email);
+    formData.append('phone', form.value.phone);
+    formData.append('address', form.value.address);
+    formData.append('name', form.value.name);
+    formData.append('lastname', form.value.lastname);
+    formData.append('password', form.value.password);
+
+    final_data = formData;
+    // } else {
+    //   // Если нет файла, то слать как обычный JSON
+    //   final_data = form.value;
+    // }
+
+    this.userService.createNewUser(final_data).subscribe((response) => {
+      // response.json();
+      console.log(response);
+    });
+
+  }
+
+  addPhoto(event) {
+    const target = event.target || event.srcElement;
+    this.files = target.files;
   }
 }
 

@@ -8,7 +8,7 @@
         new item
       </button>
       <button type="button" class="btn btn-outline-primary btn-sm" (click)="onSaveOrder(activeOrder)"
-              [ngClass]="{'disabled':activeOrder.status=='closed'}">
+              [disabled]="activeOrder.status=='closed'" >
         <i class="fa fa-floppy-o" aria-hidden="true"></i>
       </button>
       <!--<button type="button" class="btn btn-outline-primary btn-sm" dropdownShow="false" #drop-->
@@ -21,9 +21,9 @@
           <i class="fa fa-indent" aria-hidden="true"></i>
           Change order status</button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button class="dropdown-item" (click)="changeOrderStatus('unProcessed')" [ngClass]="{'disabled':activeOrder.status=='unProcessed' || activeOrder.status=='closed'}">unProcessed</button>
-          <button class="dropdown-item" (click)="changeOrderStatus('processed')" [ngClass]="{'disabled':activeOrder.status=='processed' || activeOrder.status=='closed'}">processed</button>
-          <button class="dropdown-item" (click)="changeOrderStatus('closed')" [ngClass]="{'disabled':activeOrder.status=='closed'}">closed</button>
+          <button class="dropdown-item" (click)="changeOrderStatus('unProcessed')" [disabled]="activeOrder.status=='unProcessed' || activeOrder.status=='closed'">unProcessed</button>
+          <button class="dropdown-item" (click)="changeOrderStatus('processed')" [disabled]="activeOrder.status=='processed' || activeOrder.status=='closed'">processed</button>
+          <button class="dropdown-item" (click)="changeOrderStatus('closed')" [disabled]="activeOrder.status=='closed'">closed</button>
         </div>
       </div>
       <button type="button"
@@ -68,16 +68,16 @@
 
           <td>{{entry.value}}
             <div class="btn-group btn-group-sm">
-              <div class="btn btn-outline-primary btn-sm"
+              <button type="button" class="btn btn-outline-primary btn-sm"
                    (click)="setItemEntryValue(entry.value+1,entry)"
-                   [ngClass]="{'disabled': activeOrder.status=='closed' || activeOrder.status=='processed'}">
+                   [disabled]="activeOrder.status=='closed' || activeOrder.status=='processed'">
                 <i class="fa fa-plus-square" aria-hidden="true"></i>
-              </div>
-              <div class="btn btn-outline-danger btn-sm"
-                   [ngClass]="{'disabled':entry.value==0 || activeOrder.status=='closed' || activeOrder.status=='processed'}"
+              </button>
+              <button type="button" class="btn btn-outline-danger btn-sm"
+                   [disabled]="entry.value==0 || activeOrder.status=='closed' || activeOrder.status=='processed'"
                    (click)="setItemEntryValue(entry.value-1,entry)">
                 <i class="fa fa-minus-square" aria-hidden="true"></i>
-              </div>
+              </button>
             </div>
           </td>
         </tr>

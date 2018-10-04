@@ -150,7 +150,11 @@ export class DataAccessService {
   }
 
   deleteOrder(orderToDelete: Order): Observable<Response> {
-   return this.http.post('http://localhost:8080/deleteOrder', orderToDelete);
+    return this.http.post('http://localhost:8080/deleteOrder', orderToDelete);
+  }
+
+  createNewUser(data): Observable<Response> {
+    return this.http.post('http://localhost:8080/createNewUser', data);
   }
 
 }

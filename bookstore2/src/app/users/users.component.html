@@ -1,10 +1,16 @@
 <div class="container-fluid">
   <div class="row">
     <div
-    [ngClass]="{'col-md-6':showUserDetails, 'col-md-12': !showUserDetails}">
+      [ngClass]="{'col-md-6':showUserDetails, 'col-md-12': !showUserDetails}">
       <div class="card">
         <div class="card-header">
           User list
+          <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="openAddUserModal(addUserModal)">
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              new user
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <table class="table table-striped table-bordered table-hover" id="dataTable">
@@ -44,7 +50,7 @@
           <nav aria-label="tablePagination">
             <ul class="pagination">
               <li class="page-item" [ngClass]="{disabled: currentPage==1}">
-                <a class="page-link"  (click)="onSortGet(sortBy,false,currentPage-1)">Previous</a>
+                <a class="page-link" (click)="onSortGet(sortBy,false,currentPage-1)">Previous</a>
               </li>
               <li *ngFor="let int of paginationArr; index as i"
                   class="page-item" [ngClass]="{active: currentPage==(i+1)}">
@@ -63,3 +69,60 @@
     </div>
   </div>
 </div>
+<ng-template #addUserModal let-modal>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmitUser(f)" #f="ngForm">
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+                 required>
+        </div>
+        <div class="col">
+          <input type="email" class="form-control" placeholder="Email" ngModel name="email"
+                 required email>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Phone" ngModel name="phone"
+                 required>
+        </div>
+      </div>
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="default delivery address" ngModel
+                 name="address">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="name" ngModel name="name">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="lastname" ngModel name="lastname">
+        </div>
+      </div>
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <input type="password" class="form-control" placeholder="password"
+                 ngModel name="password" #password="ngModel"
+          pattern="{{confirmPasswordProp}}" [required]="confirm.value!=''">
+        </div>
+        <div class="col">
+          <input type="password" class="form-control" placeholder="confirm password"
+                 [(ngModel)]="confirmPasswordProp" name="confirmPassword" #confirm="ngModel"
+                 [required]="password.value!=''">
+        </div>
+      </div>
+      <hr>
+      <input type="file" name="photo" (change)="addPhoto($event)"/>
+      <hr>
+      <button type="submit" class="btn btn-outline-primary btn-sm"
+              [disabled]="!f.valid || !password.valid">submit
+      </button>
+    </form>
+
+    <hr>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>

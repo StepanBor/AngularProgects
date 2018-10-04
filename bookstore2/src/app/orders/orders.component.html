@@ -16,7 +16,7 @@
             </button>
             <ng-template #delTipContent>Delete order {{activeOrder.id}}</ng-template>
             <button type="button" class="btn btn-outline-danger btn-sm" placement="right" [ngbTooltip]="delTipContent"
-                    tooltipClass="custom-tooltip-class" [ngClass]="{'disabled':activeOrder.status=='closed'}"
+                    tooltipClass="custom-tooltip-class" [disabled]="activeOrder.status=='closed'"
             (click)="deleteOrder(activeOrder)">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
