@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,6 +10,7 @@ import {HttpResponse} from '@angular/common/http';
 import {NavigationEnd, NavigationStart, Router, RouterEvent} from '@angular/router';
 import {CanComponentDeactivate} from '../can-deactivate-guard.service';
 import {BookItem} from '../data-models/BookItem';
+import {Shipment2} from '../data-models/Shipment2';
 
 @Component({
   selector: 'app-orders',
@@ -40,6 +41,9 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
   isModalActive: boolean;
   isExitModalActive: boolean;
   isDeleteModalActive: boolean;
+  newOrderId: number;
+
+  @ViewChild('orderCreated') orderCreated;
 
   constructor(private orderService: DataAccessService,
               private router1: Router,
@@ -174,7 +178,18 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
 
   addNewOrder() {
 
+    this.orderService.createNewOrder().subscribe((response) => {
+
+      if (response.status === 200) {
+        const num: number = response.json();
+        this.newOrderId = num;
+        this.openAddOrderModal(this.orderCreated);
+      }
+    });
   }
 
+  openAddOrderModal(orderCreated) {
+    this.modalService.open(orderCreated, {size: 'sm'});
+  }
 
 }

@@ -3,9 +3,10 @@ import {User} from '../data-models/User';
 import {Http} from '@angular/http';
 import {Response} from '@angular/http';
 import {Observable, Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {count, map} from 'rxjs/operators';
 import {Order} from '../data-models/Order';
 import {BookItem} from '../data-models/BookItem';
+import {Task1} from '../data-models/Task1';
 
 @Injectable()
 export class DataAccessService {
@@ -13,6 +14,7 @@ export class DataAccessService {
   usersChanged = new Subject<User[]>();
   totalUserCountChanged = new Subject<number>();
   userDetailsOrdersChanged = new Subject<Order[]>();
+  totalUnProcessedOrdersChanged = new Subject<number>();
 
   ordersChanged = new Subject<Order[]>();
   totalOrderCountChanged = new Subject<number>();
@@ -20,11 +22,17 @@ export class DataAccessService {
   bookItemsChanged = new Subject<BookItem[]>();
   totalBookItemCountChanged = new Subject<number>();
 
+  USDUAH = new Subject<number>();
+  EURUAH = new Subject<number>();
+  RUBUAH = new Subject<number>();
+  task: Task1;
+
   bookItems: BookItem[];
   totalBookItemCount: number;
 
   orders: Order[];
   totalOrderCount: number;
+  totalUnProcessedOrderCount: number;
 
   private totalUserCount = 12;
 
@@ -37,15 +45,12 @@ export class DataAccessService {
 
   private userDetailsId = -1;
 
-  // private userDetailsOrders: Order[] = [new Order([new BookItem(-1, '', '', '', '', '', -1, -1)],
-  //   -1, new User(100500, 'login2', 'email1', '111-000', 'adress2', 'name2', 'lastname2',
-  //     'CUSTOMER', 'group2', 'avatarUrl'), new Shipment2(-1, '', '', -1), '', new Date())];
-
   private userDetailsOrders: Order[];
 
   constructor(private http: Http) {
     this.getUsersFromDb('http://localhost:8080/userPage');
     this.getTotalUsersCount();
+    this.getUnprocessedOrdersCount();
     this.getUserDetailsOrders('http://localhost:8080/orders');
     this.getOrders('http://localhost:8080/orders');
     this.getTotalOrderCount();
@@ -155,6 +160,48 @@ export class DataAccessService {
 
   createNewUser(data): Observable<Response> {
     return this.http.post('http://localhost:8080/createNewUser', data);
+  }
+
+  createNewOrder(): Observable<Response> {
+    return this.http.get('http://localhost:8080/createNewOrder');
+  }
+
+  getUnprocessedOrdersCount() {
+    this.http.get('http://localhost:8080/countOrdersByParam?paramName=status&paramValue=unProcessed')
+      .subscribe((responce: Response) => {
+        const data: number = responce.json();
+        this.totalUnProcessedOrderCount = data;
+        this.totalUnProcessedOrdersChanged.next(this.totalUnProcessedOrderCount);
+      });
+  }
+
+  countOrdersByParam(paramName: string, paramValue: string): Observable<Response> {
+    return this.http.get('http://localhost:8080/countOrdersByParam?paramName='
+      + paramName + '&paramValue=' + paramValue);
+  }
+
+  getAllOrders(): Observable<Response> {
+    return this.http.get('http://localhost:8080/orders?allOrders=true');
+  }
+
+  getRates() {
+    return this.http.get('http://localhost:8080/rates')
+      .subscribe((responce) => {
+        const data = responce.json();
+        this.USDUAH.next(Math.round(data.quotes.USDUAH * 1000) / 1000);
+        this.EURUAH.next(Math.round(data.quotes.USDUAH / data.quotes.USDEUR * 1000) / 1000);
+        this.RUBUAH.next(Math.round(data.quotes.USDUAH / data.quotes.USDRUB * 1000) / 1000);
+      });
+  }
+
+  getTasks(): Observable<Response> {
+    return this.http.get('http://localhost:8080/tasks');
+  }
+
+  updateTask(task: Task1) {
+    this.http.post('http://localhost:8080/tasks', task).subscribe((response) => {
+      console.log(response);
+    });
   }
 
 }

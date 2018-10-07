@@ -11,3 +11,10 @@
   /*border-top-color: dodgerblue;*/
   border-right-color: dodgerblue;
 }
+
+table.table-bordered > thead > tr > th{
+  border:2px solid dodgerblue;
+}
+table.table-bordered > tbody > tr > td{
+  border:1px solid dodgerblue;
+}

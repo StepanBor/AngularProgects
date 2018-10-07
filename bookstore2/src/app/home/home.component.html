@@ -1,3 +1,134 @@
-<p>
-  home works!
-</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card text-white bg-warning mb-3">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-4">
+              <i class="fa fa-shopping-cart fa-5x" aria-hidden="true"></i>
+            </div>
+            <div class="col-md-8">
+              <h1 style="text-align: end">{{unProcessedOrders}}</h1>
+              <p style="text-align: end">Unprocessed Orders</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body bg-light text-warning">
+          <strong>View details</strong>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-4">
+              <i class="fa fa-indent fa-5x" aria-hidden="true"></i>
+            </div>
+            <div class="col-md-8">
+              <h1 style="text-align: end">{{taskCount}}</h1>
+              <p style="text-align: end">New Tasks</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body bg-light text-primary">
+          <strong>View details</strong>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-4">
+              <i class="fa fa-line-chart fa-5x" aria-hidden="true"></i>
+            </div>
+            <div class="col-md-8">
+              <h1 style="text-align: end">{{totalIncome}} <i class="fa fa-usd" aria-hidden="true"></i></h1>
+              <p style="text-align: end">{{ dateToday | date:"MM/dd/yyyy"}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body bg-light text-info">
+          <strong>Total income</strong>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-secondary mb-3">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-4">
+              <i class="fa fa-usd fa-5x" aria-hidden="true" *ngIf="activeCarrency==='USD'"></i>
+              <i class="fa fa-eur fa-5x" aria-hidden="true" *ngIf="activeCarrency==='EUR'"></i>
+              <i class="fa fa-rub fa-5x" aria-hidden="true" *ngIf="activeCarrency==='RUB'"></i>
+            </div>
+            <div class="col-md-8">
+              <h1 style="text-align: end" *ngIf="activeCarrency==='USD'">{{USDUAH}}</h1>
+              <h1 style="text-align: end" *ngIf="activeCarrency==='EUR'">{{EURUAH}}</h1>
+              <h1 style="text-align: end" *ngIf="activeCarrency==='RUB'">{{RUBUAH}}</h1>
+              <p style="text-align: end"><img src="http://localhost:8080/static/ukraine.png" alt="..."  class="img-fluid" width="25px" height="25px"></p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body bg-light text-secondary" style="cursor: pointer" (click)="changeActiveCurrency()">
+          <strong>Change currency</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card text-white border-primary">
+        <div class="card-header bg-primary">
+          <div class="row">
+            <div class="col-md-12">
+              <h4><i class="fa fa-area-chart" aria-hidden="true"></i> Statistics charts
+                <div ngbDropdown class="d-inline-block float-right">
+                  <button class="btn btn-secondary btn-sm" id="dropdownBasic1" ngbDropdownToggle>Scale edit</button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button class="dropdown-item" (click)="changeChartYScale('')">Total income</button>
+                    <button class="dropdown-item" (click)="changeChartYScale('dayIncome')">Day income</button>
+                    <button class="dropdown-item" (click)="changeChartYScale('ordersPerDay')">Orders per day</button>
+                  </div>
+                </div>
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <canvas id="canvas">{{chart}}</canvas>
+        </div>
+      </div>
+    </div>
+    <!--<div class="col-md-3">-->
+      <!--<div class="card text-white bg-secondary">-->
+        <!--<div class="card-header">-->
+          <!--<h4> Currency rate</h4>-->
+        <!--</div>-->
+        <!--<div class="card-body border-secondary">-->
+          <!--&lt;!&ndash;<div class="list-group" style="background-color: #6c757d">&ndash;&gt;-->
+            <!--&lt;!&ndash;<li class="list-group-item" style="background-color: #343a40">&ndash;&gt;-->
+              <!--<h4>1 <img src="http://localhost:8080/static/united-states.png" alt="..."  class="img-fluid" width="50px" height="50px">-->
+                 <!--= {{USDUAH}} <img src="http://localhost:8080/static/ukraine.png" alt="..."  class="img-fluid" width="50px" height="50px"></h4>-->
+          <!--<hr>-->
+            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li class="list-group-item" style="background-color: #343a40">&ndash;&gt;-->
+              <!--<h4>1 <img src="http://localhost:8080/static/european-union.png" alt="..."  class="img-fluid" width="50px" height="50px">-->
+                <!--= {{EURUAH}} <img src="http://localhost:8080/static/ukraine.png" alt="..."  class="img-fluid" width="50px" height="50px"></h4>-->
+          <!--<hr>-->
+            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li class="list-group-item" style="background-color: #343a40">&ndash;&gt;-->
+              <!--<h4>1 <img src="http://localhost:8080/static/russia.png" alt="..."  class="img-fluid" width="50px" height="50px">-->
+                <!--= {{RUBUAH}} <img src="http://localhost:8080/static/ukraine.png" alt="..."  class="img-fluid" width="50px" height="50px"></h4>-->
+            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+      <!--</div>-->
+
+    <!--</div>-->
+    <div class="col-md-3">
+      {{bookItems[1].bookName}}
+    </div>
+  </div>
+</div>

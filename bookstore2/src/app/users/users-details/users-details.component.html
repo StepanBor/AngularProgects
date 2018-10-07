@@ -55,11 +55,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let num of iteratArray, let i=index" [ngClass]="{collapse:(i%2!==0), show: ((i)==activeRowOrderTable), 'bg-secondary': ((i)==activeRowOrderTable-1)}" (click)="setActiveRowOrderTable(i+1)">
+                <tr *ngFor="let num of iteratArray, let i=index"
+                    [ngClass]="{collapse:(i%2!==0), show: ((i)==activeRowOrderTable), 'bg-secondary': ((i)==activeRowOrderTable-1)}"
+                    (click)="setActiveRowOrderTable(i+1)">
                   <td *ngIf="(i)%2==0">{{userDetailOrders[i/2].id}}</td>
                   <td *ngIf="(i)%2==0">{{userDetailOrders[i/2].orderPrice}}</td>
-                  <td *ngIf="(i)%2==0" >Show order list
-                    <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                  <td *ngIf="(i)%2==0" >Order list <i style="color: dodgerblue" class="fa fa-chevron-circle-down" aria-hidden="true"></i>
                   </td>
                   <td *ngIf="(i)%2==0">{{userDetailOrders[i/2].status}}</td>
                   <td *ngIf="((i)%2!==0)" colspan="4">
@@ -67,17 +68,17 @@
                       <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                          <td>Book id</td>
-                          <td>Book name</td>
-                          <td>Book prise</td>
+                          <th>Book id</th>
+                          <th>Book name</th>
+                          <th>Book quantity</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let bookItem of userDetailOrders[(i-1)/2].orderList, let j=index" [ngClass]="{collapse:((i+1)%2==0),
+                        <tr *ngFor="let itemEntry of userDetailOrders[(i-1)/2].orderList, let j=index" [ngClass]="{collapse:((i+1)%2==0),
                           show: ((i)==activeRowOrderTable)}">
-                          <td>{{bookItem.id}}</td>
-                          <td>{{bookItem.bookName}}</td>
-                          <td>{{bookItem.price}}</td>
+                          <td>{{itemEntry.key.id}}</td>
+                          <td>{{itemEntry.key.bookName}}</td>
+                          <td>{{itemEntry.value}}</td>
                         </tr>
                         </tbody>
                       </table>

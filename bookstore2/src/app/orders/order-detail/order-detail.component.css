@@ -36,6 +36,12 @@
   overflow-y: auto;
 }
 
+table.table-bordered > thead > tr > th{
+  border:2px solid dodgerblue;
+}
+table.table-bordered > tbody > tr > td{
+  border:1px solid dodgerblue;
+}
 /*.table > thead > tr > th,*/
 /*.table > thead > tr > td {*/
   /*font-size: .9em;*/

@@ -5,7 +5,7 @@
         <div class="card-header">
           Orders list
           <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-outline-primary btn-sm" (click)="openAddOrderModal(addOrderModal)">
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="addNewOrder()">
               <i class="fa fa-plus-square" aria-hidden="true"></i>
               new order
             </button>
@@ -141,4 +141,11 @@
   </div>
 </div>
 
-
+<ng-template #orderCreated let-modal>
+  <div class="modal-body">
+  New order id is - {{newOrderId}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>

@@ -16,9 +16,11 @@ export class BookItem {
 
   public storageBooks: number;
 
+  public rating: number;
+
   constructor(id: number, bookName: string, description: string,
               author: string, publisher: string, category: string,
-              price: number, storageBooks: number) {
+              price: number, storageBooks: number, raiting: number) {
     this.id = id;
     this.bookName = bookName;
     this.description = description;
@@ -27,6 +29,7 @@ export class BookItem {
     this.category = category;
     this.price = price;
     this.storageBooks = storageBooks;
+    this.rating = raiting;
   }
 
 

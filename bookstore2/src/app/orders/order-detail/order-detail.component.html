@@ -244,17 +244,6 @@
 
 <ng-template #editOrderUser let-modal>
   <div class="modal-body">
-    <form>
-      <div class="form-row">
-        <div class="col">
-          <input type="text" class="form-control" placeholder="First name">
-        </div>
-        <div class="col">
-          <input type="text" class="form-control" placeholder="Last name">
-        </div>
-      </div>
-    </form>
-      <hr>
       <app-users [showUserDetails]="false"
                   (userActivated)="setUserInActiveOrder($event)"></app-users>
 
