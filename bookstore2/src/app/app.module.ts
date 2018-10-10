@@ -23,6 +23,10 @@ import {OrderDetailComponent} from './orders/order-detail/order-detail.component
 import {OrderDetailModalComponent} from './orders/order-detail/order-detail-modal/order-detail-modal.component';
 import {CanDeactivateGuard} from './can-deactivate-guard.service';
 import {PasswordValidatorDirective} from './my-directives/password-validator.directive';
+import { BooksManagerComponent } from './books/books-manager/books-manager.component';
+import { BookItemDetailsComponent } from './books/book-item-details/book-item-details.component';
+import { BookItemSmallCardComponent } from './books/book-item-small-card/book-item-small-card.component';
+import { BookItemMidleCardComponent } from './books/book-item-midle-card/book-item-midle-card.component';
 
 
 const appRoutes: Routes = [
@@ -49,7 +53,11 @@ const appRoutes: Routes = [
     UserCabinetComponent,
     OrderDetailComponent,
     OrderDetailModalComponent,
-    PasswordValidatorDirective
+    PasswordValidatorDirective,
+    BooksManagerComponent,
+    BookItemDetailsComponent,
+    BookItemSmallCardComponent,
+    BookItemMidleCardComponent
   ],
   imports: [
     BrowserModule,

@@ -5,10 +5,16 @@
       <div class="card">
         <div class="card-header">
           User list
-          <div class="btn-group btn-group-sm">
+          <div class="btn-group btn-group-sm float-right">
             <button type="button" class="btn btn-outline-primary btn-sm" (click)="openAddUserModal(addUserModal)">
               <i class="fa fa-plus-square" aria-hidden="true"></i>
               new user
+            </button>
+            <button type="button"
+                    class="btn btn-outline-danger btn-sm"
+                    [disabled]="(activeUserOrders.length > 0) || activeUser.role == 'ADMIN' || activeUser.role == 'MANAGER'"
+                    (click)="deleteUser(activeUserId)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
           </div>
         </div>
@@ -65,7 +71,8 @@
       </div>
     </div>
     <div class="col-md-6" *ngIf="showUserDetails">
-      <app-users-details [activeUserDetails]="activeUser"></app-users-details>
+      <app-users-details [activeUserDetails]="activeUser"
+                         (userOrdersOutput)="activeUserOrders=$event"></app-users-details>
     </div>
   </div>
 </div>
@@ -104,7 +111,7 @@
         <div class="col">
           <input type="password" class="form-control" placeholder="password"
                  ngModel name="password" #password="ngModel"
-          pattern="{{confirmPasswordProp}}" [required]="confirm.value!=''">
+                 pattern="{{confirmPasswordProp}}" [required]="confirm.value!=''">
         </div>
         <div class="col">
           <input type="password" class="form-control" placeholder="confirm password"
@@ -121,6 +128,15 @@
     </form>
 
     <hr>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #userCreated let-modal>
+  <div class="modal-body">
+    {{createUserReply}}
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>

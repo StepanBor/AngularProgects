@@ -13,8 +13,16 @@
             </div>
           </div>
         </div>
-        <div class="card-body bg-light text-warning">
-          <strong>View details</strong>
+        <div class="card-body bg-light text-secondary" style="padding: 5px">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <button type="button" class="btn btn-warning btn-block text-white">
+                  <strong>View details</strong>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -31,26 +39,48 @@
             </div>
           </div>
         </div>
-        <div class="card-body bg-light text-primary">
-          <strong>View details</strong>
+        <div class="card-body bg-light text-secondary" style="padding: 5px">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <button type="button" class="btn btn-primary btn-block"
+                        (click)="isItemReportCollapsed=true; isTasksCollapsed=false">
+                  <strong>View details</strong>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="col-md-3">
       <div class="card text-white bg-info mb-3">
-        <div class="card-header">
+        <div class="card-header" style="padding-bottom: 1px">
           <div class="row">
             <div class="col-md-4">
               <i class="fa fa-line-chart fa-5x" aria-hidden="true"></i>
             </div>
             <div class="col-md-8">
               <h1 style="text-align: end">{{totalIncome}} <i class="fa fa-usd" aria-hidden="true"></i></h1>
-              <p style="text-align: end">{{ dateToday | date:"MM/dd/yyyy"}}</p>
+              <p style="text-align: end">
+                <button type="button" class="btn btn-outline-light btn sm" (click)="openPickDateModal(pickReportDate)">
+                  <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{incomeReportDate | date:"MM/dd/yyyy"}}
+                </button>
+              </p>
             </div>
           </div>
         </div>
-        <div class="card-body bg-light text-info">
-          <strong>Total income</strong>
+        <div class="card-body bg-light text-secondary" style="padding: 5px">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <button type="button" class="btn btn-info btn-block"
+                        (click)="totalIncome=totalIncomePerDay[totalIncomePerDay.length-1]; incomeReportDate=dateToday">
+                  <strong>Show total income ({{ dateToday | date:"MM/dd/yyyy"}})</strong>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -67,12 +97,21 @@
               <h1 style="text-align: end" *ngIf="activeCarrency==='USD'">{{USDUAH}}</h1>
               <h1 style="text-align: end" *ngIf="activeCarrency==='EUR'">{{EURUAH}}</h1>
               <h1 style="text-align: end" *ngIf="activeCarrency==='RUB'">{{RUBUAH}}</h1>
-              <p style="text-align: end"><img src="http://localhost:8080/static/ukraine.png" alt="..."  class="img-fluid" width="25px" height="25px"></p>
+              <p style="text-align: end"><img src="http://localhost:8080/static/ukraine.png" alt="..." class="img-fluid"
+                                              width="25px" height="25px"></p>
             </div>
           </div>
         </div>
-        <div class="card-body bg-light text-secondary" style="cursor: pointer" (click)="changeActiveCurrency()">
-          <strong>Change currency</strong>
+        <div class="card-body bg-light text-secondary" style="padding: 5px">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <button type="button" class="btn btn-secondary btn-block"
+                        (click)="changeActiveCurrency()"><strong>Change currency</strong>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -80,55 +119,157 @@
   <div class="row">
     <div class="col-md-6">
       <div class="card text-white border-primary">
-        <div class="card-header bg-primary">
+        <div class="card-header bg-info">
           <div class="row">
             <div class="col-md-12">
-              <h4><i class="fa fa-area-chart" aria-hidden="true"></i> Statistics charts
-                <div ngbDropdown class="d-inline-block float-right">
-                  <button class="btn btn-secondary btn-sm" id="dropdownBasic1" ngbDropdownToggle>Scale edit</button>
-                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                    <button class="dropdown-item" (click)="changeChartYScale('')">Total income</button>
-                    <button class="dropdown-item" (click)="changeChartYScale('dayIncome')">Day income</button>
-                    <button class="dropdown-item" (click)="changeChartYScale('ordersPerDay')">Orders per day</button>
+              <h4><i class="fa fa-area-chart" aria-hidden="true"></i> Income report
+                <div class="btn-group float-right" role="group">
+                  <div ngbDropdown class="d-inline-block">
+                    <button class="btn btn-dark" id="dropdownBasic1" ngbDropdownToggle>{{chartScaleName}}</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                      <button class="dropdown-item" (click)="changeChartYScale('')">Total income</button>
+                      <button class="dropdown-item" (click)="changeChartYScale('dayIncome')">Day income</button>
+                      <button class="dropdown-item" (click)="changeChartYScale('ordersPerDay')">Orders per day</button>
+                    </div>
                   </div>
+                  <button type="button" class="btn btn-dark"
+                          (click)="isIncomeReportCollapsed = !isIncomeReportCollapsed"
+                          [attr.aria-expanded]="!isIncomeReportCollapsed" aria-controls="collapseIncomeReport">
+                    {{isIncomeReportCollapsed ? 'Show' : 'Hide'}}
+                  </button>
                 </div>
               </h4>
             </div>
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" id="collapseIncomeReport" [ngbCollapse]="isIncomeReportCollapsed">
           <canvas id="canvas">{{chart}}</canvas>
         </div>
       </div>
+      <br>
+      <div class="card">
+        <div class="card-header bg-secondary text-white">
+          <h4><i class="fa fa-book" aria-hidden="true"></i> Popular book items
+            <button type="button" class="btn btn-primary float-right"
+                    (click)="isPopularItemCollapsed = !isPopularItemCollapsed"
+                    [attr.aria-expanded]="!isPopularItemColapsed" aria-controls="collapsePopularItems">
+              {{isPopularItemCollapsed ? 'Show' : 'Hide'}}
+            </button>
+          </h4>
+        </div>
+        <div class="card-body" id="collapsePopularItems" [ngbCollapse]="isPopularItemCollapsed">
+          <ul class="list-group">
+            <li class="list-group-item border-primary" *ngFor="let bookItem of bookItems">
+              <div class="row">
+                <div class="col-md-4" style="border-right: 2px solid blue">
+                  <img src="http://localhost:8080/cover/{{bookItem.id}}" class="img-fluid"/>
+                </div>
+                <div class="col-md">
+                  <h4 class="text-center">{{bookItem.bookName}}</h4>
+                  <hr>
+                  <p>{{bookItem.description}}</p><br>
+                  <span class="float-right">author: {{bookItem.author}}</span><br>
+                  <hr>
+                  <span class="float-right">{{bookItem.publisher}}</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <!--<div class="col-md-3">-->
-      <!--<div class="card text-white bg-secondary">-->
-        <!--<div class="card-header">-->
-          <!--<h4> Currency rate</h4>-->
-        <!--</div>-->
-        <!--<div class="card-body border-secondary">-->
-          <!--&lt;!&ndash;<div class="list-group" style="background-color: #6c757d">&ndash;&gt;-->
-            <!--&lt;!&ndash;<li class="list-group-item" style="background-color: #343a40">&ndash;&gt;-->
-              <!--<h4>1 <img src="http://localhost:8080/static/united-states.png" alt="..."  class="img-fluid" width="50px" height="50px">-->
-                 <!--= {{USDUAH}} <img src="http://localhost:8080/static/ukraine.png" alt="..."  class="img-fluid" width="50px" height="50px"></h4>-->
-          <!--<hr>-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li class="list-group-item" style="background-color: #343a40">&ndash;&gt;-->
-              <!--<h4>1 <img src="http://localhost:8080/static/european-union.png" alt="..."  class="img-fluid" width="50px" height="50px">-->
-                <!--= {{EURUAH}} <img src="http://localhost:8080/static/ukraine.png" alt="..."  class="img-fluid" width="50px" height="50px"></h4>-->
-          <!--<hr>-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li class="list-group-item" style="background-color: #343a40">&ndash;&gt;-->
-              <!--<h4>1 <img src="http://localhost:8080/static/russia.png" alt="..."  class="img-fluid" width="50px" height="50px">-->
-                <!--= {{RUBUAH}} <img src="http://localhost:8080/static/ukraine.png" alt="..."  class="img-fluid" width="50px" height="50px"></h4>-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-          <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</div>-->
-      <!--</div>-->
+    <div class="col-md-6">
+      <div class="card text-white border-primary">
+        <div class="card-header bg-info">
+          <div class="row">
+            <div class="col-md-12">
+              <h4><i class="fa fa-area-chart" aria-hidden="true"></i> Item report
+                <div class="btn-group float-right" role="group">
+                  <div ngbDropdown class="d-inline-block ">
+                    <button class="btn btn-dark" id="dropdownBasic2" ngbDropdownToggle>{{barChartScaleName}}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                      <button class="dropdown-item" (click)="changeBarChartYScale('copiesSold')">Copies sold</button>
+                      <button class="dropdown-item" (click)="changeBarChartYScale('')">Item income</button>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-dark"
+                          (click)="isItemReportCollapsed = !isItemReportCollapsed"
+                          [attr.aria-expanded]="!isItemReportCollapsed" aria-controls="collapseItemReport">
+                    {{isItemReportCollapsed ? 'Show' : 'Hide'}}
+                  </button>
+                </div>
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="card-body" id="collapseItemReport" [ngbCollapse]="isItemReportCollapsed">
+          <canvas id="barChart">{{barChart}}</canvas>
+        </div>
+      </div>
+      <br>
+      <div class="card">
+        <div class="card-header bg-secondary text-white">
+          <h4><i class="fa fa-indent" aria-hidden="true"></i> Tasks
+            <button type="button" class="btn btn-primary float-right"
+                    (click)="isTasksCollapsed = !isTasksCollapsed"
+                    [attr.aria-expanded]="!isTasksColapsed" aria-controls="collapseTasks">
+              {{isTasksCollapsed ? 'Show' : 'Hide'}}
+            </button>
+          </h4>
+        </div>
+        <div class="card-body" id="collapseTasks" [ngbCollapse]="isTasksCollapsed">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item text-info" *ngFor="let task1 of newTasks, let i=index">
+              <div class="row align-items-center">
+                <div class="col-1" style="border-right: 2px solid blue">
+                  <i class="fa fa-info fa-2x" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-9" style="border-right: 2px solid blue">
+                  <h5 class="text-center">{{task1.description}}<span class="small text-muted"> {{ task1.date | date:"MM/dd/yyyy"}}</span>
+                  </h5>
+                </div>
+                <div class="col-md-2">
+                  <button type="button" class="btn btn-outline-success" (click)="deleteTasks(newTasks[i])">close</button>
+                </div>
+              </div>
 
-    <!--</div>-->
-    <div class="col-md-3">
-      {{bookItems[1].bookName}}
+
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+
   </div>
+
+  <ng-template #pickReportDate let-modal>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="incomeDate">Date</label>
+          <div class="input-group">
+            <input id="incomeDate"
+                   class="form-control"
+                   placeholder="yyyy-mm-dd"
+                   name="dp" ngbDatepicker
+                   #dp="ngbDatepicker"
+                   [(ngModel)]="dateIncome">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--<button type="submit" class="btn btn-outline-primary btn-sm">-->
+        <!--submit-->
+        <!--</button>-->
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="onDateSubmit()">Close</button>
+    </div>
+
+  </ng-template>
 </div>

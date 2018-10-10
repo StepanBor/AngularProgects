@@ -1,3 +1,62 @@
-<p>
-  books works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Book items list
+        </div>
+        <div class="card-body">
+          <table class="table table-striped table-bordered table-hover" id="dataTable">
+            <thead class="thead-light">
+            <tr>
+              <th class="text-primary"><a (click)="onSortGet('id',true,currentPage)">
+                Id <i class="fa fa-sort" aria-hidden="true"></i></a></th>
+              <th class="text-primary">
+                Book cover</th>
+              <th class="text-primary"><a (click)="onSortGet('bookName',true,currentPage)">
+                Book name <i class="fa fa-sort" aria-hidden="true"></i>
+              </a></th>
+              <th class="text-primary"><a (click)="onSortGet('price',true,currentPage)">
+                Price <i class="fa fa-sort" aria-hidden="true"></i>
+              </a></th>
+              <th class="text-primary"><a (click)="onSortGet('author',true,currentPage)">
+                Author <i class="fa fa-sort" aria-hidden="true"></i>
+              </a></th>
+              <th class="text-primary"><a (click)="onSortGet('rating',true,currentPage)">
+                Rating <i class="fa fa-sort" aria-hidden="true"></i>
+              </a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let bookItem of bookItems, let i = index" (click)="setActiveRow(i, bookItem.id)"
+                [ngClass]="{'bg-info': i == activeRow, 'bg-warning': ((bookItem.status=='unProcessed') && (i != activeRow))}">
+              <td style="word-break: break-all">{{bookItem.id}}</td>
+              <td style="word-break: break-all">{{bookItem.orderPrice}}</td>
+              <td style="word-break: break-all">{{bookItem.client.login}}</td>
+              <td style="word-break: break-all">{{bookItem.shipment.id}}</td>
+              <td style="word-break: break-all">{{bookItem.status}}</td>
+              <td style="word-break: break-all">{{bookItem.orderDate}}</td>
+              <td *ngIf="isOrderChanged(bookItem.id)" style="text-align: center"><div class="btn btn-outline-primary btn-sm" (click)="onSaveOrder(bookItem)"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+              </div></td>
+            </tr>
+            </tbody>
+          </table>
+          <nav aria-label="tablePagination">
+            <ul class="pagination">
+              <li class="page-item" [ngClass]="{disabled: currentPage==1}">
+                <a class="page-link" (click)="onSortGet(sortBy,false,currentPage-1)">Previous</a>
+              </li>
+              <li *ngFor="let int of paginationArr; index as i"
+                  class="page-item" [ngClass]="{active: currentPage==(i+1)}">
+                <a class="page-link" (click)="onSortGet(sortBy,false,i+1)">{{i+1}}</a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled: currentPage==paginationArr.length}">
+                <a class="page-link" (click)="onSortGet(sortBy,false,currentPage+1)">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,9 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {User} from '../../data-models/User';
 import {Order} from '../../data-models/Order';
 import {DataAccessService} from '../../data-access-services/data-access.service';
 import {Subscription} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-users-details',
@@ -12,6 +13,17 @@ import {Subscription} from 'rxjs';
 export class UsersDetailsComponent implements OnInit, OnChanges {
 
   @Input() activeUserDetails: User;
+
+  @Output() userOrdersOutput = new EventEmitter<Order[]>();
+
+  confirmPasswordProp = '';
+
+  files: any;
+
+  createUserReply = '';
+  @ViewChild('userCreated') userCreated;
+
+  activeUserChanged: boolean;
 
   userDetailsOrdersSubscription: Subscription;
 
@@ -23,7 +35,8 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
 
   iteratArray: number[];
 
-  constructor(private userService: DataAccessService) {
+  constructor(private userService: DataAccessService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -32,7 +45,7 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
       '', '', '');
 
     this.activeRowOrderTable = -1;
-
+    this.activeUserChanged = false;
     this.activeTabNum = 0;
     // this.userDetailsOrdersSubscription = this.userService.userDetailsOrdersChanged.subscribe((orders: Order[]) => {
     //   this.userDetailOrders = orders;
@@ -45,8 +58,10 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
     this.userService.getUserDetailsOrders2(reqUrl).subscribe(
       (orders: Order[]) => {
         this.userDetailOrders = orders;
+        this.userOrdersOutput.emit(orders);
         this.iteratArray = Array(this.userDetailOrders.length * 2).fill(0).map((x, i) => i);
-        console.log(this.iteratArray);
+        // console.log(this.iteratArray);
+
       }
     );
   }
@@ -63,4 +78,49 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
     this.activeTabNum = tabNum;
   }
 
+  addPhoto(event) {
+    const target = event.target || event.srcElement;
+    this.files = target.files;
+  }
+
+  onSubmitUser(form: HTMLFormElement) {
+    console.log(form);
+    let final_data;
+    const formData = new FormData();
+    if (this.files != null) {
+      const files: FileList = this.files;
+      for (let i = 0; i < files.length; i++) {
+        formData.append('photo', files[i]);
+      }
+    }
+    formData.append('login', form.value.login);
+    formData.append('email', form.value.email);
+    formData.append('phone', form.value.phone);
+    formData.append('address', form.value.address);
+    formData.append('name', form.value.name);
+    formData.append('lastname', form.value.lastname);
+    formData.append('password', form.value.password);
+    formData.append('updateUser', 'true');
+    formData.append('id', this.activeUserDetails.id.toString());
+
+    final_data = formData;
+    // } else {
+    //   // Если нет файла, то слать как обычный JSON
+    //   final_data = form.value;
+    // }
+
+    this.userService.createNewUser(final_data).subscribe((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        const serverReply: string[] = response.json();
+        this.createUserReply = serverReply[0];
+        this.openAddUserModal(this.userCreated);
+      }
+    });
+
+  }
+
+  openAddUserModal(addUserModal) {
+    this.modalService.open(addUserModal);
+  }
 }

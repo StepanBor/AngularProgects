@@ -151,7 +151,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
   }
 
   deleteOrder(orderToDelete: Order) {
-    if (confirm('Delete order' + orderToDelete.id)) {
+    if (confirm('Delete bookItem' + orderToDelete.id)) {
       for (let i = 0; i < this.orders.length; i++) {
         if (this.orders[i].id === orderToDelete.id) {
           this.orders.splice(i, 1);

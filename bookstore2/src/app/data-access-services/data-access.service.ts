@@ -133,7 +133,6 @@ export class DataAccessService {
   }
 
   saveOrder(orderToSave: Order): Observable<Response> {
-    // console.log(orderToSave.orderList + 'WWWWWWWWWWWWWWWWWWWW');
     return this.http.post('http://localhost:8080/saveOrder', orderToSave);
   }
 
@@ -155,7 +154,7 @@ export class DataAccessService {
   }
 
   deleteOrder(orderToDelete: Order): Observable<Response> {
-    return this.http.post('http://localhost:8080/deleteOrder', orderToDelete);
+    return this.http.post('http://localhost:8080/deleteBookItem', orderToDelete);
   }
 
   createNewUser(data): Observable<Response> {
@@ -195,7 +194,7 @@ export class DataAccessService {
   }
 
   getTasks(): Observable<Response> {
-    return this.http.get('http://localhost:8080/tasks');
+    return this.http.get('http://localhost:8080/getTasks');
   }
 
   updateTask(task: Task1) {
@@ -204,4 +203,24 @@ export class DataAccessService {
     });
   }
 
+  deleteTasks(task: Task1): Observable<Response> {
+    task.status = 'closed';
+    return this.http.post('http://localhost:8080/tasks', task);
+  }
+
+  deleteUser(userId: number): Observable<Response> {
+    return this.http.get('http://localhost:8080/deleteUser?userId=' + userId);
+  }
+
+  saveBookItem(bookToSave: BookItem): Observable<Response> {
+    return this.http.post('http://localhost:8080/saveBookItem', bookToSave);
+  }
+
+  deleteBookItem(bookItemId: number): Observable<Response> {
+    return this.http.post('http://localhost:8080/saveBookItem', bookItemId);
+  }
+
+  createNewBookItem(data): Observable<Response> {
+    return this.http.post('http://localhost:8080/createNewBookItem', data);
+  }
 }

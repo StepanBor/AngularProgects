@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs';
 import {DataAccessService} from '../data-access-services/data-access.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpResponse} from '@angular/common/http';
+import {Order} from '../data-models/Order';
 
 @Component({
   selector: 'app-users',
@@ -24,13 +25,17 @@ export class UsersComponent implements OnInit {
   activeUserId: number;
   activeUser: User;
 
+  activeUserOrders: Order[];
   subscriptionUsers: Subscription;
   subscriptionUsersCount: Subscription;
   files: any;
 
   @Output() userActivated = new EventEmitter<User>();
   @Input() showUserDetails = true;
-  confirmPasswordProp = '1';
+  @ViewChild('userCreated') userCreated;
+  confirmPasswordProp = '';
+
+  createUserReply: string;
 
   constructor(private userService: DataAccessService,
               private modalService: NgbModal) {
@@ -92,6 +97,10 @@ export class UsersComponent implements OnInit {
     this.modalService.open(addUserModal, {size: 'lg'});
   }
 
+  openDeleteUserModal(deleteUserModal) {
+    this.modalService.open(deleteUserModal);
+  }
+
   onSubmitUser(form: HTMLFormElement) {
     console.log(form);
     let final_data;
@@ -118,8 +127,12 @@ export class UsersComponent implements OnInit {
     // }
 
     this.userService.createNewUser(final_data).subscribe((response) => {
-      // response.json();
       console.log(response);
+      if (response.status === 200) {
+        const serverReply: string[] = response.json();
+        this.createUserReply = serverReply[0];
+        this.openAddUserModal(this.userCreated);
+      }
     });
 
   }
@@ -127,6 +140,19 @@ export class UsersComponent implements OnInit {
   addPhoto(event) {
     const target = event.target || event.srcElement;
     this.files = target.files;
+  }
+
+  deleteUser(userId: number) {
+    confirm('Delete user id ' + userId);
+    this.userService.deleteUser(userId).subscribe((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        this.createUserReply = 'user deleted';
+      }
+      this.userService.getUsersFromDb('http://localhost:8080/userPage');
+      this.openAddUserModal(this.userCreated);
+    });
+
   }
 }
 

@@ -41,10 +41,10 @@ export class Shipment2 {
   // }
   //
   // getOrder(): number {
-  //   return this.order;
+  //   return this.bookItem;
   // }
   //
   // setOrder(value: number) {
-  //   this.order = value;
+  //   this.bookItem = value;
   // }
 }

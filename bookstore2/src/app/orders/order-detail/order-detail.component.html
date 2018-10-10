@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">
     Edit order {{activeOrder.id}}
-    <div class="btn-group btn-group-sm">
+    <div class="btn-group btn-group-sm float-right">
       <button type="button" class="btn btn-outline-primary btn-sm" (click)="openBooklistModal()"
               [disabled]="activeOrder.status=='closed'" >
         <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -15,7 +15,7 @@
       <!--(click)="drop.attributes.dropdownShow.nodeValue = 'true'">-->
       <!--</button>-->
       <div ngbDropdown class="d-inline-block">
-        <button class="btn btn-outline-primary"
+        <button class="btn btn-outline-primary btn-sm"
                 id="dropdownBasic1" ngbDropdownToggle
                 [disabled]="activeOrder.status=='closed'">
           <i class="fa fa-indent" aria-hidden="true"></i>
