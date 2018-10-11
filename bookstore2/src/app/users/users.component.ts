@@ -104,7 +104,7 @@ export class UsersComponent implements OnInit {
   onSubmitUser(form: HTMLFormElement) {
     console.log(form);
     let final_data;
-    let newUserData: string[];
+    // let newUserData: string[];
     const formData = new FormData();
     if (this.files != null) {
       const files: FileList = this.files;

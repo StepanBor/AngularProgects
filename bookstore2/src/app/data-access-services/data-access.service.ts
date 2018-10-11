@@ -7,6 +7,7 @@ import {count, map} from 'rxjs/operators';
 import {Order} from '../data-models/Order';
 import {BookItem} from '../data-models/BookItem';
 import {Task1} from '../data-models/Task1';
+import {StorageBooks} from '../data-models/StorageBooks';
 
 @Injectable()
 export class DataAccessService {
@@ -22,6 +23,8 @@ export class DataAccessService {
   bookItemsChanged = new Subject<BookItem[]>();
   totalBookItemCountChanged = new Subject<number>();
 
+  // storageBooksChanged = new Subject<StorageBooks>();
+
   USDUAH = new Subject<number>();
   EURUAH = new Subject<number>();
   RUBUAH = new Subject<number>();
@@ -29,6 +32,7 @@ export class DataAccessService {
 
   bookItems: BookItem[];
   totalBookItemCount: number;
+  // storageBooks: StorageBooks;
 
   orders: Order[];
   totalOrderCount: number;
@@ -223,4 +227,13 @@ export class DataAccessService {
   createNewBookItem(data): Observable<Response> {
     return this.http.post('http://localhost:8080/createNewBookItem', data);
   }
+
+  // getStorageBooks() {
+  //   this.http.get('http://localhost:8080/storageBook').subscribe((response: Response) => {
+  //     // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
+  //     const data = response.json();
+  //     this.storageBooks = data;
+  //     this.storageBooksChanged.next(this.storageBooks);
+  //   });
+  // }
 }

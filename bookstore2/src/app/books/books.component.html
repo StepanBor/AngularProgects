@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-6">
       <div class="card">
@@ -11,19 +11,19 @@
             <tr>
               <th class="text-primary"><a (click)="onSortGet('id',true,currentPage)">
                 Id <i class="fa fa-sort" aria-hidden="true"></i></a></th>
-              <th class="text-primary">
-                Book cover</th>
+
               <th class="text-primary"><a (click)="onSortGet('bookName',true,currentPage)">
                 Book name <i class="fa fa-sort" aria-hidden="true"></i>
               </a></th>
               <th class="text-primary"><a (click)="onSortGet('price',true,currentPage)">
                 Price <i class="fa fa-sort" aria-hidden="true"></i>
               </a></th>
-              <th class="text-primary"><a (click)="onSortGet('author',true,currentPage)">
-                Author <i class="fa fa-sort" aria-hidden="true"></i>
-              </a></th>
+
               <th class="text-primary"><a (click)="onSortGet('rating',true,currentPage)">
                 Rating <i class="fa fa-sort" aria-hidden="true"></i>
+              </a></th>
+              <th class="text-primary"><a (click)="onSortGet('copiesInStock',true,currentPage)">
+                Copies in stock <i class="fa fa-sort" aria-hidden="true"></i>
               </a></th>
             </tr>
             </thead>
@@ -31,13 +31,15 @@
             <tr *ngFor="let bookItem of bookItems, let i = index" (click)="setActiveRow(i, bookItem.id)"
                 [ngClass]="{'bg-info': i == activeRow, 'bg-warning': ((bookItem.status=='unProcessed') && (i != activeRow))}">
               <td style="word-break: break-all">{{bookItem.id}}</td>
-              <td style="word-break: break-all">{{bookItem.orderPrice}}</td>
-              <td style="word-break: break-all">{{bookItem.client.login}}</td>
-              <td style="word-break: break-all">{{bookItem.shipment.id}}</td>
-              <td style="word-break: break-all">{{bookItem.status}}</td>
-              <td style="word-break: break-all">{{bookItem.orderDate}}</td>
-              <td *ngIf="isOrderChanged(bookItem.id)" style="text-align: center"><div class="btn btn-outline-primary btn-sm" (click)="onSaveOrder(bookItem)"><i class="fa fa-floppy-o" aria-hidden="true"></i>
-              </div></td>
+              <td style="word-break: break-all">{{bookItem.bookName}}</td>
+              <td style="word-break: break-all">{{bookItem.price}}</td>
+              <td style="word-break: break-all">{{bookItem.rating}}</td>
+              <td style="word-break: break-all">{{bookItem.copiesInStock}}</td>
+              <td *ngIf="isBookChanged(bookItem.id)" style="text-align: center">
+                <div class="btn btn-outline-primary btn-sm" (click)="onSaveBookItem(bookItem)">
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                </div>
+              </td>
             </tr>
             </tbody>
           </table>
@@ -57,6 +59,9 @@
           </nav>
         </div>
       </div>
+    </div>
+    <div class="col-md-6">
+      <app-book-item-details [activeBookItemDetails]="activeBook"></app-book-item-details>
     </div>
   </div>
 </div>

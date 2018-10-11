@@ -3,6 +3,7 @@ import {BookItem} from '../data-models/BookItem';
 import {DataAccessService} from '../data-access-services/data-access.service';
 import {Observable, Subscription} from 'rxjs';
 import {Order} from '../data-models/Order';
+import {StorageBooks} from '../data-models/StorageBooks';
 
 @Component({
   selector: 'app-books',
@@ -12,8 +13,13 @@ import {Order} from '../data-models/Order';
 export class BooksComponent implements OnInit {
 
   bookItems: BookItem[];
-  subscriptionBookItems: Subscription;
+  // storageBooks: StorageBooks;
   totalBookCount = 12;
+
+  subscriptionBookItems: Subscription;
+  subscriptionTotalBookItemCount: Subscription;
+  // subscriptionStorageBooks: Subscription;
+
 
   itemsPerPage: number;
   paginationArr: number[];
@@ -35,27 +41,31 @@ export class BooksComponent implements OnInit {
   ngOnInit() {
     this.subscriptionBookItems = this.dataAccessService.bookItemsChanged.subscribe((bookItems1: BookItem[]) => {
       this.bookItems = bookItems1;
-      this.bookItems.sort((a: BookItem, b: BookItem) => {
-        if (a.rating > b.rating) {
-          return -1;
-        } else if (a.rating < b.rating) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
+      this.activeBook = bookItems1[0];
     });
-    this.itemsPerPage = 6;
-    this.paginationArr = Array((this.totalBookCount % this.itemsPerPage) === 0 ?
-      Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
-      .fill(0).map((x, i) => i);
+    this.subscriptionTotalBookItemCount = this.dataAccessService.totalBookItemCountChanged
+      .subscribe((count: number) => {
+        this.totalBookCount = count;
+        this.paginationArr = Array((this.totalBookCount % this.itemsPerPage) === 0 ?
+          Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
+          .fill(0).map((x, i) => i);
+
+      });
+    this.dataAccessService.getTotalBookItemsCount();
+    this.dataAccessService.getBookItems('http://localhost:8080/bookItems');
+    // this.subscriptionStorageBooks = this.dataAccessService.storageBooksChanged
+    //   .subscribe((data: StorageBooks) => {
+    //   this.storageBooks=data;
+    //   });
     this.currentPage = 1;
     this.sortBy = 'id';
     this.changeSortDirect = false;
-    this.activeRow = -1;
-    this.activeBookId = 0;
     this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
+    this.itemsPerPage = 6;
+    this.activeRow = -1;
+    this.activeBookId = 0;
+
 
   }
 
@@ -149,7 +159,7 @@ export class BooksComponent implements OnInit {
   onSubmitBookItem(form: HTMLFormElement) {
     console.log(form);
     let final_data;
-    let newUserData: string[];
+    // let newUserData: string[];
     const formData = new FormData();
     if (this.files != null) {
       const files: FileList = this.files;
@@ -176,13 +186,13 @@ export class BooksComponent implements OnInit {
 
     this.dataAccessService.createNewBookItem(final_data).subscribe((response) => {
       console.log(response);
-    //   if (response.status === 200) {
-    //     // const serverReply: string[] = response.json();
-    //     // this.createUserReply = serverReply[0];
-    //     // this.openAddUserModal(this.userCreated);
-    //   }
-    // });
+      //   if (response.status === 200) {
+      //     // const serverReply: string[] = response.json();
+      //     // this.createUserReply = serverReply[0];
+      //     // this.openAddUserModal(this.userCreated);
+      //   }
+      // });
 
-  }
+    }
 
 
