@@ -63,8 +63,10 @@
             <div class="col-md-8">
               <h1 style="text-align: end">{{totalIncome}} <i class="fa fa-usd" aria-hidden="true"></i></h1>
               <p style="text-align: end">
-                <button type="button" class="btn btn-outline-light btn sm" (click)="openPickDateModal(pickReportDate)">
-                  <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{incomeReportDate | date:"MM/dd/yyyy"}}
+                <button type="button" class="btn btn-outline-light btn sm"
+                        (click)="openPickDateModal(pickReportDate)">
+                  <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{incomeReportDate |
+                  date:"MM/dd/yyyy"}}
                 </button>
               </p>
             </div>
@@ -97,7 +99,8 @@
               <h1 style="text-align: end" *ngIf="activeCarrency==='USD'">{{USDUAH}}</h1>
               <h1 style="text-align: end" *ngIf="activeCarrency==='EUR'">{{EURUAH}}</h1>
               <h1 style="text-align: end" *ngIf="activeCarrency==='RUB'">{{RUBUAH}}</h1>
-              <p style="text-align: end"><img src="http://localhost:8080/static/ukraine.png" alt="..." class="img-fluid"
+              <p style="text-align: end"><img src="http://localhost:8080/static/ukraine.png" alt="..."
+                                              class="img-fluid"
                                               width="25px" height="25px"></p>
             </div>
           </div>
@@ -125,16 +128,21 @@
               <h4><i class="fa fa-area-chart" aria-hidden="true"></i> Income report
                 <div class="btn-group float-right" role="group">
                   <div ngbDropdown class="d-inline-block">
-                    <button class="btn btn-dark" id="dropdownBasic1" ngbDropdownToggle>{{chartScaleName}}</button>
+                    <button class="btn btn-dark" id="dropdownBasic1" ngbDropdownToggle>{{chartScaleName}}
+                    </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                       <button class="dropdown-item" (click)="changeChartYScale('')">Total income</button>
-                      <button class="dropdown-item" (click)="changeChartYScale('dayIncome')">Day income</button>
-                      <button class="dropdown-item" (click)="changeChartYScale('ordersPerDay')">Orders per day</button>
+                      <button class="dropdown-item" (click)="changeChartYScale('dayIncome')">Day income
+                      </button>
+                      <button class="dropdown-item" (click)="changeChartYScale('ordersPerDay')">Orders per
+                        day
+                      </button>
                     </div>
                   </div>
                   <button type="button" class="btn btn-dark"
                           (click)="isIncomeReportCollapsed = !isIncomeReportCollapsed"
-                          [attr.aria-expanded]="!isIncomeReportCollapsed" aria-controls="collapseIncomeReport">
+                          [attr.aria-expanded]="!isIncomeReportCollapsed"
+                          aria-controls="collapseIncomeReport">
                     {{isIncomeReportCollapsed ? 'Show' : 'Hide'}}
                   </button>
                 </div>
@@ -189,7 +197,8 @@
                     <button class="btn btn-dark" id="dropdownBasic2" ngbDropdownToggle>{{barChartScaleName}}
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                      <button class="dropdown-item" (click)="changeBarChartYScale('copiesSold')">Copies sold</button>
+                      <button class="dropdown-item" (click)="changeBarChartYScale('copiesSold')">Copies sold
+                      </button>
                       <button class="dropdown-item" (click)="changeBarChartYScale('')">Item income</button>
                     </div>
                   </div>
@@ -230,7 +239,9 @@
                   </h5>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" class="btn btn-outline-success" (click)="deleteTasks(newTasks[i])">close</button>
+                  <button type="button" class="btn btn-outline-success" (click)="deleteTasks(newTasks[i])">
+                    close
+                  </button>
                 </div>
               </div>
 
@@ -273,3 +284,4 @@
 
   </ng-template>
 </div>
+

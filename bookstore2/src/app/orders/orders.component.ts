@@ -19,6 +19,9 @@ import {Shipment2} from '../data-models/Shipment2';
 })
 export class OrdersComponent implements OnInit, CanComponentDeactivate {
 
+  title = 'bookstore2';
+  isSidebarOn = false;
+
   orders: Order[] = [];
   totalOrderCount = 12;
   bookItems: BookItem[] = [];
@@ -192,4 +195,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
     this.modalService.open(orderCreated, {size: 'sm'});
   }
 
+  onSidebarOn() {
+    this.isSidebarOn = !this.isSidebarOn;
+  }
 }

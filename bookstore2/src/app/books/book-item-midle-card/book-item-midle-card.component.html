@@ -1,3 +1,33 @@
-<p>
-  book-item-midle-card works!
-</p>
+<div class="card" ><!--style="width: 400px; height: 200px"-->
+  <div class="card-body" style="padding-top: 0px; padding-left: 0px">
+    <img src="http://localhost:8080/cover/{{activeBookItemDetails.id}}"
+    width="30%" align="left"/>
+        <h4 style="overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap">
+          {{activeBookItemDetails.bookName}}
+        </h4>
+    <p>
+      <span class="text-info float-right">{{activeBookItemDetails.author}}</span>
+    </p>
+    <br>
+    <p style="height: 80px; overflow: hidden; text-overflow: ellipsis">
+      {{activeBookItemDetails.description}}
+    </p>
+    <p>
+        <ngb-rating [rate]="activeBookItemDetails.rating" readonly max="5">
+          <ng-template let-fill="fill" let-index="index">
+              <span class="star" [class.filled]="fill === 100">
+                <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+              </span>
+          </ng-template>
+        </ngb-rating>
+        <strong
+          class="text-info float-right"
+          style="font-size: 1rem">
+          <i class="fa fa-usd" aria-hidden="true"></i>{{activeBookItemDetails.price}}
+        </strong>
+      </p>
+  </div>
+
+</div>

@@ -13,6 +13,9 @@ import {Order} from '../data-models/Order';
 })
 export class UsersComponent implements OnInit {
 
+  title = 'bookstore2';
+  isSidebarOn = false;
+
   users: User[] = [];
   totalUserCount = 12;
   itemsPerPage: number;
@@ -153,6 +156,10 @@ export class UsersComponent implements OnInit {
       this.openAddUserModal(this.userCreated);
     });
 
+  }
+
+  onSidebarOn() {
+    this.isSidebarOn = !this.isSidebarOn;
   }
 }
 

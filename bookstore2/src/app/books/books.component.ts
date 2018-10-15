@@ -12,6 +12,9 @@ import {StorageBooks} from '../data-models/StorageBooks';
 })
 export class BooksComponent implements OnInit {
 
+  title = 'bookstore2';
+  isSidebarOn = false;
+
   bookItems: BookItem[];
   // storageBooks: StorageBooks;
   totalBookCount = 12;
@@ -49,14 +52,10 @@ export class BooksComponent implements OnInit {
         this.paginationArr = Array((this.totalBookCount % this.itemsPerPage) === 0 ?
           Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
           .fill(0).map((x, i) => i);
-
       });
     this.dataAccessService.getTotalBookItemsCount();
-    this.dataAccessService.getBookItems('http://localhost:8080/bookItems');
-    // this.subscriptionStorageBooks = this.dataAccessService.storageBooksChanged
-    //   .subscribe((data: StorageBooks) => {
-    //   this.storageBooks=data;
-    //   });
+    this.dataAccessService.getBookItems('http://localhost:8080/bookItems?page=1');
+
     this.currentPage = 1;
     this.sortBy = 'id';
     this.changeSortDirect = false;
@@ -186,13 +185,10 @@ export class BooksComponent implements OnInit {
 
     this.dataAccessService.createNewBookItem(final_data).subscribe((response) => {
       console.log(response);
-      //   if (response.status === 200) {
-      //     // const serverReply: string[] = response.json();
-      //     // this.createUserReply = serverReply[0];
-      //     // this.openAddUserModal(this.userCreated);
-      //   }
-      // });
+    });
+  }
 
-    }
-
-
+  onSidebarOn() {
+    this.isSidebarOn = !this.isSidebarOn;
+  }
+}

@@ -7,3 +7,15 @@ table.table-bordered > thead > tr > th{
 table.table-bordered > tbody > tr > td{
   border:1px solid dodgerblue;
 }
+
+.content-inner {
+  position: relative;
+  /*width: calc(100% - 250px);*/
+  /*min-height: calc(100vh - 70px);*/
+  /*padding-bottom: 60px;*/
+  width: 100%;
+}
+
+.content-inner.active {
+  width: calc(100% - 90px);
+}

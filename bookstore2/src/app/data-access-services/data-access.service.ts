@@ -142,11 +142,15 @@ export class DataAccessService {
 
   getBookItems(reqUrl: string) {
     this.http.get(reqUrl).subscribe((response: Response) => {
-      console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
+      // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
       const data = response.json();
       this.bookItems = data;
       this.bookItemsChanged.next(this.bookItems);
     });
+  }
+
+  getBookItemsByParam(paramName: string, paramValue: string): Observable<Response> {
+    return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
   }
 
   getTotalBookItemsCount() {

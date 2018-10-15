@@ -27,6 +27,7 @@ import { BooksManagerComponent } from './books/books-manager/books-manager.compo
 import { BookItemDetailsComponent } from './books/book-item-details/book-item-details.component';
 import { BookItemSmallCardComponent } from './books/book-item-small-card/book-item-small-card.component';
 import { BookItemMidleCardComponent } from './books/book-item-midle-card/book-item-midle-card.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 const appRoutes: Routes = [
@@ -34,7 +35,7 @@ const appRoutes: Routes = [
   {path: 'users', component: UsersComponent},
   {path: 'orders', component: OrdersComponent, canDeactivate: [CanDeactivateGuard]},
   {path: 'bookItems', component: BooksComponent},
-  {path: 'userCabinet', component: UserCabinetComponent},
+  {path: 'userCabinet', component: UserCabinetComponent}
 ];
 
 @NgModule({
@@ -65,7 +66,8 @@ const appRoutes: Routes = [
     AngularFontAwesomeModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule
   ],
   providers: [DataAccessService, CanDeactivateGuard],
   bootstrap: [AppComponent]

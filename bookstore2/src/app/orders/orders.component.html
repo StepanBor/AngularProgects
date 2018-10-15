@@ -10,14 +10,16 @@
               new order
             </button>
             <ng-template #saveTipContent>Save all changes</ng-template>
-            <button type="button" class="btn btn-outline-primary btn-sm" placement="right" [ngbTooltip]="saveTipContent"
+            <button type="button" class="btn btn-outline-primary btn-sm" placement="right"
+                    [ngbTooltip]="saveTipContent"
                     tooltipClass="custom-tooltip-class" (click)="saveAllChanges()">
               <i class="fa fa-floppy-o" aria-hidden="true"></i>
             </button>
             <ng-template #delTipContent>Delete order {{activeOrder.id}}</ng-template>
-            <button type="button" class="btn btn-outline-danger btn-sm" placement="right" [ngbTooltip]="delTipContent"
+            <button type="button" class="btn btn-outline-danger btn-sm" placement="right"
+                    [ngbTooltip]="delTipContent"
                     tooltipClass="custom-tooltip-class" [disabled]="activeOrder.status=='closed'"
-            (click)="deleteOrder(activeOrder)">
+                    (click)="deleteOrder(activeOrder)">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
           </div>
@@ -54,8 +56,11 @@
               <td style="word-break: break-all">{{order.shipment.id}}</td>
               <td style="word-break: break-all">{{order.status}}</td>
               <td style="word-break: break-all">{{order.orderDate}}</td>
-              <td *ngIf="isOrderChanged(order.id)" style="text-align: center"><div class="btn btn-outline-primary btn-sm" (click)="onSaveOrder(order)"><i class="fa fa-floppy-o" aria-hidden="true"></i>
-              </div></td>
+              <td *ngIf="isOrderChanged(order.id)" style="text-align: center">
+                <div class="btn btn-outline-primary btn-sm" (click)="onSaveOrder(order)"><i
+                  class="fa fa-floppy-o" aria-hidden="true"></i>
+                </div>
+              </td>
             </tr>
             </tbody>
           </table>
@@ -85,7 +90,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal fade show" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true"
      [ngStyle]="{'display': (isModalActive?'block':''), 'padding-right': (isModalActive?'15px':'')}">
@@ -135,7 +139,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                (click)="isDeleteModalActive=false">Close</button>
+                (click)="isDeleteModalActive=false">Close
+        </button>
       </div>
     </div>
   </div>
@@ -143,7 +148,7 @@
 
 <ng-template #orderCreated let-modal>
   <div class="modal-body">
-  New order id is - {{newOrderId}}
+    New order id is - {{newOrderId}}
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>

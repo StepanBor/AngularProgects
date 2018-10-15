@@ -18,6 +18,9 @@ import {Response} from '@angular/http';
 })
 export class HomeComponent implements OnInit {
 
+  title = 'bookstore2';
+  isSidebarOn = false;
+
   dateToday = new Date();
   incomeReportDate = new Date();
   unProcessedOrders: number;
@@ -147,7 +150,7 @@ export class HomeComponent implements OnInit {
             dayIcomeTemp = dayIcomeTemp + this.orders[j].orderPrice;
           }
         }
-        this.totalIncome = this.totalIncome + dayIcomeTemp;
+        this.totalIncome = Math.floor(this.totalIncome + dayIcomeTemp);
 
         this.totalIncomePerDay.push(this.totalIncome);
 
@@ -266,7 +269,7 @@ export class HomeComponent implements OnInit {
         },
         scales: {
           xAxes: [{
-            display: true
+            display: false
           }],
           yAxes: [{
             display: true,
@@ -304,7 +307,7 @@ export class HomeComponent implements OnInit {
       const date = new Date(this.datesWithOrders[i]);
       if (this.dateIncome.getTime() >= date.getTime()) {
         this.incomeReportDate = this.datesWithOrders[i];
-        this.totalIncome = this.totalIncomePerDay[i];
+        this.totalIncome = Math.floor(this.totalIncomePerDay[i]);
       }
     }
   }
@@ -315,4 +318,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  onSidebarOn() {
+    this.isSidebarOn = !this.isSidebarOn;
+  }
 }

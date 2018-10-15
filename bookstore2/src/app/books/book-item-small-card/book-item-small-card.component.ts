@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {BookItem} from '../../data-models/BookItem';
 
 @Component({
   selector: 'app-book-item-small-card',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./book-item-small-card.component.css']
 })
 export class BookItemSmallCardComponent implements OnInit {
+
+  @Input() activeBookItemDetails: BookItem;
 
   constructor() { }
 

@@ -1,0 +1,25 @@
+.star {
+  font-size: 1.2rem;
+  position: relative;
+  display: inline-block;
+  color: #d3d3d3;
+}
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: #ff8d14;
+}
+.filled {
+  color: #ff8d14;
+}
+.bad {
+  color: #deb0b0;
+}
+.filled.bad {
+  color: #ff1e1e;
+}
+
+.description {
+  height: 75px
+}

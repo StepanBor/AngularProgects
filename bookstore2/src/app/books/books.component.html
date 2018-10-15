@@ -30,9 +30,9 @@
             <tbody>
             <tr *ngFor="let bookItem of bookItems, let i = index" (click)="setActiveRow(i, bookItem.id)"
                 [ngClass]="{'bg-info': i == activeRow, 'bg-warning': ((bookItem.status=='unProcessed') && (i != activeRow))}">
-              <td style="word-break: break-all">{{bookItem.id}}</td>
+              <td>{{bookItem.id}}</td>
               <td style="word-break: break-all">{{bookItem.bookName}}</td>
-              <td style="word-break: break-all">{{bookItem.price}}</td>
+              <td>{{bookItem.price}}</td>
               <td style="word-break: break-all">{{bookItem.rating}}</td>
               <td style="word-break: break-all">{{bookItem.copiesInStock}}</td>
               <td *ngIf="isBookChanged(bookItem.id)" style="text-align: center">
@@ -63,5 +63,11 @@
     <div class="col-md-6">
       <app-book-item-details [activeBookItemDetails]="activeBook"></app-book-item-details>
     </div>
+  </div>
+  <div class="row justify-content-end">
+    <div class="col-md-4">
+      <app-book-item-midle-card [activeBookItemDetails]="activeBook"></app-book-item-midle-card>
+    </div>
+
   </div>
 </div>

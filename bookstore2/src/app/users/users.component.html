@@ -6,7 +6,8 @@
         <div class="card-header">
           User list
           <div class="btn-group btn-group-sm float-right">
-            <button type="button" class="btn btn-outline-primary btn-sm" (click)="openAddUserModal(addUserModal)">
+            <button type="button" class="btn btn-outline-primary btn-sm"
+                    (click)="openAddUserModal(addUserModal)">
               <i class="fa fa-plus-square" aria-hidden="true"></i>
               new user
             </button>
@@ -24,16 +25,19 @@
             <tr>
               <th class="text-primary" style="cursor:pointer"><a (click)="onSortGet('id',true,currentPage)">
                 Id <i class="fa fa-sort" aria-hidden="true"></i></a></th>
-              <th class="text-primary" style="cursor:pointer"><a (click)="onSortGet('login',true,currentPage)">
+              <th class="text-primary" style="cursor:pointer"><a
+                (click)="onSortGet('login',true,currentPage)">
                 Login <i class="fa fa-sort" aria-hidden="true"></i>
               </a></th>
               <th class="text-primary" style="cursor:pointer"><a (click)="onSortGet('name',true,currentPage)">
                 Name <i class="fa fa-sort" aria-hidden="true"></i>
               </a></th>
-              <th class="text-primary" style="cursor:pointer"><a (click)="onSortGet('phone',true,currentPage)">
+              <th class="text-primary" style="cursor:pointer"><a
+                (click)="onSortGet('phone',true,currentPage)">
                 Phone <i class="fa fa-sort" aria-hidden="true"></i>
               </a></th>
-              <th class="text-primary" style="cursor:pointer"><a (click)="onSortGet('email',true,currentPage)">
+              <th class="text-primary" style="cursor:pointer"><a
+                (click)="onSortGet('email',true,currentPage)">
                 Email <i class="fa fa-sort" aria-hidden="true"></i>
               </a></th>
               <th class="text-primary" style="cursor:pointer"><a (click)="onSortGet('role',true,currentPage)">
