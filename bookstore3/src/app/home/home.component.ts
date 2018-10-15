@@ -51,14 +51,14 @@ export class HomeComponent implements OnInit {
           .fill(0).map((x, i) => i);
       });
     this.dataAccessService.getTotalBookItemsCount();
-    this.dataAccessService.getBookItems('http://localhost:8080/bookItems?page=1');
+    this.dataAccessService.getBookItems('http://localhost:8080/bookItems?page=1&itemsPerPage=12');
 
     this.currentPage = 1;
     this.sortBy = 'id';
     this.changeSortDirect = false;
     this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
-    this.itemsPerPage = 6;
+    this.itemsPerPage = 12;
     this.activeRow = -1;
     this.activeBookId = 0;
 

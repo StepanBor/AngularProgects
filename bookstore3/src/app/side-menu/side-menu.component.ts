@@ -23,7 +23,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         'text-overflow': 'ellipsis'
       })),
       state('showAut', style({})),
-      transition('brief <=> full', animate(500)),
+      transition('showAut <=> hideAut', animate(500)),
     ]),
     trigger('publishers', [
       state('hidePub', style({
@@ -32,13 +32,13 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         'text-overflow': 'ellipsis'
       })),
       state('showPub', style({})),
-      transition('brief <=> full', animate(500)),
+      transition('showPub <=> hidePub', animate(500)),
     ])
   ]
 })
 export class SideMenuComponent implements OnInit {
 
-  bookParams: { category: string[], author: string[], publisher: string[] };
+  bookParams = [];
 
   categories: string;
   authors: string;
@@ -52,7 +52,7 @@ export class SideMenuComponent implements OnInit {
     this.dataAccessService.getBookParameters().subscribe((response) => {
       const data = response.json();
       this.bookParams = data;
-      console.log(this.bookParams[0]);
+      // console.log(this.bookParams[0] + 'WWWWWWWWWWWW');
     });
 
     this.categories = 'hideCat';

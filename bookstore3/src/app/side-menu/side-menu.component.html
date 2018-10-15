@@ -1,32 +1,30 @@
 <div class="container-fluid" style="padding-top: 20px">
-  <div class="col" style="padding-left: 0px; padding-right: 0px">
-    <ul class="list-group list-group-flush" style="white-space: nowrap;
+  <div class="row">
+    <div class="col" style="padding-left: 0px; padding-right: 0px">
+      <ul class="list-group list-group-flush" style="white-space: nowrap;
        overflow: hidden;
-       text-overflow: ellipsis;
-       /*padding-right: 2px;*/
-        margin-left: -20px;
-        margin-right: -20px;
-        border-radius: 10px">
-      <li class="list-group-item" (click)="categories=((categories=='showCat')?'hideCat':'showCat')">
-        <h5>Product categories</h5>
-        <ul class="list-group list-group-flush" [@categories]="categories">
-          <li class="list-group-item" *ngFor="let category of bookParams[0]">{{category}}</li>
-        </ul>
-      </li>
-      <li class="list-group-item">
-        <h5>Authors</h5>
-        <ul class="list-group list-group-flush" [@authors]="authors">
-          <li class="list-group-item" *ngFor="let author of bookParams[1]">{{author}}</li>
-        </ul>
-      </li>
-      <li class="list-group-item">
-        <h5>Publishers</h5>
-        <ul class="list-group list-group-flush" [@publishers]="publishers">
-          <li class="list-group-item" *ngFor="let publisher of bookParams[2]">{{publisher}}</li>
-        </ul>
-      </li>
-    </ul>
-
-
+       text-overflow: ellipsis">
+        <li class="list-group-item" (click)="categories=((categories=='showCat')?'hideCat':'showCat')">
+          <h5>Product categories</h5>
+          <ul class="list-group list-group-flush" [@categories]="categories">
+            <li class="list-group-item" *ngFor="let category of bookParams[0]">{{category}}</li>
+          </ul>
+        </li>
+        <li class="list-group-item" (click)="authors=((authors=='showAut')?'hideAut':'showAut')">
+          <h5>Authors</h5>
+          <ul class="list-group list-group-flush" [@authors]="authors">
+            <li class="list-group-item" *ngFor="let author of bookParams[1]">{{author}}</li>
+          </ul>
+        </li>
+        <li class="list-group-item" (click)="publishers=((publishers=='showPub')?'hidePub':'showPub')">
+          <h5>Publishers</h5>
+          <ul class="list-group list-group-flush" [@publishers]="publishers">
+            <li class="list-group-item" *ngFor="let publisher of bookParams[2]">{{publisher}}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
+
 </div>
+
