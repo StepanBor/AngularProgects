@@ -21,7 +21,7 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'bookItem:bookId', component: HomeComponent},
+  {path: 'bookItem/:bookId', component: BookItemDetailsComponent},
 ];
 
 @NgModule({

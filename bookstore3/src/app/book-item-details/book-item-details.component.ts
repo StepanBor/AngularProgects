@@ -32,21 +32,29 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
 
   bookItems: BookItem[];
 
-  arr = Array(2).fill(0).map((x, i) => i);
+  routerId: string;
+
+  arr: number[];
 
   constructor(private dataAccessService: DataAccessService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.dataAccessService.getBookItemsByParam('id', this.route.params['bookId'])
+    this.routerId = this.route.snapshot.params['bookId'];
+    this.dataAccessService.getBookItemsByParam('id', this.routerId)
       .subscribe((response) => {
-        const data = response.json();
-        this.activeBookItemDetails = data;
+        const data: BookItem[] = response.json();
+        this.activeBookItemDetails = data[0];
         this.dataAccessService.getBookItemsByParam('author', this.activeBookItemDetails.author)
           .subscribe((response2) => {
             console.log(response);
             const data2 = response2.json();
             this.bookItems = data2;
+            if (this.bookItems.length < 2) {
+              this.arr = Array(this.bookItems.length).fill(0).map((x, i) => i);
+            } else {
+              this.arr = Array(2).fill(0).map((x, i) => i);
+            }
             this.bookItems.sort((a: BookItem, b: BookItem) => {
               if (a.rating > b.rating) {
                 return -1;

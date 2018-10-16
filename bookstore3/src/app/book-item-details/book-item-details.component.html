@@ -70,12 +70,11 @@
                 <h4>About author</h4>
               </div>
               <!--<div class="col-6" *ngFor="let bookItem of bookItems, let i=index">-->
-              <div class="col-md-8 ">
-                <div class="card-deck justify-content-end">
+              <div class="col-md-4" *ngFor="let j of arr" style="height: 70%">
+                <!--<div class="card-deck justify-content-end">-->
                   <app-book-item-small-card
-                    [activeBookItemDetails]="bookItems[j]"
-                    *ngFor="let j of arr" style="width:50%"></app-book-item-small-card>
-                </div>
+                    [activeBookItemDetails]="bookItems[j]" ></app-book-item-small-card>
+                <!--</div>-->
               </div>
 
               <!--</div>-->
