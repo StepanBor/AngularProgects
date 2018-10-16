@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {BookItem} from '../data-models/BookItem';
 import {DataAccessService} from '../data-access-services/data-access.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-book-item-details',
@@ -31,25 +32,33 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
 
   bookItems: BookItem[];
 
-  constructor(private dataAccessService: DataAccessService) {
+  arr = Array(2).fill(0).map((x, i) => i);
+
+  constructor(private dataAccessService: DataAccessService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.dataAccessService.getBookItemsByParam('author', this.activeBookItemDetails.author)
+    this.dataAccessService.getBookItemsByParam('id', this.route.params['bookId'])
       .subscribe((response) => {
-        console.log(response);
         const data = response.json();
-        this.bookItems = data;
-        this.bookItems.sort((a: BookItem, b: BookItem) => {
-          if (a.rating > b.rating) {
-            return -1;
-          } else if (a.rating < b.rating) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
+        this.activeBookItemDetails = data;
+        this.dataAccessService.getBookItemsByParam('author', this.activeBookItemDetails.author)
+          .subscribe((response2) => {
+            console.log(response);
+            const data2 = response2.json();
+            this.bookItems = data2;
+            this.bookItems.sort((a: BookItem, b: BookItem) => {
+              if (a.rating > b.rating) {
+                return -1;
+              } else if (a.rating < b.rating) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
+          });
       });
+
     this.fullDescription = false;
     this.state = 'brief';
   }

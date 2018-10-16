@@ -32,6 +32,7 @@ export class DataAccessService {
 
   bookItems: BookItem[];
   totalBookItemCount: number;
+  shopingCart: BookItem[];
   // storageBooks: StorageBooks;
 
   orders: Order[];

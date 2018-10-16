@@ -194,6 +194,7 @@ export class DataAccessService {
   getRates() {
     return this.http.get('http://localhost:8080/rates')
       .subscribe((responce) => {
+        console.log(responce + 'RRRRRRRRRRRRRRRRRRRRRRRR');
         const data = responce.json();
         this.USDUAH.next(Math.round(data.quotes.USDUAH * 1000) / 1000);
         this.EURUAH.next(Math.round(data.quotes.USDUAH / data.quotes.USDEUR * 1000) / 1000);

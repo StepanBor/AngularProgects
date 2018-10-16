@@ -16,4 +16,8 @@ export class BookItemSmallCardComponent implements OnInit {
   ngOnInit() {
   }
 
+  onBookClick(){
+    
+  }
+
 }

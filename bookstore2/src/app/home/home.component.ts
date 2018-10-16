@@ -96,6 +96,7 @@ export class HomeComponent implements OnInit {
         this.changeBarChartYScale('');
       });
     this.subscriptionUSDUAH = this.dataAccessService.USDUAH.subscribe((num: number) => {
+      console.log(num + 'WWWWWWWWWWW');
       this.USDUAH = num;
     });
     this.subscriptionEURUAH = this.dataAccessService.EURUAH.subscribe((num: number) => {
