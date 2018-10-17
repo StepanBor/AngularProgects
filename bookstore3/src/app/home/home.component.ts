@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {BookItem} from '../data-models/BookItem';
 import {Observable, Subscription} from 'rxjs';
 import {DataAccessService} from '../data-access-services/data-access.service';
@@ -8,7 +8,7 @@ import {DataAccessService} from '../data-access-services/data-access.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnChanges {
 
 
   bookItems: BookItem[];
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   itemsPerPage: number;
   paginationArr: number[];
   currentPage: number;
-  sortBy: string;
+  @Input() sortBy: string;
   url: string;
   changeSortDirect: boolean;
   activeRow: number;
@@ -65,9 +65,12 @@ export class HomeComponent implements OnInit {
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
     this.activeRow = -1;
     this.activeBookId = 0;
-
-
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('ku');
+  }
+
 
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
     this.sortBy = sortBy;

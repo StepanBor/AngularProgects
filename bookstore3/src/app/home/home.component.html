@@ -8,12 +8,31 @@
 
   </div>
 
-  <div class="row">
+  <div class="row justify-content-end" style="margin-top: 10px">
 
-    <div class="col">
-      <br>
-      <strong class="text-primary" style="font-size: 1.2rem">Popular books</strong>
-    </div>
+    <form (ngSubmit)="sortBooks()" #f="ngForm">
+      <div class="form-row">
+
+        <div class="col">
+          <button type="submit" class="btn btn-primary btn-block">
+            <strong>sort by</strong>
+          </button>
+        </div>
+        <div class="col">
+          <!--<label for="secret">Secret Questions</label>-->
+          <select
+            id="sortBy"
+            class="form-control"
+            [ngModel]="sortBy"
+            name="sortBy">
+            <option selected value="author" >Author</option>
+            <option value="bookName">Book name</option>
+            <option value="rating">Rating</option>
+            <option value="publisher">Publisher</option>
+          </select>
+        </div>
+      </div>
+    </form>
   </div>
   <div class="row justify-content-around" style="padding-top: 10px">
     <div class="col-md-2 justify-content-start" *ngFor="let num of arr1, let i=index">
@@ -27,7 +46,7 @@
         [activeBookItemDetails]="bookItems[i]"></app-book-item-small-card>
     </div>
   </div>
-  <div class="row justify-content-end">
+  <div class="row justify-content-end" style="margin-top: 10px">
     <nav aria-label="tablePagination">
       <ul class="pagination">
         <li class="page-item" [ngClass]="{disabled: currentPage==1}">
