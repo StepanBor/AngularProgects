@@ -36,6 +36,8 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
 
   arr: number[];
 
+  orderQuantity: number;
+
   constructor(private dataAccessService: DataAccessService, private route: ActivatedRoute) {
   }
 
@@ -69,6 +71,7 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
 
     this.fullDescription = false;
     this.state = 'brief';
+    this.orderQuantity = 1;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

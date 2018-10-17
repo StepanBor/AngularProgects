@@ -16,10 +16,36 @@
     </div>
   </div>
   <div class="row justify-content-around" style="padding-top: 10px">
-    <div class="col-md-2"  *ngFor="let bookItem of bookItems, let i=index">
+    <div class="col-md-2 justify-content-start" *ngFor="let num of arr1, let i=index">
       <app-book-item-small-card
-        [activeBookItemDetails]="bookItem"></app-book-item-small-card>
+        [activeBookItemDetails]="bookItems[i]"></app-book-item-small-card>
     </div>
   </div>
+  <div class="row justify-content-around" style="padding-top: 10px">
+    <div class="col-md-2 justify-content-start" *ngFor="let num of arr2, let i=index">
+      <app-book-item-small-card
+        [activeBookItemDetails]="bookItems[i]"></app-book-item-small-card>
+    </div>
+  </div>
+  <div class="row justify-content-end">
+    <nav aria-label="tablePagination">
+      <ul class="pagination">
+        <li class="page-item" [ngClass]="{disabled: currentPage==1}">
+          <a class="page-link" (click)="onSortGet(sortBy,false,currentPage-1)">Previous</a>
+        </li>
+        <li *ngFor="let int of paginationArr; index as i"
+            class="page-item" [ngClass]="{active: currentPage==(i+1)}">
+          <a class="page-link" (click)="onSortGet(sortBy,false,i+1)">{{i+1}}</a>
+        </li>
+        <li class="page-item" [ngClass]="{disabled: currentPage==paginationArr.length}">
+          <a class="page-link" (click)="onSortGet(sortBy,false,currentPage+1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+
+
+
 
 </div>

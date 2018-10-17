@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BookItem} from '../data-models/BookItem';
 import {Observable, Subscription} from 'rxjs';
 import {DataAccessService} from '../data-access-services/data-access.service';
@@ -9,7 +9,6 @@ import {DataAccessService} from '../data-access-services/data-access.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
 
 
   bookItems: BookItem[];
@@ -35,10 +34,14 @@ export class HomeComponent implements OnInit {
   newBookItemId: number;
   files: any;
 
+  arr1: number[];
+  arr2: number[];
+
   constructor(private dataAccessService: DataAccessService) {
   }
 
   ngOnInit() {
+    this.itemsPerPage = 12;
     this.subscriptionBookItems = this.dataAccessService.bookItemsChanged.subscribe((bookItems1: BookItem[]) => {
       this.bookItems = bookItems1;
       this.activeBook = bookItems1[0];
@@ -50,6 +53,8 @@ export class HomeComponent implements OnInit {
           Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
           .fill(0).map((x, i) => i);
       });
+    this.arr1 = Array(6).fill(0).map((x, i) => i);
+    this.arr2 = Array(6).fill(0).map((x, i) => (i + 6));
     this.dataAccessService.getTotalBookItemsCount();
     this.dataAccessService.getBookItems('http://localhost:8080/bookItems?page=1&itemsPerPage=12');
 
@@ -58,7 +63,6 @@ export class HomeComponent implements OnInit {
     this.changeSortDirect = false;
     this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
-    this.itemsPerPage = 12;
     this.activeRow = -1;
     this.activeBookId = 0;
 
@@ -69,10 +73,10 @@ export class HomeComponent implements OnInit {
     this.sortBy = sortBy;
     this.currentPage = page;
     this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
-      + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage;
+      + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=12';
     this.dataAccessService.getBookItems(this.url);
     this.dataAccessService.getTotalBookItemsCount();
-    this.itemsPerPage = 6;
+    this.itemsPerPage = 12;
     this.paginationArr = Array((this.totalBookCount % this.itemsPerPage) === 0 ?
       Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
       .fill(0).map((x, i) => i);
