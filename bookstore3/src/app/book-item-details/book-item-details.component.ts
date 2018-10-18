@@ -3,6 +3,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {BookItem} from '../data-models/BookItem';
 import {DataAccessService} from '../data-access-services/data-access.service';
 import {ActivatedRoute} from '@angular/router';
+import {ItemEntry} from '../data-models/ItemEntry';
 
 @Component({
   selector: 'app-book-item-details',
@@ -93,16 +94,19 @@ export class BookItemDetailsComponent implements OnInit {
 
   onAddToCart(form: HTMLFormElement) {
     this.addToCart.emit(form.value.quantity);
-    // this.dataAccessService.shopingCart.push(this.activeBookItemDetails);
-    if (this.dataAccessService.cart.has(this.activeBookItemDetails)) {
-      this.dataAccessService.cart
-        .set(this.activeBookItemDetails, this.dataAccessService.cart.get(this.activeBookItemDetails) + form.value.quantity);
-    } else {
-      this.dataAccessService.cart
-        .set(this.activeBookItemDetails, form.value.quantity);
+    let num = 0;
+    for (const itemEntry of this.dataAccessService.shoppingCart) {
+      if (itemEntry.key.id === this.activeBookItemDetails.id) {
+        itemEntry.value = itemEntry.value + form.value.quantity;
+        num = 1;
+        break;
+      }
+    }
+    if (num === 0) {
+      this.dataAccessService.shoppingCart.push(new ItemEntry(this.activeBookItemDetails, form.value.quantity));
     }
 
-    console.log(this.dataAccessService.cart);
+    console.log(this.dataAccessService.shoppingCart);
   }
 
 

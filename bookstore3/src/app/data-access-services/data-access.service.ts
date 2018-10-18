@@ -8,6 +8,7 @@ import {Order} from '../data-models/Order';
 import {BookItem} from '../data-models/BookItem';
 import {Task1} from '../data-models/Task1';
 import {StorageBooks} from '../data-models/StorageBooks';
+import {ItemEntry} from '../data-models/ItemEntry';
 
 @Injectable()
 export class DataAccessService {
@@ -32,14 +33,14 @@ export class DataAccessService {
 
   bookItems: BookItem[];
   totalBookItemCount: number;
-  shopingCart: BookItem[];
+  shoppingCart: ItemEntry[];
   // storageBooks: StorageBooks;
 
   orders: Order[];
   totalOrderCount: number;
   totalUnProcessedOrderCount: number;
 
-  cart = new Map<BookItem, number>();
+  // cart = new Map<BookItem, number>();
 
   private totalUserCount = 12;
 
@@ -63,6 +64,7 @@ export class DataAccessService {
     this.getTotalOrderCount();
     this.getBookItems('http://localhost:8080/bookItems');
     this.getTotalBookItemsCount();
+    this.shoppingCart = [];
   }
 
   getUsersFromDb(reqUrl: string) {

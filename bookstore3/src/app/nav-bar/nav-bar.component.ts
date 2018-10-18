@@ -7,9 +7,10 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class NavBarComponent implements OnInit {
 
-  @Output() sideBarTogle=new EventEmitter<boolean>();
+  @Output() sideBarTogle = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
