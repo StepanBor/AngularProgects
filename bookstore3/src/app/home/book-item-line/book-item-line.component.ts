@@ -10,9 +10,9 @@ import {Subscription} from 'rxjs';
 })
 export class BookItemLineComponent implements OnInit, OnChanges {
 
-  @Input() bookItems: BookItem[];
+  bookItems: BookItem[];
 
-  @Input() sortBy: string;
+  sortBy: string;
 
   subscriptionTotalBookItemCount: Subscription;
 
@@ -35,7 +35,7 @@ export class BookItemLineComponent implements OnInit, OnChanges {
           Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
           .fill(0).map((x, i) => i);
       });
-    this.dataAccessService.getBookItems2('http://localhost:8080/bookItems?sortBy=rating&page=1')
+    this.dataAccessService.getBookItems2('http://localhost:8080/bookItems?sortBy=rating&page=1&sortDirect=DESC')
       .subscribe((response) => {
         const data = response.json();
         this.bookItems = data;

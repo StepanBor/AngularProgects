@@ -84,6 +84,15 @@
         </div>
       </div>
     </div>
+    <div class="col-md-4">
+      <h4 class="text-primary">Mor from {{activeBookItemDetails.category}} category</h4>
+      <app-book-item-midle-card *ngFor="let bookItem of sameCategoryBooks"
+                                [activeBookItemDetails]="bookItem"
+                                (itemDetailsId)="changeActiveItem($event)"
+                                style="cursor: pointer"></app-book-item-midle-card>
+
+    </div>
   </div>
+
 </div>
 

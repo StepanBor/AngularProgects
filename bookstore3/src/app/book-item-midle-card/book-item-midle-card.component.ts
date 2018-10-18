@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BookItem} from '../data-models/BookItem';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-book-item-midle-card',
@@ -10,9 +11,16 @@ export class BookItemMidleCardComponent implements OnInit {
 
   @Input() activeBookItemDetails: BookItem;
 
-  constructor() { }
+  @Output() itemDetailsId = new EventEmitter<string>();
+
+  constructor(private router: Router) {
+  }
 
   ngOnInit() {
+  }
+
+  bookDetails() {
+    this.itemDetailsId.emit('' + this.activeBookItemDetails.id);
   }
 
 }

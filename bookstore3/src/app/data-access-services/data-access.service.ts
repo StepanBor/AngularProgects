@@ -39,6 +39,8 @@ export class DataAccessService {
   totalOrderCount: number;
   totalUnProcessedOrderCount: number;
 
+  cart = new Map<BookItem, number>();
+
   private totalUserCount = 12;
 
   private users: User[] = [new User(100500, 'login1', 'email1',
@@ -143,7 +145,7 @@ export class DataAccessService {
 
   getBookItems(reqUrl: string) {
     this.http.get(reqUrl).subscribe((response: Response) => {
-      // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
       const data = response.json();
       this.bookItems = data;
       this.bookItemsChanged.next(this.bookItems);

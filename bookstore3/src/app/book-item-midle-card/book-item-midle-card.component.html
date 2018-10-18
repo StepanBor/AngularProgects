@@ -1,5 +1,5 @@
-<div class="card" ><!--style="width: 400px; height: 200px"-->
-  <div class="card-body" style="padding-top: 0px; padding-left: 0px">
+<div class="card" (click)="bookDetails()" style="margin-top: 4px; margin-bottom: 4px"><!--style="width: 400px; height: 200px"-->
+  <div class="card-body" style="padding-top: 0px; padding-left: 0px; padding-bottom: 0px">
     <img src="http://localhost:8080/cover/{{activeBookItemDetails.id}}"
          width="30%" align="left"/>
     <h4 style="overflow: hidden;
@@ -29,5 +29,4 @@
       </strong>
     </p>
   </div>
-
 </div>

@@ -16,8 +16,8 @@
             <li class="list-group-item" *ngFor="let author of bookParams[1]">{{author}}</li>
           </ul>
         </li>
-        <li class="list-group-item" (click)="publishers=((publishers=='showPub')?'hidePub':'showPub')">
-          <h5>Publishers</h5>
+        <li class="list-group-item" >
+          <h5 (click)="publishers=((publishers=='showPub')?'hidePub':'showPub')">Publishers</h5>
           <ul class="list-group list-group-flush" [@publishers]="publishers">
             <li class="list-group-item" *ngFor="let publisher of bookParams[2]">{{publisher}}</li>
           </ul>

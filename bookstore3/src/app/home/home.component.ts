@@ -8,10 +8,10 @@ import {DataAccessService} from '../data-access-services/data-access.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, OnChanges {
+export class HomeComponent implements OnInit {
 
 
-  bookItems: BookItem[];
+  bookItems: BookItem[] = [new BookItem(null, null, null, null, null, null, null, null, null, null, null)];
   // storageBooks: StorageBooks;
   totalBookCount = 12;
 
@@ -21,14 +21,14 @@ export class HomeComponent implements OnInit, OnChanges {
 
 
   itemsPerPage: number;
-  paginationArr: number[];
+  paginationArr: number[] = [1];
   currentPage: number;
   @Input() sortBy: string;
   url: string;
   changeSortDirect: boolean;
   activeRow: number;
   activeBookId: number;
-  activeBook: BookItem;
+  activeBook: BookItem = this.bookItems[0];
   changedBooksId: number[] = [-1];
 
   newBookItemId: number;
@@ -55,20 +55,19 @@ export class HomeComponent implements OnInit, OnChanges {
       });
     this.arr1 = Array(6).fill(0).map((x, i) => i);
     this.arr2 = Array(6).fill(0).map((x, i) => (i + 6));
-    this.dataAccessService.getTotalBookItemsCount();
-    this.dataAccessService.getBookItems('http://localhost:8080/bookItems?page=1&itemsPerPage=12');
+
 
     this.currentPage = 1;
-    this.sortBy = 'id';
+    this.sortBy = 'author';
     this.changeSortDirect = false;
     this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
-      + '&changeSortDirect=' + true + '&page=' + this.currentPage;
+      + '&changeSortDirect=' + true + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
     this.activeRow = -1;
     this.activeBookId = 0;
-  }
+    this.dataAccessService.getTotalBookItemsCount();
+    this.dataAccessService.getBookItems(this.url);
+    /*'http://localhost:8080/bookItems?page=1&itemsPerPage=12&sortBy=author'*/
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('ku');
   }
 
 
@@ -76,13 +75,13 @@ export class HomeComponent implements OnInit, OnChanges {
     this.sortBy = sortBy;
     this.currentPage = page;
     this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
-      + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=12';
+      + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
     this.dataAccessService.getBookItems(this.url);
     this.dataAccessService.getTotalBookItemsCount();
-    this.itemsPerPage = 12;
-    this.paginationArr = Array((this.totalBookCount % this.itemsPerPage) === 0 ?
-      Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
-      .fill(0).map((x, i) => i);
+    // this.itemsPerPage = 12;
+    // this.paginationArr = Array((this.totalBookCount % this.itemsPerPage) === 0 ?
+    //   Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
+    //   .fill(0).map((x, i) => i);
   }
 
   setActiveRow(index1: number, bookId: number) {
@@ -192,5 +191,7 @@ export class HomeComponent implements OnInit, OnChanges {
     });
   }
 
-
+  sortBooks(form: HTMLFormElement) {
+    this.onSortGet(form.value.sortBy, true, this.currentPage);
+  }
 }
