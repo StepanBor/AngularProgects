@@ -13,7 +13,7 @@
         <a class="nav-link"><i class="fa fa-home" aria-hidden="true"></i>
           Home</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" [ngbPopover]="popContent" placement="bottom" triggers="mouseenter:mouseleave">
         <a class="nav-link"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping cart</a>
       </li>
       <li>
@@ -41,4 +41,14 @@
     <!--</form>-->
   </div>
 </nav>
+
+<ng-template #popContent>
+  <div class="container-fluid" style="width: 425px">
+    <div class="row">
+      <div class="col-md-12">
+        <app-book-item-midle-card *ngFor="let itemEntry of shoppingCart" [activeBookItemDetails]="itemEntry.key"></app-book-item-midle-card>
+      </div>
+    </div>
+  </div>
+</ng-template>
 
