@@ -1,7 +1,8 @@
-<div class="card" (click)="bookDetails()" style="margin-top: 4px; margin-bottom: 4px"><!--style="width: 400px; height: 200px"-->
+<div class="card" (click)="bookDetails()" style="margin-top: 4px; margin-bottom: 4px">
+  <!--style="width: 400px; height: 200px"-->
   <div class="card-body" style="padding-top: 0px; padding-left: 0px; padding-bottom: 0px">
     <img src="http://localhost:8080/cover/{{activeBookItemDetails.id}}"
-         width="30%" align="left"/>
+         width="35%" align="left"/>
     <h4 style="overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap">
@@ -25,8 +26,29 @@
       <strong
         class="text-info float-right"
         style="font-size: 1rem">
-        <i class="fa fa-usd" aria-hidden="true"></i>{{activeBookItemDetails.price}}
+        {{shoppingCartNum ? shoppingCartNum+' x ':''}}<i class="fa fa-usd" aria-hidden="true"></i>{{activeBookItemDetails.price}}
+        <i class="fa fa-minus-square text-danger" aria-hidden="true" style="cursor: pointer"
+           (click)="deleteFromCart(activeBookItemDetails)"
+            *ngIf="getFromCart()"
+           placement="right"
+           [ngbTooltip]="delFromCart"
+           tooltipClass="custom-tooltip-class" ></i>
       </strong>
+      <!--<div class="btn-group btn-group-sm">-->
+      <!--<button type="button" class="btn btn-outline-primary btn-sm"-->
+      <!--(click)="setItemEntryValue(entry.value+1,entry)"-->
+      <!--[disabled]="activeOrder.status=='closed' || activeOrder.status=='processed'">-->
+      <!--<i class="fa fa-plus-square" aria-hidden="true"></i>-->
+      <!--</button>-->
+      <!--<button type="button" class="btn btn-outline-danger btn-sm"-->
+      <!--[disabled]="entry.value==0 || activeOrder.status=='closed' || activeOrder.status=='processed'"-->
+      <!--(click)="setItemEntryValue(entry.value-1,entry)">-->
+      <!--<i class="fa fa-minus-square" aria-hidden="true"></i>-->
+      <!--</button>-->
+      <!--</div>-->
+      <!--<button type="button" class="btn btn-outline-danger btn-sm"><i class="fa fa-minus-square" aria-hidden="true"></i></button>-->
     </p>
   </div>
 </div>
+
+<ng-template #delFromCart>Delete from cart</ng-template>

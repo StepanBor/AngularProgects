@@ -1,4 +1,4 @@
-<a routerLink="{{'/bookItem/'+activeBookItemDetails.id}}">
+<a routerLink="{{'/bookItem/'+activeBookItemDetails.id}}" (click)="onBookClick()">
 <div class="card" style="height: 100%" ><!--style="width: 150px; height: 325px"-->
   <img src="http://localhost:8080/cover/{{activeBookItemDetails.id}}"
        class="card-img-top" height="75%"/>

@@ -1,21 +1,22 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {DataAccessService} from '../data-access-services/data-access.service';
-import {BookItem} from '../data-models/BookItem';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ItemEntry} from '../data-models/ItemEntry';
 import {Subscription} from 'rxjs';
+import {DataAccessService} from '../data-access-services/data-access.service';
 import {Router} from '@angular/router';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {BookItem} from '../data-models/BookItem';
+import {LoginNewUserComponent} from '../login-new-user/login-new-user.component';
 import {User} from '../data-models/User';
+import {Shipment2} from '../data-models/Shipment2';
 import {Order} from '../data-models/Order';
 
-@Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css']
-})
-export class NavBarComponent implements OnInit {
 
-  @Output() sideBarTogle = new EventEmitter<boolean>();
+@Component({
+  selector: 'app-shopping-cart',
+  templateUrl: './shopping-cart.component.html',
+  styleUrls: ['./shopping-cart.component.css']
+})
+export class ShoppingCartComponent implements OnInit {
 
   subscriptionShoppingCartSum: Subscription;
   subscriptionLoggedUserChanged: Subscription;
@@ -24,6 +25,12 @@ export class NavBarComponent implements OnInit {
   shoppingCartSum: number;
 
   shoppingCart: ItemEntry[];
+
+  activeRowIndex: number;
+
+  activeBookItemId: number;
+
+  activeBookItem: BookItem;
 
   loggedUser: User;
 
@@ -36,7 +43,6 @@ export class NavBarComponent implements OnInit {
   confirmPasswordProp = '';
   login = true;
 
-
   constructor(private dataAccessService: DataAccessService,
               private router: Router,
               private modalService: NgbModal) {
@@ -45,7 +51,10 @@ export class NavBarComponent implements OnInit {
   ngOnInit() {
     this.loggedUser = this.dataAccessService.loggedUser;
     this.loggedUserOrders = this.dataAccessService.loggedUserOrders;
+    this.activeRowIndex = 0;
     this.shoppingCart = this.dataAccessService.shoppingCart;
+    this.activeBookItem = this.shoppingCart[0].key;
+    this.activeBookItemId = this.activeBookItem.id;
     this.subscriptionShoppingCartSum = this.dataAccessService.totalShoppingCartSumChanged
       .subscribe((sum: number) => {
         this.shoppingCartSum = sum;
@@ -58,14 +67,80 @@ export class NavBarComponent implements OnInit {
       .subscribe((orders: Order[]) => {
         this.loggedUserOrders = orders;
       });
+    this.shoppingCartSum = this.dataAccessService.totalShoppingCartSum;
+
   }
 
-  goToCart() {
-    this.router.navigate(['cart']);
+  togglePopover(popover, id: number) {
+    if (id == null) {
+      popover.close();
+    } else if (popover.isOpen()) {
+      popover.close();
+    } else {
+      popover.open({id});
+    }
   }
 
-  goToCabinet() {
-    this.router.navigate(['userCabinet']);
+  onAddToCart(bookItem: BookItem) {
+
+    this.dataAccessService.addToCart(bookItem, 1);
+
+  }
+
+  deleteFromCart(bookItem: BookItem) {
+    this.dataAccessService.deleteFromCart(bookItem);
+  }
+
+  setActiveRow(index1: number, orderId: number) {
+    this.activeRowIndex = index1;
+    this.activeBookItemId = orderId;
+    for (const entry of this.shoppingCart) {
+      if (entry.key.id === orderId) {
+        this.activeBookItem = entry.key;
+      }
+    }
+  }
+
+  openAddUserModal(addUserModal) {
+    if (this.login) {
+      this.modalService.open(addUserModal);
+    } else {
+      this.modalService.open(addUserModal, {size: 'lg'});
+    }
+
+  }
+
+  onSubmitOrder(form: HTMLFormElement) {
+    console.log(form);
+    let final_data;
+    const formData = new FormData();
+    formData.append('email', form.value.email);
+    formData.append('phone', form.value.phone);
+
+    final_data = formData;
+
+    let user = new User(0, null, form.value.email, form.value.phone,
+      null, null, null, 'CUSTOMER', null, null);
+
+    if (this.loggedUser != null) {
+      user = this.loggedUser;
+    }
+
+
+    const order = new Order(this.shoppingCart, Math.floor(this.shoppingCartSum * 100) / 100, user,
+      new Shipment2(0, 'default', 'unProcessed', 0),
+      'unProcessed', new Date());
+
+    this.dataAccessService.submitOrder(order).subscribe((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        const serverReply: string[] = response.json();
+        this.serverReply = serverReply[0];
+        this.openModal(this.userCreated);
+      }
+    });
+    this.router.navigate(['']);
+    this.dataAccessService.shoppingCart.splice(0, this.dataAccessService.shoppingCart.length);
   }
 
   onSubmitUser(form: HTMLFormElement) {
@@ -88,10 +163,6 @@ export class NavBarComponent implements OnInit {
     formData.append('password', form.value.password);
 
     final_data = formData;
-    // } else {
-    //   // Если нет файла, то слать как обычный JSON
-    //   final_data = form.value;
-    // }
 
     this.dataAccessService.createNewUser(final_data).subscribe((response) => {
       console.log(response);
@@ -110,9 +181,7 @@ export class NavBarComponent implements OnInit {
     final_data = {login: form.value.login, password: form.value.password};
 
     this.dataAccessService.login(final_data);
-
     this.modalService.dismissAll();
-
   }
 
   openModal(addUserModal) {
@@ -122,18 +191,5 @@ export class NavBarComponent implements OnInit {
   addPhoto(event) {
     const target = event.target || event.srcElement;
     this.files = target.files;
-  }
-
-  openAddUserModal(addUserModal) {
-    if (this.login) {
-      this.modalService.open(addUserModal);
-    } else {
-      this.modalService.open(addUserModal, {size: 'lg'});
-    }
-
-  }
-
-  logout() {
-    this.dataAccessService.logout();
   }
 }

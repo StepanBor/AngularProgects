@@ -39,25 +39,26 @@
 
   </div>
 
-  <div class="row justify-content-around" style="padding-top: 10px">
+  <div class="row " style="padding-top: 10px" *ngIf="arr1.length>0">
     <div class="col-md-2 justify-content-start" *ngFor="let num of arr1, let i=index">
       <app-book-item-small-card
         [activeBookItemDetails]="bookItems[num]"></app-book-item-small-card>
     </div>
   </div>
-  <div class="row justify-content-around" style="padding-top: 10px">
+  <div class="row " style="padding-top: 10px" *ngIf="arr2.length>0">
     <div class="col-md-2 justify-content-start" *ngFor="let num of arr2, let i=index">
       <app-book-item-small-card
         [activeBookItemDetails]="bookItems[num]"></app-book-item-small-card>
     </div>
   </div>
+
   <div class="row justify-content-start" style="margin-top: 10px">
     <nav aria-label="tablePagination">
       <ul class="pagination">
         <li class="page-item" [ngClass]="{disabled: currentPage==1}">
           <a class="page-link" (click)="onSortGet(sortBy,false,currentPage-1)">Previous</a>
         </li>
-        <li *ngFor="let int of paginationArr; index as i"
+        <li *ngFor="let int of paginationArr"
             class="page-item" [ngClass]="{active: currentPage==(int+1)}">
           <a class="page-link" (click)="onSortGet(sortBy,false,int+1)">{{int+1}}</a>
         </li>

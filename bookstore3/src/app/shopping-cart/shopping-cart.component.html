@@ -1,0 +1,213 @@
+<div class="container-fluid" style="margin-top: 10px">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          submit order
+          <div class="btn-group btn-group-sm float-right">
+            <button type="button" class="btn btn-outline-success btn-sm"
+                    (click)="login=true;openAddUserModal(addUserModal)">
+              <i class="fa fa-sign-in" aria-hidden="true"></i>
+              Login
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-sm"
+                    (click)="login=false;openAddUserModal(addUserModal)">
+              <i class="fa fa-plus" aria-hidden="true"></i> New account
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmitOrder(f3)" #f3="ngForm" >
+            <div class="form-row" *ngIf="loggedUser==null">
+              <div class="col">
+                <label for="email">Enter your email</label>
+                <input type="email" class="form-control" ngModel name="email"
+                       [required]="loggedUser==null" email id="email" [readonly]="loggedUser!=null"
+                       value="{{this.loggedUser!=null ? loggedUser.email : ''}}">
+              </div>
+              <div class="col">
+                <label for="phone">Enter your phone</label>
+                <input type="text" class="form-control" ngModel name="phone"
+                       [required]="loggedUser==null" id="phone" [readonly]="loggedUser!=null"
+                       value="{{loggedUser!=null?loggedUser.phone:''}}">
+              </div>
+            </div>
+            <div *ngIf="loggedUser!=null">
+              <h5>You logged in as {{loggedUser.login}}</h5>
+              <hr>
+              <ul class="list-unstyled">
+                <li>Email: {{loggedUser.email}}</li>
+                <li>Phone: {{loggedUser.phone}}</li>
+              </ul>
+              <hr>
+            </div>
+            <small class="form-text text-muted">Our manager will contact with you as soon as possible</small>
+            <hr>
+            <div>
+              <ng-template #popContent let-id="id">
+                <img class="img-fluid" src="http://localhost:8080/cover/{{id}}"/></ng-template>
+              <table class="table table-bordered  table-striped table-hover" style="margin-bottom: 0px">
+                <thead class="thead-light">
+                <tr>
+                  <th class="text-primary">#</th>
+                  <th class="text-primary">Book cover</th>
+                  <th class="text-primary">Book id</th>
+                  <th class="text-primary">Book name</th>
+                  <th class="text-primary">Book price</th>
+                  <th class="text-primary">Book quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let entry of shoppingCart, let i=index" (click)="setActiveRow(i, entry.key.id)"
+                    [ngClass]="{'bg-info': i == activeRowIndex}">
+                  <td [ngClass]="{'item-deleted': entry.value==0}">{{i+1}}</td>
+                  <td [ngClass]="{'item-deleted': entry.value==0}">
+                    <img src="http://localhost:8080/cover/{{entry.key.id}}"
+                         width="50px" height="80px"
+                         [ngbPopover]="popContent"
+                         #pop="ngbPopover"
+                         (click)="togglePopover(pop,entry.key.id)"
+                         triggers="manual"
+                         style="cursor: pointer"/>
+                  </td>
+                  <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.id}}</td>
+                  <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.bookName}}</td>
+                  <td [ngClass]="{'item-deleted': entry.value==0}">{{entry.key.price}}</td>
+
+                  <td>{{entry.value}}
+                    <div class="btn-group btn-group-sm">
+                      <button type="button" class="btn btn-outline-primary btn-sm"
+                              (click)="onAddToCart(entry.key)">
+                        <i class="fa fa-plus-square" aria-hidden="true"></i>
+                      </button>
+                      <button type="button" class="btn btn-outline-danger btn-sm"
+                              (click)="deleteFromCart(entry.key)">
+                        <i class="fa fa-minus-square" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <td colspan="4"><h5 style="text-align: right">Total price:</h5></td>
+                  <td><h5>{{shoppingCartSum}}</h5></td>
+                  <td>
+                    <button type="submit" class="btn btn-outline-primary btn-sm"
+                            [disabled]="!f3.valid"><i class="fa fa-credit-card" aria-hidden="true"></i>
+                      submit order
+                    </button>
+                  </td>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <app-book-item-details [activeBookItemDetails]="activeBookItem"
+                             [showSameCat]="false"></app-book-item-details>
+    </div>
+  </div>
+</div>
+
+<ng-template #addUserModal let-modal>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmitUser(f)" #f="ngForm" *ngIf="!login">
+
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+                 required>
+        </div>
+        <div class="col">
+          <input type="email" class="form-control" placeholder="Email" ngModel name="email"
+                 required email>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Phone" ngModel name="phone"
+                 required>
+        </div>
+      </div>
+
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="default delivery address" ngModel
+                 name="address">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="name" ngModel name="name">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="lastname" ngModel name="lastname">
+        </div>
+      </div>
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <input type="password" class="form-control" placeholder="password"
+                 ngModel name="password" #password="ngModel"
+                 pattern="{{confirmPasswordProp}}" [required]="confirm.value!=''">
+        </div>
+        <div class="col">
+          <input type="password" class="form-control" placeholder="confirm password"
+                 [(ngModel)]="confirmPasswordProp" name="confirmPassword" #confirm="ngModel"
+                 [required]="password.value!=''">
+        </div>
+      </div>
+      <hr>
+      <input type="file" name="photo" (change)="addPhoto($event)"/>
+
+      <hr>
+      <button type="submit" class="btn btn-primary btn-block"
+              [disabled]="!f.valid || !password.valid"
+              *ngIf="!login">submit
+      </button>
+
+    </form>
+
+    <form (ngSubmit)="onLogin(f2)" #f2="ngForm" *ngIf="login">
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+                 required>
+        </div>
+        <div class="col">
+          <input type="password" class="form-control" placeholder="password"
+                 ngModel name="password" #password1="ngModel"
+                 pattern="{{confirmPasswordProp}}" required>
+        </div>
+      </div>
+      <hr>
+      <button type="submit" class="btn btn-primary btn-block"
+              [disabled]="!f2.valid">submit
+      </button>
+    </form>
+
+    <hr>
+    <button type="button" class="btn btn-link btn-block"
+            *ngIf="!login" (click)="login=true">Login page
+    </button>
+    <button type="button" class="btn btn-link btn-block"
+            *ngIf="login" (click)="login=false">Create account
+    </button>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #userCreated let-modal>
+  <div class="modal-body">
+    {{serverReply}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>

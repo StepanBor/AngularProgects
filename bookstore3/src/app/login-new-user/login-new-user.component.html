@@ -1,0 +1,95 @@
+<!--<ng-template #addUserModal let-modal>-->
+<div class="modal-body">
+  <form (ngSubmit)="onSubmitUser(f)" #f="ngForm">
+    <div class="form-row" *ngIf="login">
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+               required>
+      </div>
+      <div class="col">
+        <input type="password" class="form-control" placeholder="password"
+               ngModel name="password" #password="ngModel"
+               pattern="{{confirmPasswordProp}}" required>
+      </div>
+    </div>
+    <div *ngIf="!login">
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+                 required>
+        </div>
+        <div class="col">
+          <input type="email" class="form-control" placeholder="Email" ngModel name="email"
+                 required email>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Phone" ngModel name="phone"
+                 required>
+        </div>
+      </div>
+
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="default delivery address" ngModel
+                 name="address">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="name" ngModel name="name">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="lastname" ngModel name="lastname">
+        </div>
+      </div>
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <input type="password" class="form-control" placeholder="password"
+                 ngModel name="password" #password="ngModel"
+                 pattern="{{confirmPasswordProp}}" [required]="confirm.value!=''">
+        </div>
+        <div class="col">
+          <input type="password" class="form-control" placeholder="confirm password"
+                 [(ngModel)]="confirmPasswordProp" name="confirmPassword" #confirm="ngModel"
+                 [required]="password.value!=''">
+        </div>
+      </div>
+      <hr>
+      <input type="file" name="photo" (change)="addPhoto($event)"/>
+
+    </div>
+    <hr>
+    <button type="submit" class="btn btn-primary btn-block"
+            [disabled]="!f.valid || !password.valid"
+            *ngIf="!login">submit
+    </button>
+    <button type="submit" class="btn btn-primary btn-block"
+            *ngIf="login">submit
+    </button>
+  </form>
+
+  <hr>
+  <button type="button" class="btn btn-link btn-block"
+          *ngIf="!login">Login page
+  </button>
+  <button type="button" class="btn btn-link btn-block"
+          *ngIf="login">Create account
+  </button>
+
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
+<!--</ng-template>-->
+
+
+<ng-template #userCreated let-modal>
+  <div class="modal-body">
+    {{createUserReply}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>

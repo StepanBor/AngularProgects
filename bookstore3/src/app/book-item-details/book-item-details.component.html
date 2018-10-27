@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div [ngClass]="{'col-md-12':!showSameCat, 'col-md-6':(showSameCat)}">
       <div class="card">
         <div class="card-body" style="margin-bottom: 20px"><!--style="padding-left: 0px;padding-top: 0px"-->
           <div class="container-fluid">
@@ -18,12 +18,14 @@
               </span>
                   </ng-template>
                 </ngb-rating>
-                <strong class="text-info float-right" style="font-size: 1.2rem">{{activeBookItemDetails.author}}</strong>
+                <strong class="text-info float-right"
+                        style="font-size: 1.2rem">{{activeBookItemDetails.author}}</strong>
                 <br>
                 <span class="text-muted float-right">{{activeBookItemDetails.publisher}}</span>
                 <br>
                 <hr>
-                <span class="text-muted float-right" style="font-size: 1.2rem">item id: {{activeBookItemDetails.id}}</span>
+                <span class="text-muted float-right"
+                      style="font-size: 1.2rem">item id: {{activeBookItemDetails.id}}</span>
                 <br>
                 <hr>
 
@@ -35,7 +37,8 @@
                     </div>
                     <div class="col-9">
                       <button type="submit" class="btn btn-primary btn-block">
-                        <strong><i class="fa fa-usd" aria-hidden="true"></i> {{activeBookItemDetails.price}} <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <strong><i class="fa fa-usd" aria-hidden="true"></i> {{activeBookItemDetails.price}} <i
+                          class="fa fa-cart-plus" aria-hidden="true"></i>
                         </strong>
                       </button>
                     </div>
@@ -64,10 +67,12 @@
                 </button>
               </div>
             </div>
-            <div class="row" >
-              <div class="col-md-12"><!-- style="padding-left: 0px; padding-right: 0px" style="background-image: url(http://localhost:8080/static/book.jpg)"-->
-                <img src="http://localhost:8080/static/book.jpg" class="img-fluid" style="width: 100%; height:90%; position: absolute;top: 0;left: 0; z-index: 0;">
-                <div class="row justify-content-around">
+            <div class="row">
+              <div class="col-md-12">
+                <!-- style="padding-left: 0px; padding-right: 0px" style="background-image: url(http://localhost:8080/static/book.jpg)"-->
+                <img src="http://localhost:8080/static/book.jpg" class="img-fluid"
+                     style="width: 100%; height:90%; position: absolute;top: 0;left: 0; z-index: 0;">
+                <div class="row justify-content-around" *ngIf="bookItems">
                   <div class="col-md-6 text-white">
                     <h3>More by {{activeBookItemDetails.author}}</h3>
                     <hr>
@@ -75,7 +80,8 @@
                   </div>
                   <div class="col-md-3" *ngFor="let j of arr" style="margin-top: 2%">
                     <app-book-item-small-card
-                      [activeBookItemDetails]="bookItems[j] "  ></app-book-item-small-card>
+                      [activeBookItemDetails]="bookItems[j]"
+                      (itemDetailsId)="changeActiveItem($event)"></app-book-item-small-card>
                   </div>
                 </div>
               </div>
@@ -84,8 +90,8 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <h4 class="text-primary">Mor from {{activeBookItemDetails.category}} category</h4>
+    <div class="col-md-4" *ngIf="showSameCat">
+      <!--<h4 class="text-primary" *ngIf="showSameCat">Mor from {{activeBookItemDetails.category}} category</h4>-->
       <app-book-item-midle-card *ngFor="let bookItem of sameCategoryBooks"
                                 [activeBookItemDetails]="bookItem"
                                 (itemDetailsId)="changeActiveItem($event)"

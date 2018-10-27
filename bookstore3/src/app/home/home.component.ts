@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   bookItems: BookItem[] = [new BookItem(null, null, null, null, null, null, null, null, null, null, null)];
   // storageBooks: StorageBooks;
-  totalBookCount = 12;
+  totalBookCount: number;
 
   subscriptionBookItems: Subscription;
   subscriptionTotalBookItemCount: Subscription;
@@ -34,8 +34,8 @@ export class HomeComponent implements OnInit {
   newBookItemId: number;
   files: any;
 
-  arr1: number[];
-  arr2: number[];
+  arr1: number[] = [];
+  arr2: number[] = [];
 
   constructor(private dataAccessService: DataAccessService) {
   }
@@ -45,6 +45,8 @@ export class HomeComponent implements OnInit {
     this.subscriptionBookItems = this.dataAccessService.bookItemsChanged.subscribe((bookItems1: BookItem[]) => {
       this.bookItems = bookItems1;
       this.activeBook = bookItems1[0];
+      this.arr1 = Array(((this.bookItems.length - 6) >= 0) ? 6 : this.bookItems.length).fill(0).map((x, i) => i);
+      this.arr2 = Array((this.bookItems.length === 12) ? 6 : this.bookItems.length - 6).fill(0).map((x, i) => (i + 6));
     });
     this.subscriptionTotalBookItemCount = this.dataAccessService.totalBookItemCountChanged
       .subscribe((count: number) => {
@@ -53,8 +55,6 @@ export class HomeComponent implements OnInit {
           Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
           .fill(0).map((x, i) => i);
       });
-    this.arr1 = Array(6).fill(0).map((x, i) => i);
-    this.arr2 = Array(6).fill(0).map((x, i) => (i + 6));
 
 
     this.currentPage = 1;
@@ -76,6 +76,7 @@ export class HomeComponent implements OnInit {
     this.currentPage = page;
     this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
       + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
+    console.log(this.url);
     this.dataAccessService.getBookItems(this.url);
     this.dataAccessService.getTotalBookItemsCount();
     // this.itemsPerPage = 12;

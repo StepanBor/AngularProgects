@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {User} from '../data-models/User';
-import {Http} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import {Response} from '@angular/http';
 import {Observable, Subject} from 'rxjs';
 import {count, map} from 'rxjs/operators';
@@ -40,6 +40,16 @@ export class DataAccessService {
   totalOrderCount: number;
   totalUnProcessedOrderCount: number;
 
+  totalShoppingCartSum: number;
+  totalShoppingCartSumChanged = new Subject<number>();
+
+  accessToken: string;
+
+  loggedUser: User;
+  loggedUserOrders: Order[];
+  loggedUserOrdersChanged = new Subject<Order[]>();
+  loggedUserChanged = new Subject<User>();
+
   // cart = new Map<BookItem, number>();
 
   private totalUserCount = 12;
@@ -65,6 +75,7 @@ export class DataAccessService {
     this.getBookItems('http://localhost:8080/bookItems');
     this.getTotalBookItemsCount();
     this.shoppingCart = [];
+    this.totalShoppingCartSum = 0;
   }
 
   getUsersFromDb(reqUrl: string) {
@@ -170,12 +181,48 @@ export class DataAccessService {
     });
   }
 
-  deleteOrder(orderToDelete: Order): Observable<Response> {
-    return this.http.post('http://localhost:8080/deleteBookItem', orderToDelete);
-  }
 
   createNewUser(data): Observable<Response> {
     return this.http.post('http://localhost:8080/createNewUser', data);
+  }
+
+  login(data) {
+    this.http.post('http://localhost:8080/signin', data).subscribe((response) => {
+      // console.log(response);
+      if (response.status === 200) {
+        const serverReply = response.json();
+        this.accessToken = serverReply.accessToken;
+        const header = new Headers({'Authorization': this.accessToken});
+        this.http.get('http://localhost:8080/userInfo?login=' + data.login, {headers: header}).subscribe((response2) => {
+          if (response2.status === 200) {
+            const serverReply2 = response2.json();
+            this.loggedUser = serverReply2.clientDTO;
+            this.loggedUserOrders = serverReply2.clientOrders;
+            this.loggedUserChanged.next(this.loggedUser);
+            this.loggedUserOrdersChanged.next(this.loggedUserOrders);
+            // console.log(response2);
+            // console.log(serverReply2.clientDTO);
+            // console.log(serverReply2.clientOrders);
+          }
+        });
+        // console.log(this.accessToken);
+      } else {
+        // const serverReply: string[] = response.json();
+        // this.serverReply = serverReply[0];
+        // this.openModal(this.userCreated);
+      }
+    });
+  }
+
+  logout() {
+    this.loggedUser = null;
+    this.loggedUserOrders = null;
+    this.loggedUserChanged.next(this.loggedUser);
+    this.loggedUserOrdersChanged.next(this.loggedUserOrders);
+  }
+
+  submitOrder(data): Observable<Response> {
+    return this.http.post('http://localhost:8080/submitOrder', data);
   }
 
   createNewOrder(): Observable<Response> {
@@ -252,5 +299,65 @@ export class DataAccessService {
 
   getBookParameters(): Observable<Response> {
     return this.http.get('http://localhost:8080/getBookParameters');
+  }
+
+  addToCart(bookItem: BookItem, quantity: number) {
+    let num = 0;
+    let shopSum = 0;
+    for (const itemEntry of this.shoppingCart) {
+      if (itemEntry.key.id === bookItem.id) {
+        itemEntry.value = itemEntry.value + quantity;
+        num = 1;
+        break;
+      }
+    }
+
+    if (num === 0) {
+      this.shoppingCart.push(new ItemEntry(bookItem, quantity));
+
+    }
+    for (const itemEntry of this.shoppingCart) {
+      shopSum = shopSum + itemEntry.key.price * itemEntry.value;
+
+    }
+
+    this.totalShoppingCartSum = Math.floor(shopSum * 100) / 100;
+
+    this.totalShoppingCartSumChanged.next(this.totalShoppingCartSum);
+
+  }
+
+  deleteFromCart(bookItem: BookItem) {
+    let ind = -1;
+    let shopSum = 0;
+    for (let i = 0; i < this.shoppingCart.length; i++) {
+      if (this.shoppingCart[i].key.id === bookItem.id) {
+        this.shoppingCart[i].value--;
+        if (this.shoppingCart[i].value <= 0) {
+          ind = i;
+          break;
+        }
+      }
+    }
+    if (ind !== -1) {
+      this.shoppingCart.splice(ind, 1);
+    }
+    for (const itemEntry of this.shoppingCart) {
+      shopSum = shopSum + itemEntry.key.price * itemEntry.value;
+
+    }
+
+    this.totalShoppingCartSum = Math.floor(shopSum * 100) / 100;
+
+    this.totalShoppingCartSumChanged.next(this.totalShoppingCartSum);
+  }
+
+  getFromCart(bookItem: BookItem): number | null {
+    for (const itemEntry of this.shoppingCart) {
+      if (itemEntry.key.id === bookItem.id) {
+        return itemEntry.value;
+      }
+    }
+    return null;
   }
 }

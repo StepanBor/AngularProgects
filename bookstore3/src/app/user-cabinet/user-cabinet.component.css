@@ -1,0 +1,11 @@
+table.table-bordered > thead > tr > th{
+  border:2px solid dodgerblue;
+}
+table.table-bordered > tbody > tr > td{
+  border:1px solid dodgerblue;
+}
+a.nav-link.active{
+  border-top:2px solid dodgerblue;
+  border-left:2px solid dodgerblue;
+  border-right:2px solid dodgerblue;
+}
