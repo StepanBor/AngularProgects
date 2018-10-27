@@ -8,6 +8,10 @@
 
   </div>
 
+  <div class="row">
+    <div class="col-md-12"><hr></div>
+  </div>
+
   <div class="row justify-content-start" style="margin-top: 10px">
     <div class="col-md-3">
       <form (ngSubmit)="sortBooks(f)" #f="ngForm">
@@ -35,8 +39,15 @@
         </div>
       </form>
     </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-8">
+      <button type="button" class="btn btn-link"><strong>Active filters: </strong></button>
+      <button type="button" class="btn btn-link" *ngFor="let filter of activeFilters"><strong>{{filter}} </strong></button>
+    </div>
 
-
+  </div>
+  <div class="row">
+  <div class="col-md-12"><hr></div>
   </div>
 
   <div class="row " style="padding-top: 10px" *ngIf="arr1.length>0">

@@ -37,6 +37,7 @@ export class DataAccessService {
   orders: Order[];
   totalOrderCount: number;
   totalUnProcessedOrderCount: number;
+  activeOrder: Order;
 
   private totalUserCount = 12;
 
@@ -123,6 +124,7 @@ export class DataAccessService {
       console.log(response + ' from get orders');
       const data = response.json();
       this.orders = data;
+      this.activeOrder = this.orders[0];
       this.ordersChanged.next(this.orders);
     });
   }

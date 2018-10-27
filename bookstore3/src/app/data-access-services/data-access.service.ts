@@ -50,7 +50,8 @@ export class DataAccessService {
   loggedUserOrdersChanged = new Subject<Order[]>();
   loggedUserChanged = new Subject<User>();
 
-  // cart = new Map<BookItem, number>();
+  activeFilters: string[] = [];
+  activeFiltersChanged = new Subject<string[]>();
 
   private totalUserCount = 12;
 
@@ -170,6 +171,10 @@ export class DataAccessService {
   }
 
   getBookItemsByParam(paramName: string, paramValue: string): Observable<Response> {
+    return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
+  }
+
+  getBookItemsBy(params: Object[]):Observable<Response>{
     return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
   }
 
@@ -360,4 +365,6 @@ export class DataAccessService {
     }
     return null;
   }
+
+
 }

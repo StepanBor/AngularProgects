@@ -53,13 +53,13 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
     if (this.routerId != null) {
       this.dataAccessService.getBookItemsByParam('id', this.routerId)
         .subscribe((response) => {
-          const data: BookItem[] = response.json();
-          this.activeBookItemDetails = data[0];
+          const data = response.json();
+          this.activeBookItemDetails = data.bookItems[0];
           this.dataAccessService.getBookItemsByParam('author', this.activeBookItemDetails.author)
             .subscribe((response2) => {
               // console.log(response);
               const data2 = response2.json();
-              this.bookItems = data2;
+              this.bookItems = data2.bookItems;
               if (this.bookItems.length < 2) {
                 this.arr = Array(this.bookItems.length).fill(0).map((x, i) => i);
               } else {
@@ -79,7 +79,7 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
             .subscribe((response2) => {
               // console.log(response);
               const data2 = response2.json();
-              this.sameCategoryBooks = data2;
+              this.sameCategoryBooks = data2.bookItems;
               this.sameCategoryBooks.sort((a: BookItem, b: BookItem) => {
                 if (a.rating > b.rating) {
                   return -1;
@@ -120,13 +120,13 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
   changeActiveItem(bookItemId: string) {
     this.dataAccessService.getBookItemsByParam('id', bookItemId)
       .subscribe((response) => {
-        const data: BookItem[] = response.json();
-        this.activeBookItemDetails = data[0];
+        const data = response.json();
+        this.activeBookItemDetails = data.bookItems[0];
         this.dataAccessService.getBookItemsByParam('author', this.activeBookItemDetails.author)
           .subscribe((response2) => {
             // console.log(response);
             const data2 = response2.json();
-            this.bookItems = data2;
+            this.bookItems = data2.bookItems;
             if (this.bookItems.length < 2) {
               this.arr = Array(this.bookItems.length).fill(0).map((x, i) => i);
             } else {
@@ -146,7 +146,7 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
           .subscribe((response2) => {
             // console.log(response);
             const data2 = response2.json();
-            this.sameCategoryBooks = data2;
+            this.sameCategoryBooks = data2.bookItems;
             this.sameCategoryBooks.sort((a: BookItem, b: BookItem) => {
               if (a.rating > b.rating) {
                 return -1;

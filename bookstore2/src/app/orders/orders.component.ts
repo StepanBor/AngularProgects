@@ -11,6 +11,8 @@ import {NavigationEnd, NavigationStart, Router, RouterEvent} from '@angular/rout
 import {CanComponentDeactivate} from '../can-deactivate-guard.service';
 import {BookItem} from '../data-models/BookItem';
 import {Shipment2} from '../data-models/Shipment2';
+import {ItemEntry} from '../data-models/ItemEntry';
+import {User} from '../data-models/User';
 
 @Component({
   selector: 'app-orders',
@@ -27,7 +29,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
   bookItems: BookItem[] = [];
 
   itemsPerPage: number;
-  paginationArr: number[];
+  paginationArr: number[] = [0, 1];
   currentPage: number;
   sortBy: string;
   url: string;
@@ -54,10 +56,14 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
-
+    this.activeOrder = new Order(
+      [new ItemEntry(new BookItem(0, '', '', '', '', '', 0, 0, 0, '', 0), 0)],
+      0, new User(0, '', '', '', '', '', '', '', '', ''),
+      new Shipment2(0, '', '', 0), '', new Date);
     this.subscriptionOrders = this.orderService.ordersChanged.subscribe((ordersTemp: Order[]) => {
       this.orders = ordersTemp;
       this.activeOrder = ordersTemp[0];
+      this.orderService.activeOrder = this.activeOrder;
     });
 
     this.subscriptionOrdersCount = this.orderService.totalOrderCountChanged.subscribe((count: number) => {
@@ -68,10 +74,13 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
       this.bookItems = bookItemsTemp;
       console.log(this.bookItems);
     });
+
+    this.totalOrderCount = 12;
     this.orderService.getBookItems('http://localhost:8080/bookItems');
     this.orderService.getOrders('http://localhost:8080/orders');
     this.orderService.getTotalOrderCount();
-    // this.activeOrder = this.orders[0];
+
+
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.totalOrderCount % this.itemsPerPage) === 0 ?
       Math.floor(this.totalOrderCount / this.itemsPerPage) : Math.floor(this.totalOrderCount / this.itemsPerPage) + 1)
@@ -108,6 +117,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
     for (const order of this.orders) {
       if (order.id === orderId) {
         this.activeOrder = order;
+        this.orderService.activeOrder = this.activeOrder;
         console.log(this.activeOrder.orderList[0]);
       }
     }

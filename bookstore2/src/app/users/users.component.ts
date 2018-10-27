@@ -5,6 +5,9 @@ import {DataAccessService} from '../data-access-services/data-access.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpResponse} from '@angular/common/http';
 import {Order} from '../data-models/Order';
+import {ItemEntry} from '../data-models/ItemEntry';
+import {BookItem} from '../data-models/BookItem';
+import {Shipment2} from '../data-models/Shipment2';
 
 @Component({
   selector: 'app-users',
@@ -45,6 +48,11 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activeUserOrders = [new Order(
+      [new ItemEntry(new BookItem(0, '', '', '', '', '', 0, 0, 0, '', 0), 0)],
+      0, new User(0, '', '', '', '', '', '', '', '', ''),
+      new Shipment2(0, '', '', 0), '', new Date)];
+    this.activeUser = new User(0, '', '', '', '', '', '', '', '', '');
     this.userService.getUsersFromDb('http://localhost:8080/userPage');
     this.totalUserCount = this.userService.getTotalUserCount();
     this.subscriptionUsers = this.userService.usersChanged.subscribe((tempUsers: User[]) => {

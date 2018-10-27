@@ -8,6 +8,7 @@ import {BookItem} from '../../data-models/BookItem';
 import {NgForm} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../../data-models/User';
+import {Shipment2} from '../../data-models/Shipment2';
 
 @Component({
   selector: 'app-order-detail',
@@ -51,7 +52,9 @@ export class OrderDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
+    this.activeOrder = new Order([new ItemEntry(new BookItem(0, '', '', '', '', '', 0, 0, 0, '', 0), 0)],
+      0, new User(0, '', '', '', '', '', '', '', '', ''),
+      new Shipment2(0, '', '', 0), '', new Date);
     this.activeRowOrderTable = -1;
     this.iteratArray = Array(this.activeOrder.orderList.length * 2).fill(0).map((x, i) => i);
     this.isModalActive = false;
@@ -67,7 +70,7 @@ export class OrderDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
+    console.log(changes);
     this.iteratArray = Array(this.activeOrder.orderList.length * 2).fill(0).map((x, i) => i);
     this.activeTabNum = 0;
 

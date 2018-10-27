@@ -52,13 +52,17 @@ export class SideMenuComponent implements OnInit {
     this.dataAccessService.getBookParameters().subscribe((response) => {
       const data = response.json();
       this.bookParams = data;
-      // console.log(this.bookParams[0] + 'WWWWWWWWWWWW');
     });
 
     this.categories = 'hideCat';
     this.authors = 'hideAut';
     this.publishers = 'hidePub';
 
+  }
+
+  setACtiveFilter(filter: string) {
+    this.dataAccessService.activeFilters.push(filter);
+    this.dataAccessService.activeFiltersChanged.next(this.dataAccessService.activeFilters);
   }
 
 }

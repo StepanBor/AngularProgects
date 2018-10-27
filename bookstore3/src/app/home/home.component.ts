@@ -37,11 +37,18 @@ export class HomeComponent implements OnInit {
   arr1: number[] = [];
   arr2: number[] = [];
 
+  @Input() activeFilters: string[] = [];
+  subscritionActiveFilters: Subscription;
+
   constructor(private dataAccessService: DataAccessService) {
   }
 
   ngOnInit() {
     this.itemsPerPage = 12;
+    this.subscritionActiveFilters = this.dataAccessService.activeFiltersChanged
+      .subscribe((filters: string[]) => {
+        this.activeFilters = filters;
+      });
     this.subscriptionBookItems = this.dataAccessService.bookItemsChanged.subscribe((bookItems1: BookItem[]) => {
       this.bookItems = bookItems1;
       this.activeBook = bookItems1[0];
@@ -79,10 +86,7 @@ export class HomeComponent implements OnInit {
     console.log(this.url);
     this.dataAccessService.getBookItems(this.url);
     this.dataAccessService.getTotalBookItemsCount();
-    // this.itemsPerPage = 12;
-    // this.paginationArr = Array((this.totalBookCount % this.itemsPerPage) === 0 ?
-    //   Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
-    //   .fill(0).map((x, i) => i);
+
   }
 
   setActiveRow(index1: number, bookId: number) {
