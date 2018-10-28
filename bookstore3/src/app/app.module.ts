@@ -20,6 +20,7 @@ import {SideMenuComponent} from './side-menu/side-menu.component';
 import {ShoppingCartComponent} from './shopping-cart/shopping-cart.component';
 import {LoginNewUserComponent} from './login-new-user/login-new-user.component';
 import { UserCabinetComponent } from './user-cabinet/user-cabinet.component';
+import { PageFooterComponent } from './page-footer/page-footer.component';
 
 
 const appRoutes: Routes = [
@@ -41,7 +42,8 @@ const appRoutes: Routes = [
     SideMenuComponent,
     ShoppingCartComponent,
     LoginNewUserComponent,
-    UserCabinetComponent
+    UserCabinetComponent,
+    PageFooterComponent
   ],
   imports: [
     BrowserModule,

@@ -9,7 +9,9 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12"><hr></div>
+    <div class="col-md-12">
+      <hr>
+    </div>
   </div>
 
   <div class="row justify-content-start" style="margin-top: 10px">
@@ -42,12 +44,26 @@
     <div class="col-md-1"></div>
     <div class="col-md-8">
       <button type="button" class="btn btn-link"><strong>Active filters: </strong></button>
-      <button type="button" class="btn btn-link" *ngFor="let filter of activeFilters"><strong>{{filter}} </strong></button>
+      <button type="button"
+              class="btn btn-link"
+              *ngFor="let key of activeFiltersArr"
+              (click)="deleteFromFilter(key)">
+        <strong>{{key}}:{{activeFilters.get(key).toString()}}
+          <i class="fa fa-minus-square text-danger"
+             aria-hidden="true"
+             placement="right"
+             [ngbTooltip]="delFromFilter"
+             tooltipClass="custom-tooltip-class"></i>
+        </strong>
+
+      </button>
     </div>
 
   </div>
   <div class="row">
-  <div class="col-md-12"><hr></div>
+    <div class="col-md-12">
+      <hr>
+    </div>
   </div>
 
   <div class="row " style="padding-top: 10px" *ngIf="arr1.length>0">
@@ -82,3 +98,4 @@
 
 
 </div>
+<ng-template #delFromFilter>Delete from cart</ng-template>

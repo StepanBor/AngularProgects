@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit {
   arr1: number[] = [];
   arr2: number[] = [];
 
-  @Input() activeFilters: string[] = [];
+  @Input() activeFilters: Map<string, string[]> = new Map();
+  activeFiltersArr: string[] = [];
   subscritionActiveFilters: Subscription;
 
   constructor(private dataAccessService: DataAccessService) {
@@ -46,14 +47,20 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.itemsPerPage = 12;
     this.subscritionActiveFilters = this.dataAccessService.activeFiltersChanged
-      .subscribe((filters: string[]) => {
+      .subscribe((filters: Map<string, string[]>) => {
         this.activeFilters = filters;
+        this.activeFiltersArr = Array.from(this.activeFilters.keys());
+        if (this.activeFilters.size !== 0) {
+          this.dataAccessService.getBookItemsByParam2(this.activeFilters,
+            this.sortBy, this.itemsPerPage, this.currentPage, this.changeSortDirect);
+        }
       });
     this.subscriptionBookItems = this.dataAccessService.bookItemsChanged.subscribe((bookItems1: BookItem[]) => {
       this.bookItems = bookItems1;
       this.activeBook = bookItems1[0];
       this.arr1 = Array(((this.bookItems.length - 6) >= 0) ? 6 : this.bookItems.length).fill(0).map((x, i) => i);
-      this.arr2 = Array((this.bookItems.length === 12) ? 6 : this.bookItems.length - 6).fill(0).map((x, i) => (i + 6));
+      this.arr2 = Array((this.bookItems.length === 12) ? 6
+        : (((this.bookItems.length - 6) < 0) ? 0 : (this.bookItems.length - 6))).fill(0).map((x, i) => (i + 6));
     });
     this.subscriptionTotalBookItemCount = this.dataAccessService.totalBookItemCountChanged
       .subscribe((count: number) => {
@@ -79,14 +86,20 @@ export class HomeComponent implements OnInit {
 
 
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
-    this.sortBy = sortBy;
-    this.currentPage = page;
-    this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
-      + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
-    console.log(this.url);
-    this.dataAccessService.getBookItems(this.url);
-    this.dataAccessService.getTotalBookItemsCount();
-
+    if (this.activeFilters.size !== 0) {
+      this.dataAccessService.getBookItemsByParam2(this.activeFilters, sortBy,
+        this.itemsPerPage, page, changeSortDirect);
+      this.sortBy = sortBy;
+      this.currentPage = page;
+    } else {
+      this.sortBy = sortBy;
+      this.currentPage = page;
+      this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
+        + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
+      console.log(this.url);
+      this.dataAccessService.getBookItems(this.url);
+      this.dataAccessService.getTotalBookItemsCount();
+    }
   }
 
   setActiveRow(index1: number, bookId: number) {
@@ -198,5 +211,30 @@ export class HomeComponent implements OnInit {
 
   sortBooks(form: HTMLFormElement) {
     this.onSortGet(form.value.sortBy, true, this.currentPage);
+  }
+
+  deleteFromFilter(key: string) {
+    if (this.dataAccessService.activeFilters.get(key).length === 0) {
+      this.activeFilters.delete(key);
+    } else {
+      this.dataAccessService.activeFilters.get(key).pop();
+      if (this.dataAccessService.activeFilters.get(key).length === 0) {
+        this.activeFilters.delete(key);
+      }
+    }
+
+    if (this.activeFilters.size === 0) {
+      this.currentPage = 1;
+      this.sortBy = 'author';
+      this.changeSortDirect = false;
+      this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
+        + '&changeSortDirect=' + true + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
+      this.activeRow = -1;
+      this.activeBookId = 0;
+      this.dataAccessService.getTotalBookItemsCount();
+      this.dataAccessService.getBookItems(this.url);
+    }
+    console.log(this.activeFilters);
+    this.dataAccessService.activeFiltersChanged.next(this.dataAccessService.activeFilters);
   }
 }

@@ -60,8 +60,13 @@ export class SideMenuComponent implements OnInit {
 
   }
 
-  setACtiveFilter(filter: string) {
-    this.dataAccessService.activeFilters.push(filter);
+  setActiveFilter(filter: string, filterName: string) {
+    if (this.dataAccessService.activeFilters.has(filterName)) {
+      this.dataAccessService.activeFilters.get(filterName).push(filter);
+    } else {
+      this.dataAccessService.activeFilters.set(filterName, [filter]);
+    }
+
     this.dataAccessService.activeFiltersChanged.next(this.dataAccessService.activeFilters);
   }
 

@@ -50,8 +50,8 @@ export class DataAccessService {
   loggedUserOrdersChanged = new Subject<Order[]>();
   loggedUserChanged = new Subject<User>();
 
-  activeFilters: string[] = [];
-  activeFiltersChanged = new Subject<string[]>();
+  activeFilters: Map<string, string[]> = new Map();
+  activeFiltersChanged = new Subject<Map<string, string[]>>();
 
   private totalUserCount = 12;
 
@@ -174,9 +174,32 @@ export class DataAccessService {
     return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
   }
 
-  getBookItemsBy(params: Object[]):Observable<Response>{
-    return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
+  getBookItemsByParam2(filters: Map<string, string[]>,
+                       sortBy: string,
+                       itemsPerPage: number,
+                       page: number,
+                       changeSortDirect: boolean) {
+    let reqUrl = 'http://localhost:8080/bookItemsByParam?';
+    for (let key of Array.from(filters.keys())) {
+      for (let j = 0; j < filters.get(key).length; j++) {
+        reqUrl = reqUrl + key + '=' + filters.get(key)[j] + '&';
+      }
+    }
+    reqUrl = reqUrl + 'sortBy=' + sortBy + '&itemsPerPage=' + itemsPerPage
+      + '&page=' + page + '&changeSortDirect=' + changeSortDirect;
+    console.log(reqUrl);
+    this.http.get(reqUrl).subscribe((response: Response) => {
+      const data = response.json();
+      this.bookItems = data.bookItems;
+      this.totalBookItemCount = data.totalCountByParam;
+      this.bookItemsChanged.next(this.bookItems);
+      this.totalBookItemCountChanged.next(this.totalBookItemCount);
+    });
   }
+
+  // getBookItemsBy(params: Object[]):Observable<Response>{
+  //   return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
+  // }
 
   getTotalBookItemsCount() {
     this.http.get('http://localhost:8080/bookCount').subscribe((responce: Response) => {

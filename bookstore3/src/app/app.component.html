@@ -1,17 +1,34 @@
 <app-nav-bar (sideBarTogle)="onSideMenuShow()"></app-nav-bar>
-<div class="wrapper">
-  <div class="bg-light" [@sideMenu]="sideMenu">
-    <app-side-menu></app-side-menu>
-  </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wrapper">
+        <div class="bg-light" [@sideMenu]="sideMenu">
+          <app-side-menu></app-side-menu>
+        </div>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <router-outlet></router-outlet>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <router-outlet></router-outlet>
+            </div>
+          </div>
+          <!--<div class="row">-->
+            <!---->
+          <!--</div>-->
+        </div>
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-12">
+      <app-page-footer></app-page-footer>
+    </div>
+  </div>
 </div>
+
+
+
 
 
 

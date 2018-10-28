@@ -7,19 +7,19 @@
         <li class="list-group-item" >
           <h5 (click)="categories=((categories=='showCat')?'hideCat':'showCat')">Product categories</h5>
           <ul class="list-group list-group-flush" [@categories]="categories">
-            <li class="list-group-item" (click)="setACtiveFilter(category)" *ngFor="let category of bookParams[0]">{{category}}</li>
+            <li class="list-group-item" (click)="setActiveFilter(category,'category')" *ngFor="let category of bookParams[0]">{{category}}</li>
           </ul>
         </li>
         <li class="list-group-item">
           <h5 (click)="authors=((authors=='showAut')?'hideAut':'showAut')">Authors</h5>
           <ul class="list-group list-group-flush" [@authors]="authors">
-            <li class="list-group-item" (click)="setACtiveFilter(author)" *ngFor="let author of bookParams[1]">{{author}}</li>
+            <li class="list-group-item" (click)="setActiveFilter(author, 'author')" *ngFor="let author of bookParams[1]">{{author}}</li>
           </ul>
         </li>
         <li class="list-group-item" >
           <h5 (click)="publishers=((publishers=='showPub')?'hidePub':'showPub')">Publishers</h5>
           <ul class="list-group list-group-flush" [@publishers]="publishers">
-            <li class="list-group-item" (click)="setACtiveFilter(publisher)" *ngFor="let publisher of bookParams[2]">{{publisher}}</li>
+            <li class="list-group-item" (click)="setActiveFilter(publisher, 'publisher')" *ngFor="let publisher of bookParams[2]">{{publisher}}</li>
           </ul>
         </li>
       </ul>
