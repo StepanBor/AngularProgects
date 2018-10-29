@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-.popover{
-  max-width:600px;
-  padding: 2px;
-  /*background-color: dodgerblue;*/
- background-color:rgba(0, 0, 255, 0.5);
-  border-radius: 25px;
-}
+/*.popover{*/
+  /*max-width:600px;*/
+  /*padding: 2px;*/
+  /*!*background-color: dodgerblue;*!*/
+ /*background-color:rgba(0, 0, 255, 0.5);*/
+  /*border-radius: 25px;*/
+/*}*/
 
 /*
  * Social Buttons for Bootstrap
