@@ -1,32 +1,36 @@
+
 <app-nav-bar (sideBarTogle)="onSideMenuShow()"></app-nav-bar>
 <!--<div class="container-fluid">-->
-  <!--<div class="row">-->
-    <!--<div class="col-md-12">-->
-      <div class="wrapper">
-        <div class="bg-light" [@sideMenu]="sideMenu">
-          <app-side-menu></app-side-menu>
-        </div>
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
 
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
-              <router-outlet></router-outlet>
-            </div>
-          </div>
-          <!--<div class="row">-->
-            <!---->
-          <!--</div>-->
-        </div>
+<div class="wrapper">
+  <!--<img src="http://localhost:8080/static/book.jpg" style="z-index: -1; position: absolute;">-->
+  <div [@sideMenu]="sideMenu" style="background-color: rgba(52,58,64,0.9)">
+    <app-side-menu></app-side-menu>
+  </div>
+
+  <div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+      <div class="col-md-12">
+        <router-outlet></router-outlet>
       </div>
+    </div>
+    <!--<div class="row">-->
+    <!---->
     <!--</div>-->
-  <!--</div>-->
-  <!--<div class="row">-->
-    <!--<div class="col-md-12">-->
-      <app-page-footer></app-page-footer>
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
+  </div>
 
+</div>
+<!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+<!--style="position: absolute;bottom: 0;background-color: #343a40;width: 100%"-->
+<app-page-footer class="footer"></app-page-footer>
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
 
 

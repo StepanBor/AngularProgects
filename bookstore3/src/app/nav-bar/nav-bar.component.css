@@ -16,6 +16,9 @@ input.ng-invalid.ng-touched {
   max-width:600px;
   padding: 2px;
   /*background-color: dodgerblue;*/
-  background-color:rgba(0, 0, 255, 0.5);
+  /*background-color:rgba(0, 0, 255, 0.5);*/
+  /*background-color:#f8f9fa;*/
+  /*background-color:#6c757d;*/
+  background-color: rgba(52,58,64,0.9);
   border-radius: 25px;
 }

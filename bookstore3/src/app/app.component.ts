@@ -9,13 +9,19 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     trigger('sideMenu', [
       state('hideSide', style({
         'margin-left': '-250px',
-        width: '250px',
-        'margin-top': '10px'
+        'width': '250px',
+        'margin-top': '10px',
+        'border-radius': '10px',
+        'padding': '12px',
+        'display': 'block'
       })),
       state('showSide', style({
-        'margin-left': '2px',
-        width: '250px',
-        'margin-top': '10px'
+        'margin-left': '20px',
+        'width': '250px',
+        'margin-top': '10px',
+        'border-radius': '10px',
+        'padding': '12px',
+        'display': 'block'
       })),
       transition('showSide <=> hideSide', animate(500)),
     ])]

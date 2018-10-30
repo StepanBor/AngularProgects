@@ -3,3 +3,33 @@
   width: 100%;
   align-items: stretch;
 }
+/*.footer{*/
+  /*position: absolute;*/
+  /*display: -ms-flexbox;*/
+  /*display: flex;*/
+  /*-ms-flex-wrap: wrap;*/
+  /*flex-wrap: wrap;*/
+  /*-ms-flex-align: center;*/
+  /*align-items: center;*/
+  /*-ms-flex-pack: justify;*/
+  /*!*justify-content: space-between;*!*/
+  /*justify-content: center;*/
+  /*padding: 0.5rem 1rem;*/
+  /*background-color: #343a40;*/
+  /*bottom: 0;*/
+  /*width: 100%;*/
+/*}*/
+
+.footer{
+  display: block;
+  align-self: flex-end;
+  background-color: #343a40;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.wrapper2 {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+}
