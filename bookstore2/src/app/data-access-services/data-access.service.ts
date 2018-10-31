@@ -144,7 +144,6 @@ export class DataAccessService {
 
   getBookItems(reqUrl: string) {
     this.http.get(reqUrl).subscribe((response: Response) => {
-      // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
       const data = response.json();
       this.bookItems = data;
       this.bookItemsChanged.next(this.bookItems);
@@ -196,7 +195,6 @@ export class DataAccessService {
   getRates() {
     return this.http.get('http://localhost:8080/rates')
       .subscribe((responce) => {
-        console.log(responce + 'RRRRRRRRRRRRRRRRRRRRRRRR');
         const data = responce.json();
         this.USDUAH.next(Math.round(data.quotes.USDUAH * 1000) / 1000);
         this.EURUAH.next(Math.round(data.quotes.USDUAH / data.quotes.USDEUR * 1000) / 1000);
@@ -233,6 +231,10 @@ export class DataAccessService {
 
   createNewBookItem(data): Observable<Response> {
     return this.http.post('http://localhost:8080/createNewBookItem', data);
+  }
+
+  addBooks(data): Observable<Response> {
+    return this.http.post('http://localhost:8080/addBooks', data);
   }
 
   // getStorageBooks() {

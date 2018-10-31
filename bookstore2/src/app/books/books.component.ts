@@ -4,6 +4,7 @@ import {DataAccessService} from '../data-access-services/data-access.service';
 import {Observable, Subscription} from 'rxjs';
 import {Order} from '../data-models/Order';
 import {StorageBooks} from '../data-models/StorageBooks';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-books',
@@ -38,7 +39,8 @@ export class BooksComponent implements OnInit {
   newBookItemId: number;
   files: any;
 
-  constructor(private dataAccessService: DataAccessService) {
+  constructor(private dataAccessService: DataAccessService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -190,5 +192,49 @@ export class BooksComponent implements OnInit {
 
   onSidebarOn() {
     this.isSidebarOn = !this.isSidebarOn;
+  }
+
+  addBooks(addBooksModal) {
+    this.modalService.open(addBooksModal);
+  }
+
+  onSubmitTable(form: HTMLFormElement){
+    console.log(form);
+    let final_data;
+    // let newUserData: string[];
+    const formData = new FormData();
+    // if (this.files != null) {
+      const files: FileList = this.files;
+      // for (let i = 0; i < files.length; i++) {
+      //   formData.append('table', files[i]);
+      // }
+      formData.append('table', files[0]);
+      formData.append('covers', files[1]);
+    // }
+
+    final_data = formData;
+    // } else {
+    //   // Если нет файла, то слать как обычный JSON
+    //   final_data = form.value;
+    // }
+
+    this.dataAccessService.createNewUser(final_data).subscribe((response) => {
+      console.log(response);
+      // if (response.status === 200) {
+      //   const serverReply: string[] = response.json();
+      //   this.createUserReply = serverReply[0];
+      //   this.openAddUserModal(this.userCreated);
+      // }
+    });
+  }
+
+  addTable(event) {
+    const target = event.target || event.srcElement;
+    this.files[0] = target.files;
+  }
+
+  addCovers(event) {
+    const target = event.target || event.srcElement;
+    this.files[1] = target.files;
   }
 }
