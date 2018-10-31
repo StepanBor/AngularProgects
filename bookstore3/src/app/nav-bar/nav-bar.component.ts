@@ -135,5 +135,6 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.dataAccessService.logout();
+    this.router.navigate(['/']);
   }
 }

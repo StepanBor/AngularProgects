@@ -9,3 +9,12 @@
 .content-inner.active {
   width: calc(100% - 90px);
 }
+
+::ng-deep .custom-tooltip-class .tooltip-inner{
+  background-color: dodgerblue;
+  /*font-size: 125%;*/
+}
+::ng-deep .custom-tooltip-class .arrow::before {
+  /*border-top-color: dodgerblue;*/
+  border-right-color: dodgerblue;
+}

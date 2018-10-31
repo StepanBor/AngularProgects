@@ -4,6 +4,15 @@
       <div class="card">
         <div class="card-header">
           Book items list
+          <div class="btn-group btn-group-sm float-right">
+            <button type="button" class="btn btn-outline-primary btn-sm"
+                    placement="right"
+                    [ngbTooltip]="addBooksTip"
+                    tooltipClass="custom-tooltip-class">
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              Add books
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <table class="table table-striped table-bordered table-hover" id="dataTable">
@@ -71,3 +80,5 @@
 
   </div>
 </div>
+
+<ng-template #addBooksTip>Add books using excel table</ng-template>

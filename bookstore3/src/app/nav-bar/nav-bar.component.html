@@ -46,9 +46,15 @@
             <i class="fa fa-plus" aria-hidden="true"></i>
             Create account
           </button>
-          <button class="dropdown-item" (click)="goToCabinet()">
+          <button class="dropdown-item" (click)="goToCabinet()"
+                  [disabled]="loggedUser==null">
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
              User cabinet
+          </button>
+          <button class="dropdown-item" (click)="goToCabinet()"
+                  [disabled]="loggedUser==null || loggedUser.role!=='ADMIN'">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            Admin page
           </button>
           <div class="dropdown-divider"></div>
           <button class="dropdown-item"
@@ -165,6 +171,8 @@
                  ngModel name="password" #password1="ngModel"
                  pattern="{{confirmPasswordProp}}" required>
         </div>
+        <small id="emailHelp" class="form-text text-muted" >{{serverReply}}
+        </small>
       </div>
       <hr>
       <button type="submit" class="btn btn-primary btn-block"

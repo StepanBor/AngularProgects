@@ -49,6 +49,7 @@ export class DataAccessService {
   loggedUserOrders: Order[];
   loggedUserOrdersChanged = new Subject<Order[]>();
   loggedUserChanged = new Subject<User>();
+  serverReply: string;
 
   activeFilters: Map<string, string[]> = new Map();
   activeFiltersChanged = new Subject<Map<string, string[]>>();
@@ -159,7 +160,7 @@ export class DataAccessService {
 
   getBookItems(reqUrl: string) {
     this.http.get(reqUrl).subscribe((response: Response) => {
-      console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
+      // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
       const data = response.json();
       this.bookItems = data;
       this.bookItemsChanged.next(this.bookItems);
@@ -236,7 +237,7 @@ export class DataAccessService {
         // console.log(this.accessToken);
       } else {
         // const serverReply: string[] = response.json();
-        // this.serverReply = serverReply[0];
+        this.serverReply = 'wrong login or password';
         // this.openModal(this.userCreated);
       }
     });
