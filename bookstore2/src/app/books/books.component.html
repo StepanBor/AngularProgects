@@ -88,14 +88,16 @@
   <div class="modal-body">
     <form (ngSubmit)="onSubmitTable(f3)" #f3="ngForm">
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="validatedCustomFile" required (change)="addTable($event)" accept="application/vnd.ms-excel">
-        <label class="custom-file-label" for="validatedCustomFile" name="table">Choose excel file...</label>
+        <input type="file" class="custom-file-input" id="validatedCustomFile" required (change)="addTable($event)" accept="application/vnd.ms-excel"
+        name="table">
+        <label class="custom-file-label" for="validatedCustomFile">Choose excel file...</label>
         <div class="invalid-feedback">Choose table</div>
       </div>
       <hr>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="validatedCustomFile2" required (change)="addCovers($event)" accept="application/zip">
-        <label class="custom-file-label" for="validatedCustomFile2" name="table">Choose archive with book covers...</label>
+        <input type="file" class="custom-file-input" id="validatedCustomFile2" required (change)="addCovers($event)" accept="application/zip"
+        name="covers">
+        <label class="custom-file-label" for="validatedCustomFile2">Choose archive with book covers...</label>
         <div class="invalid-feedback">Choose archive with book covers</div>
       </div>
       <hr>

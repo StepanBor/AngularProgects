@@ -37,7 +37,10 @@ export class BooksComponent implements OnInit {
   changedBooksId: number[] = [-1];
 
   newBookItemId: number;
-  files: any;
+  files: any[] = [];
+
+  table: any;
+  covers: any;
 
   constructor(private dataAccessService: DataAccessService,
               private modalService: NgbModal) {
@@ -198,19 +201,24 @@ export class BooksComponent implements OnInit {
     this.modalService.open(addBooksModal);
   }
 
-  onSubmitTable(form: HTMLFormElement){
+  onSubmitTable(form: HTMLFormElement) {
     console.log(form);
     let final_data;
     // let newUserData: string[];
     const formData = new FormData();
-    // if (this.files != null) {
-      const files: FileList = this.files;
-      // for (let i = 0; i < files.length; i++) {
-      //   formData.append('table', files[i]);
-      // }
-      formData.append('table', files[0]);
-      formData.append('covers', files[1]);
-    // }
+    if (this.table != null) {
+      const table1: FileList = this.table;
+
+      for (let i = 0; i < table1.length; i++) {
+        formData.append('table', table1[i]);
+      }
+    }
+    if (this.covers != null) {
+      const covers1: FileList = this.covers;
+      for (let i = 0; i < covers1.length; i++) {
+        formData.append('covers', covers1[i]);
+      }
+    }
 
     final_data = formData;
     // } else {
@@ -218,7 +226,7 @@ export class BooksComponent implements OnInit {
     //   final_data = form.value;
     // }
 
-    this.dataAccessService.createNewUser(final_data).subscribe((response) => {
+    this.dataAccessService.addBooks(final_data).subscribe((response) => {
       console.log(response);
       // if (response.status === 200) {
       //   const serverReply: string[] = response.json();
@@ -230,11 +238,13 @@ export class BooksComponent implements OnInit {
 
   addTable(event) {
     const target = event.target || event.srcElement;
-    this.files[0] = target.files;
+    this.table = target.files;
+    console.log(this.table);
   }
 
   addCovers(event) {
     const target = event.target || event.srcElement;
-    this.files[1] = target.files;
+    this.covers = target.files;
+    console.log(this.covers);
   }
 }
