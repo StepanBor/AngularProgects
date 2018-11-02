@@ -37,7 +37,7 @@ export class BooksComponent implements OnInit {
   changedBooksId: number[] = [-1];
 
   newBookItemId: number;
-  files: any[] = [];
+  files: any;
 
   table: any;
   covers: any;
