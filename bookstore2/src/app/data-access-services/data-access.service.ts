@@ -301,7 +301,7 @@ export class DataAccessService {
   }
 
   isAuthenticated(): boolean {
-    if (this.loggedUser != null || this.loggedUser.role === 'ADMIN' || this.loggedUser.role === 'MANAGER') {
+    if (this.loggedUser != null && (this.loggedUser.role === 'ADMIN' || this.loggedUser.role === 'MANAGER')) {
       return true;
     } else {
       return false;

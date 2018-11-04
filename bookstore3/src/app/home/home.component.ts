@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit {
       this.sortBy = sortBy;
       this.currentPage = page;
       this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
-        + '&changeSortDirect=' + true + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
+        + '&changeSortDirect=' + this.changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
       console.log(this.url);
       this.dataAccessService.getBookItems(this.url);
       this.dataAccessService.getTotalBookItemsCount();
@@ -214,6 +214,7 @@ export class HomeComponent implements OnInit {
   }
 
   sortBooks(form: HTMLFormElement) {
+    this.changeSortDirect = true;
     this.onSortGet(form.value.sortBy, this.currentPage);
   }
 

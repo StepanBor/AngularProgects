@@ -1,0 +1,112 @@
+<!--<ng-template #addUserModal let-modal>-->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <!--<div class="modal-body">-->
+        <form (ngSubmit)="onSubmitUser(f)" #f="ngForm" *ngIf="!login">
+
+          <div class="form-row">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+                     required>
+            </div>
+            <div class="col">
+              <input type="email" class="form-control" placeholder="Email" ngModel name="email"
+                     required email>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Phone" ngModel name="phone"
+                     required>
+            </div>
+          </div>
+
+          <hr>
+          <div class="form-row">
+            <div class="col">
+              <select type="text"
+                      class="form-control"
+                      ngModel
+                      name="userRole"
+                      required>
+                <option value="admin">ADMIN</option>
+                <option [selected]="true" value="manager">MANAGER</option>
+              </select>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="name" ngModel name="name">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="lastname" ngModel name="lastname">
+            </div>
+          </div>
+          <hr>
+          <div class="form-row">
+            <div class="col">
+              <input type="password" class="form-control" placeholder="password"
+                     ngModel name="password" #password="ngModel"
+                     pattern="{{confirmPasswordProp}}" [required]="confirm.value!=''">
+            </div>
+            <div class="col">
+              <input type="password" class="form-control" placeholder="confirm password"
+                     [(ngModel)]="confirmPasswordProp" name="confirmPassword" #confirm="ngModel"
+                     [required]="password.value!=''">
+            </div>
+          </div>
+          <hr>
+          <input type="file" name="photo" (change)="addPhoto($event)"/>
+
+          <hr>
+          <button type="submit" class="btn btn-primary btn-block"
+                  [disabled]="!f.valid || !password.valid"
+                  *ngIf="!login">submit
+          </button>
+
+        </form>
+
+        <form (ngSubmit)="onLogin(f2)" #f2="ngForm" *ngIf="login">
+          <strong id="emailHelp" class="form-text text-danger">{{serverReply}}</strong>
+          <div class="form-row">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+                     required>
+            </div>
+            <div class="col">
+              <input type="password" class="form-control" placeholder="password"
+                     ngModel name="password" #password1="ngModel"
+                     pattern="{{confirmPasswordProp}}" required>
+            </div>
+
+          </div>
+          <hr>
+          <button type="submit" class="btn btn-primary btn-block"
+                  [disabled]="!f2.valid">submit
+          </button>
+        </form>
+
+        <hr>
+        <!--<button type="button" class="btn btn-link btn-block"-->
+        <!--*ngIf="!login" (click)="login=true">Login page-->
+        <!--</button>-->
+        <!--<button type="button" class="btn btn-link btn-block"-->
+        <!--*ngIf="login" (click)="login=false">Create account-->
+        <!--</button>-->
+
+      <!--</div>-->
+
+      <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>-->
+      <!--</div>-->
+    </div>
+  </div>
+</div>
+
+<!--</ng-template>-->
+
+<ng-template #userCreated let-modal>
+  <div class="modal-body">
+    {{serverReply}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="navigateHome();modal.close()">Close</button>
+  </div>
+</ng-template>

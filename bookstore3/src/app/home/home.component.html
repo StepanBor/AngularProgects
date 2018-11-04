@@ -83,14 +83,14 @@
     <nav aria-label="tablePagination">
       <ul class="pagination">
         <li class="page-item" [ngClass]="{disabled: currentPage==1}">
-          <a class="page-link" (click)="onSortGet(sortBy,currentPage-1)">Previous</a>
+          <a class="page-link" (click)="changeSortDirect=false;onSortGet(sortBy,currentPage-1)">Previous</a>
         </li>
         <li *ngFor="let int of paginationArr"
             class="page-item" [ngClass]="{active: currentPage==(int+1)}">
-          <a class="page-link" (click)="onSortGet(sortBy,int+1)">{{int+1}}</a>
+          <a class="page-link" (click)="changeSortDirect=false;onSortGet(sortBy,int+1)">{{int+1}}</a>
         </li>
         <li class="page-item" [ngClass]="{disabled: currentPage==paginationArr.length}">
-          <a class="page-link" (click)="onSortGet(sortBy,currentPage+1)">Next</a>
+          <a class="page-link" (click)="changeSortDirect=false;onSortGet(sortBy,currentPage+1)">Next</a>
         </li>
       </ul>
     </nav>

@@ -1,23 +1,20 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {DataAccessService} from '../data-access-services/data-access.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../data-models/User';
+import {DataAccessService} from '../data-access-services/data-access.service';
+import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-navigation-bar',
-  templateUrl: './navigation-bar.component.html',
-  styleUrls: ['./navigation-bar.component.css']
+  selector: 'app-login-page',
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.css']
 })
-export class NavigationBarComponent implements OnInit {
+export class LoginPageComponent implements OnInit {
 
   subscriptionLoggedUserChanged: Subscription;
   loggedUser: User;
 
-  @Output() sidebarToggled = new EventEmitter<boolean>();
-  navbarDropdownToggle: boolean;
-  dropdownShow: string;
   files: any;
 
   serverReply = '';
@@ -46,24 +43,6 @@ export class NavigationBarComponent implements OnInit {
       .subscribe((user: User) => {
         this.loggedUser = user;
       });
-    this.dropdownShow = '';
-    this.navbarDropdownToggle = false;
-    // this.sidebarToggle = false;
-  }
-
-  onnavbarDropdownToggle() {
-    this.navbarDropdownToggle = !this.navbarDropdownToggle;
-    if (this.navbarDropdownToggle) {
-      this.dropdownShow = 'show';
-    } else {
-      this.dropdownShow = '';
-    }
-
-  }
-
-  onSidebarToggle() {
-    // this.sidebarToggle = !this.sidebarToggle;
-    this.sidebarToggled.emit();
   }
 
   onLogin(form: HTMLFormElement) {
@@ -79,7 +58,7 @@ export class NavigationBarComponent implements OnInit {
 
   logout() {
     this.dataAccessService.logout();
-    this.router.navigate(['/loginPage']);
+    this.router.navigate(['/']);
   }
 
   onSubmitUser(form: HTMLFormElement) {
@@ -97,7 +76,6 @@ export class NavigationBarComponent implements OnInit {
     formData.append('email', form.value.email);
     formData.append('phone', form.value.phone);
     formData.append('address', form.value.address);
-    formData.append('userRole', form.value.userRole);
     formData.append('name', form.value.name);
     formData.append('lastname', form.value.lastname);
     formData.append('password', form.value.password);
@@ -128,13 +106,8 @@ export class NavigationBarComponent implements OnInit {
     this.modalService.open(addUserModal, {size: 'lg'});
   }
 
-  openAddUserModal(addUserModal) {
-    if (this.login) {
-      this.modalService.open(addUserModal);
-    } else {
-      this.modalService.open(addUserModal, {size: 'lg'});
-    }
-
+  navigateHome() {
+    this.router.navigate(['/']);
   }
 
 }

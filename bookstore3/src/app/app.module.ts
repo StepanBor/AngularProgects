@@ -19,15 +19,16 @@ import {BookItemLineComponent} from './home/book-item-line/book-item-line.compon
 import {SideMenuComponent} from './side-menu/side-menu.component';
 import {ShoppingCartComponent} from './shopping-cart/shopping-cart.component';
 import {LoginNewUserComponent} from './login-new-user/login-new-user.component';
-import { UserCabinetComponent } from './user-cabinet/user-cabinet.component';
-import { PageFooterComponent } from './page-footer/page-footer.component';
+import {UserCabinetComponent} from './user-cabinet/user-cabinet.component';
+import {PageFooterComponent} from './page-footer/page-footer.component';
+import {AuthGuard} from './auth-guard.service';
 
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'bookItem/:bookId', component: BookItemDetailsComponent},
   {path: 'cart', component: ShoppingCartComponent},
-  {path: 'userCabinet', component: UserCabinetComponent},
+  {path: 'userCabinet', canActivate: [AuthGuard], component: UserCabinetComponent},
 ];
 
 @NgModule({
@@ -55,7 +56,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule
   ],
   entryComponents: [LoginNewUserComponent],
-  providers: [DataAccessService, CanDeactivateGuard],
+  providers: [DataAccessService, CanDeactivateGuard, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

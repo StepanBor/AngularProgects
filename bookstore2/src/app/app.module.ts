@@ -23,19 +23,22 @@ import {OrderDetailComponent} from './orders/order-detail/order-detail.component
 import {OrderDetailModalComponent} from './orders/order-detail/order-detail-modal/order-detail-modal.component';
 import {CanDeactivateGuard} from './can-deactivate-guard.service';
 import {PasswordValidatorDirective} from './my-directives/password-validator.directive';
-import { BooksManagerComponent } from './books/books-manager/books-manager.component';
-import { BookItemDetailsComponent } from './books/book-item-details/book-item-details.component';
-import { BookItemSmallCardComponent } from './books/book-item-small-card/book-item-small-card.component';
-import { BookItemMidleCardComponent } from './books/book-item-midle-card/book-item-midle-card.component';
+import {BooksManagerComponent} from './books/books-manager/books-manager.component';
+import {BookItemDetailsComponent} from './books/book-item-details/book-item-details.component';
+import {BookItemSmallCardComponent} from './books/book-item-small-card/book-item-small-card.component';
+import {BookItemMidleCardComponent} from './books/book-item-midle-card/book-item-midle-card.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AuthGuard} from './auth-guard.service';
+import {LoginPageComponent} from './login-page/login-page.component';
 
 
 const appRoutes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'users', component: UsersComponent},
-  {path: 'orders', component: OrdersComponent, canDeactivate: [CanDeactivateGuard]},
-  {path: 'bookItems', component: BooksComponent},
-  {path: 'userCabinet', component: UserCabinetComponent}
+  {path: '', canActivate: [AuthGuard], component: HomeComponent},
+  {path: 'users', canActivate: [AuthGuard], component: UsersComponent},
+  {path: 'orders', canActivate: [AuthGuard], component: OrdersComponent, canDeactivate: [CanDeactivateGuard]},
+  {path: 'bookItems', canActivate: [AuthGuard], component: BooksComponent},
+  // {path: 'userCabinet', canActivate: [AuthGuard], component: UserCabinetComponent},
+  {path: 'loginPage', component: LoginPageComponent}
 ];
 
 @NgModule({
@@ -58,7 +61,8 @@ const appRoutes: Routes = [
     BooksManagerComponent,
     BookItemDetailsComponent,
     BookItemSmallCardComponent,
-    BookItemMidleCardComponent
+    BookItemMidleCardComponent,
+    LoginPageComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +73,7 @@ const appRoutes: Routes = [
     NgbModule,
     BrowserAnimationsModule
   ],
-  providers: [DataAccessService, CanDeactivateGuard],
+  providers: [DataAccessService, CanDeactivateGuard, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

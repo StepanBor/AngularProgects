@@ -250,6 +250,14 @@ export class DataAccessService {
     this.loggedUserOrdersChanged.next(this.loggedUserOrders);
   }
 
+  isAuthenticated(): boolean {
+    if (this.loggedUser != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   submitOrder(data): Observable<Response> {
     return this.http.post('http://localhost:8080/submitOrder', data);
   }
