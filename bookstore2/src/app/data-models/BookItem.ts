@@ -18,7 +18,7 @@ export class BookItem {
 
   public rating: number;
 
-  public ISBN: string;
+  public isbn: string;
 
   public copiesInStock: number;
 
@@ -34,7 +34,7 @@ export class BookItem {
     this.price = price;
     this.storageBooks = storageBooks;
     this.rating = raiting;
-    this.ISBN = ISBN;
+    this.isbn = ISBN;
     this.copiesInStock = copiesInStock;
   }
 

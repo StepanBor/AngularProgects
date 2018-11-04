@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {User} from '../data-models/User';
-import {Http} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import {Response} from '@angular/http';
 import {Observable, Subject} from 'rxjs';
 import {count, map} from 'rxjs/operators';
@@ -38,6 +38,15 @@ export class DataAccessService {
   totalOrderCount: number;
   totalUnProcessedOrderCount: number;
   activeOrder: Order;
+
+  accessToken: string;
+  loggedUser: User;
+
+  loggedUserOrders: Order[];
+  loggedUserOrdersChanged = new Subject<Order[]>();
+  loggedUserChanged = new Subject<User>();
+  serverReplyChanged = new Subject<string>();
+  serverReply: string;
 
   private totalUserCount = 12;
 
@@ -150,6 +159,10 @@ export class DataAccessService {
     });
   }
 
+  getBookParameters(): Observable<Response> {
+    return this.http.get('http://localhost:8080/getBookParameters');
+  }
+
   getBookItemsByParam(paramName: string, paramValue: string): Observable<Response> {
     return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
   }
@@ -225,8 +238,8 @@ export class DataAccessService {
     return this.http.post('http://localhost:8080/saveBookItem', bookToSave);
   }
 
-  deleteBookItem(bookItemId: number): Observable<Response> {
-    return this.http.post('http://localhost:8080/saveBookItem', bookItemId);
+  deleteBookItem(bookToDelete: BookItem): Observable<Response> {
+    return this.http.post('http://localhost:8080/deleteBookItem', bookToDelete);
   }
 
   createNewBookItem(data): Observable<Response> {
@@ -237,12 +250,66 @@ export class DataAccessService {
     return this.http.post('http://localhost:8080/addBooks', data);
   }
 
-  // getStorageBooks() {
-  //   this.http.get('http://localhost:8080/storageBook').subscribe((response: Response) => {
-  //     // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
-  //     const data = response.json();
-  //     this.storageBooks = data;
-  //     this.storageBooksChanged.next(this.storageBooks);
-  //   });
-  // }
+  createNewPublisher(data): Observable<Response> {
+    return this.http.post('http://localhost:8080/createNewPublisher', data);
+  }
+
+  createNewCategory(data): Observable<Response> {
+    return this.http.post('http://localhost:8080/createNewCategory', data);
+  }
+
+  login(data) {
+    this.http.post('http://localhost:8080/signinAdmin', data).subscribe((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        const serverReply = response.json();
+        this.accessToken = serverReply.accessToken;
+        const header = new Headers({'Authorization': this.accessToken});
+        this.http.get('http://localhost:8080/userInfo?login=' + data.login, {headers: header}).subscribe((response2) => {
+          if (response2.status === 200) {
+            const serverReply2 = response2.json();
+            this.loggedUser = serverReply2.clientDTO;
+            this.loggedUserOrders = serverReply2.clientOrders;
+            this.loggedUserChanged.next(this.loggedUser);
+            this.loggedUserOrdersChanged.next(this.loggedUserOrders);
+            this.serverReply = 'you logged in as ' + this.loggedUser.login;
+            this.serverReplyChanged.next(this.serverReply);
+            // console.log(response2);
+            // console.log(serverReply2.clientDTO);
+            // console.log(serverReply2.clientOrders);
+          }
+        });
+        // console.log(this.accessToken);
+      }
+      if (response.status === 401) {
+        // const serverReply: string[] = response.json();
+        this.serverReply = 'wrong login or password';
+        this.serverReplyChanged.next(this.serverReply);
+        // this.openModal(this.userCreated);
+      }
+    }, (error) => {
+      this.serverReply = 'wrong login or password';
+      this.serverReplyChanged.next(this.serverReply);
+    });
+  }
+
+  logout() {
+    this.loggedUser = null;
+    this.loggedUserOrders = null;
+    this.loggedUserChanged.next(this.loggedUser);
+    this.loggedUserOrdersChanged.next(this.loggedUserOrders);
+  }
+
+  isAuthenticated(): boolean {
+    if (this.loggedUser != null || this.loggedUser.role === 'ADMIN' || this.loggedUser.role === 'MANAGER') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getTableSample() {
+    this.http.get('http://localhost:8080/static/Books111018.xls').subscribe();
+  }
+
 }

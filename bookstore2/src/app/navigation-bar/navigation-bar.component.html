@@ -1,36 +1,157 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" style="color: white">OnlineBookStore</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand text-primary" routerLink="/" style="line-height: 20%">
+    <img src="http://localhost:8080/static/book-logo-2.png" width="50px" height="50px" align="left">
+    <h3>OnlineBookStore</h3>
+    <span
+      class="text-primary text-muted float-right" style="font-size: 80%">books for everyone
+    </span>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <button class="btn btn-primary" (click)="onSidebarToggle()">Sidebar toggle</button>
+  <button class="btn btn-primary" (click)="onSidebarToggle()" style="margin-left: 50px">Sidebar toggle</button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link">Recipe</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link">Shopping list</a>
-      </li>
-    </ul>
-    <ul class="navbar-nav">
-      <li class="nav-item dropdown dropleft">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown"
-           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="onnavbarDropdownToggle()">
-          Dropdown
+    <ul class="navbar-nav ml-auto" style="font-size: 1.2rem">
+
+      <li class="nav-item" ngbDropdown>
+        <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>
+          <i class="fa fa-users" aria-hidden="true"></i>
+          <span *ngIf="loggedUser==null">User info</span>
+          <span *ngIf="loggedUser!=null">{{loggedUser.login}}</span>
         </a>
-        <div class="dropdown-menu {{this.dropdownShow}}" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item">Save data</a>
-          <a class="dropdown-item">Fetch data</a>
+
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button class="dropdown-item"
+                  (click)="serverReply='';login=true;openAddUserModal(addUserModal)">
+            <i class="fa fa-sign-in" aria-hidden="true"></i>
+            Login
+          </button>
+
+          <button class="dropdown-item"
+                  *ngIf="loggedUser!=null&&loggedUser.role=='ADMIN'"
+                  (click)="serverReply='';login=false;openAddUserModal(addUserModal)">
+            <i class="fa fa-user-plus" aria-hidden="true"></i>
+            Create new account
+          </button>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item">Something else here</a>
+          <button class="dropdown-item"
+                  (click)="logout()">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            Logout
+          </button>
         </div>
+
       </li>
     </ul>
-    <!--<form class="form-inline my-2 my-lg-0">-->
-    <!--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-    <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
-    <!--</form>-->
+
   </div>
 </nav>
+
+
+<ng-template #addUserModal let-modal>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmitUser(f)" #f="ngForm" *ngIf="!login">
+
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+                 required>
+        </div>
+        <div class="col">
+          <input type="email" class="form-control" placeholder="Email" ngModel name="email"
+                 required email>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Phone" ngModel name="phone"
+                 required>
+        </div>
+      </div>
+
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <select type="text"
+                 class="form-control"
+                 ngModel
+                 name="userRole"
+                 required>
+            <option value="admin">ADMIN</option>
+            <option [selected]="true" value="manager">MANAGER</option>
+          </select>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="name" ngModel name="name">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="lastname" ngModel name="lastname">
+        </div>
+      </div>
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <input type="password" class="form-control" placeholder="password"
+                 ngModel name="password" #password="ngModel"
+                 pattern="{{confirmPasswordProp}}" [required]="confirm.value!=''">
+        </div>
+        <div class="col">
+          <input type="password" class="form-control" placeholder="confirm password"
+                 [(ngModel)]="confirmPasswordProp" name="confirmPassword" #confirm="ngModel"
+                 [required]="password.value!=''">
+        </div>
+      </div>
+      <hr>
+      <input type="file" name="photo" (change)="addPhoto($event)"/>
+
+      <hr>
+      <button type="submit" class="btn btn-primary btn-block"
+              [disabled]="!f.valid || !password.valid"
+              *ngIf="!login">submit
+      </button>
+
+    </form>
+
+    <form (ngSubmit)="onLogin(f2)" #f2="ngForm" *ngIf="login">
+      <strong id="emailHelp" class="form-text text-danger">{{serverReply}}</strong>
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Login" ngModel name="login"
+                 required>
+        </div>
+        <div class="col">
+          <input type="password" class="form-control" placeholder="password"
+                 ngModel name="password" #password1="ngModel"
+                 pattern="{{confirmPasswordProp}}" required>
+        </div>
+
+      </div>
+      <hr>
+      <button type="submit" class="btn btn-primary btn-block"
+              [disabled]="!f2.valid">submit
+      </button>
+    </form>
+
+    <hr>
+    <!--<button type="button" class="btn btn-link btn-block"-->
+    <!--*ngIf="!login" (click)="login=true">Login page-->
+    <!--</button>-->
+    <!--<button type="button" class="btn btn-link btn-block"-->
+    <!--*ngIf="login" (click)="login=false">Create account-->
+    <!--</button>-->
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #userCreated let-modal>
+  <div class="modal-body">
+    {{serverReply}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>

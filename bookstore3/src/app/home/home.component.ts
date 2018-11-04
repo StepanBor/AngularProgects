@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
   activeBookId: number;
   activeBook: BookItem = this.bookItems[0];
   changedBooksId: number[] = [-1];
+  changeSortDirection: boolean;
 
   newBookItemId: number;
   files: any;
@@ -45,6 +46,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.changeSortDirect = true;
     this.itemsPerPage = 12;
     this.subscritionActiveFilters = this.dataAccessService.activeFiltersChanged
       .subscribe((filters: Map<string, string[]>) => {
@@ -85,20 +87,22 @@ export class HomeComponent implements OnInit {
   }
 
 
-  onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
+  onSortGet(sortBy: string, page: number) {
     if (this.activeFilters.size !== 0) {
       this.dataAccessService.getBookItemsByParam2(this.activeFilters, sortBy,
-        this.itemsPerPage, page, changeSortDirect);
+        this.itemsPerPage, page, this.changeSortDirect);
       this.sortBy = sortBy;
       this.currentPage = page;
+      this.changeSortDirect = !this.changeSortDirect;
     } else {
       this.sortBy = sortBy;
       this.currentPage = page;
       this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
-        + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
+        + '&changeSortDirect=' + true + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
       console.log(this.url);
       this.dataAccessService.getBookItems(this.url);
       this.dataAccessService.getTotalBookItemsCount();
+      // this.changeSortDirect = !this.changeSortDirect;
     }
   }
 
@@ -195,7 +199,7 @@ export class HomeComponent implements OnInit {
     formData.append('publisherAdress', form.value.publisherAdress);
     formData.append('category', form.value.category);
     formData.append('price', form.value.price);
-    formData.append('ISBN', form.value.isbn);
+    formData.append('isbn', form.value.isbn);
     // formData.append('password', form.value.password);
 
     final_data = formData;
@@ -210,7 +214,7 @@ export class HomeComponent implements OnInit {
   }
 
   sortBooks(form: HTMLFormElement) {
-    this.onSortGet(form.value.sortBy, true, this.currentPage);
+    this.onSortGet(form.value.sortBy, this.currentPage);
   }
 
   deleteFromFilter(key: string) {

@@ -35,11 +35,13 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    // this.activeBookItemDetails = new BookItem(0, '', '', '', '', '', 0, 0, 0, '', 0);
+    // this.bookItems = [new BookItem(0, '', '', '', '', '', 0, 0, 0, '', 0)];
     this.dataAccessService.getBookItemsByParam('author', this.activeBookItemDetails.author)
       .subscribe((response) => {
         console.log(response);
         const data = response.json();
-        this.bookItems = data;
+        this.bookItems = data.bookItems;
         this.bookItems.sort((a: BookItem, b: BookItem) => {
           if (a.rating > b.rating) {
             return -1;
@@ -55,11 +57,12 @@ export class BookItemDetailsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
     this.dataAccessService.getBookItemsByParam('author', this.activeBookItemDetails.author)
       .subscribe((response) => {
         console.log(response);
         const data = response.json();
-        this.bookItems = data;
+        this.bookItems = data.bookItems;
         this.bookItems.sort((a: BookItem, b: BookItem) => {
           if (a.rating > b.rating) {
             return -1;

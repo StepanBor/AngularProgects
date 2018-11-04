@@ -44,8 +44,8 @@ export class DataAccessService {
   totalShoppingCartSumChanged = new Subject<number>();
 
   accessToken: string;
-
   loggedUser: User;
+
   loggedUserOrders: Order[];
   loggedUserOrdersChanged = new Subject<Order[]>();
   loggedUserChanged = new Subject<User>();

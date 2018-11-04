@@ -15,6 +15,7 @@ export class BooksComponent implements OnInit {
 
   title = 'bookstore2';
   isSidebarOn = false;
+  bookParams = [];
 
   bookItems: BookItem[];
   // storageBooks: StorageBooks;
@@ -35,6 +36,7 @@ export class BooksComponent implements OnInit {
   activeBookId: number;
   activeBook: BookItem;
   changedBooksId: number[] = [-1];
+  updateBook: boolean;
 
   newBookItemId: number;
   files: any;
@@ -47,6 +49,14 @@ export class BooksComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.updateBook = true;
+    this.dataAccessService.getBookParameters().subscribe((response) => {
+      const data = response.json();
+      this.bookParams = data;
+    });
+    this.activeBook = new BookItem(0, '', '', '', '', '', 0, 0, 0, '', 0);
+    this.bookItems = [new BookItem(0, '', '', '', '', '', 0, 0, 0, '', 0)];
+    this.paginationArr = [0];
     this.subscriptionBookItems = this.dataAccessService.bookItemsChanged.subscribe((bookItems1: BookItem[]) => {
       this.bookItems = bookItems1;
       this.activeBook = bookItems1[0];
@@ -139,10 +149,10 @@ export class BooksComponent implements OnInit {
       for (let i = 0; i < this.bookItems.length; i++) {
         if (this.bookItems[i].id === bookToDelete.id) {
           this.bookItems.splice(i, 1);
-          this.dataAccessService.deleteBookItem(bookToDelete.id).subscribe((response) => {
-            console.log(response);
+          this.dataAccessService.deleteBookItem(bookToDelete).subscribe((response) => {
+
             if (response.status === 200) {
-              // this.isDeleteModalActive = true;
+              console.log(response);
             }
           });
         }
@@ -160,7 +170,7 @@ export class BooksComponent implements OnInit {
     }
   }
 
-  onSubmitBookItem(form: HTMLFormElement) {
+  onSubmitBookItem(form: HTMLFormElement, updateBook: boolean) {
     console.log(form);
     let final_data;
     // let newUserData: string[];
@@ -172,14 +182,17 @@ export class BooksComponent implements OnInit {
       }
     }
     formData.append('bookName', form.value.bookName);
+    formData.append('description', form.value.description);
     formData.append('author', form.value.author);
-    formData.append('publisherId', form.value.publisherId);
-    formData.append('publisherName', form.value.publisherName);
-    formData.append('publisherDescription', form.value.publisherName);
-    formData.append('publisherAdress', form.value.publisherAdress);
-    formData.append('category', form.value.category);
+    formData.append('publisherName', form.value.publisher);
+    formData.append('categoryName', form.value.category);
     formData.append('price', form.value.price);
     formData.append('ISBN', form.value.isbn);
+    formData.append('updateBook', '' + updateBook);
+    if (updateBook) {
+      formData.append('id', this.activeBook.id.toString());
+    }
+
     // formData.append('password', form.value.password);
 
     final_data = formData;
@@ -190,6 +203,8 @@ export class BooksComponent implements OnInit {
 
     this.dataAccessService.createNewBookItem(final_data).subscribe((response) => {
       console.log(response);
+      this.dataAccessService.getTotalBookItemsCount();
+      this.dataAccessService.getBookItems('http://localhost:8080/bookItems?page=1');
     });
   }
 
@@ -197,8 +212,8 @@ export class BooksComponent implements OnInit {
     this.isSidebarOn = !this.isSidebarOn;
   }
 
-  addBooks(addBooksModal) {
-    this.modalService.open(addBooksModal);
+  addBooks(addBooksModal, size?: string) {
+    this.modalService.open(addBooksModal, {size: (size === 'sm' ? 'sm' : 'lg')});
   }
 
   onSubmitTable(form: HTMLFormElement) {
@@ -236,15 +251,67 @@ export class BooksComponent implements OnInit {
     });
   }
 
+  addCover(event) {
+    const target = event.target || event.srcElement;
+    this.files = target.files;
+  }
+
   addTable(event) {
     const target = event.target || event.srcElement;
     this.table = target.files;
-    console.log(this.table);
+    // console.log(this.table);
   }
 
   addCovers(event) {
     const target = event.target || event.srcElement;
     this.covers = target.files;
-    console.log(this.covers);
+    // console.log(this.covers);
   }
+
+  onSubmitPublisher(form: HTMLFormElement) {
+    console.log(form);
+    let final_data;
+    const formData = new FormData();
+
+    formData.append('publisherName', form.value.publisherName);
+    formData.append('publisherDescription', form.value.publisherDescription);
+    formData.append('publisherAddress', form.value.publisherAddress);
+
+    final_data = formData;
+
+    this.dataAccessService.createNewPublisher(final_data).subscribe((response) => {
+      console.log(response);
+      this.dataAccessService.getBookParameters().subscribe((response1) => {
+        const data = response1.json();
+        this.bookParams = data;
+      });
+    });
+  }
+
+  onSubmitCategory(form: HTMLFormElement) {
+    console.log(form);
+    let final_data;
+    const formData = new FormData();
+
+    formData.append('categoryName', form.value.categoryName);
+    formData.append('categoryDescription', form.value.categoryDescription);
+
+    final_data = formData;
+
+    this.dataAccessService.createNewCategory(final_data).subscribe((response) => {
+      console.log(response);
+      this.dataAccessService.getBookParameters().subscribe((response1) => {
+        const data = response1.json();
+        this.bookParams = data;
+      });
+    });
+  }
+
+  addNewBook(editBook) {
+    this.updateBook = false;
+    const bookItem = new BookItem(0, '', '', '', '', '', 0, 0, 0, '', 0);
+    this.activeBook = bookItem;
+    this.addBooks(editBook);
+  }
+
 }

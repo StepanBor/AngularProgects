@@ -5,13 +5,35 @@
         <div class="card-header">
           Book items list
           <div class="btn-group btn-group-sm float-right">
-            <button type="button" class="btn btn-outline-primary btn-sm"
+            <button type="button" class="btn btn-outline-primary "
                     placement="right"
                     [ngbTooltip]="addBooksTip"
                     tooltipClass="custom-tooltip-class"
                     (click)="addBooks(addBooksModal)">
               <i class="fa fa-file-excel-o" aria-hidden="true"></i>
               Add books
+            </button>
+            <button type="button" class="btn btn-outline-primary"
+                    placement="right"
+                    [ngbTooltip]="addBookTip"
+                    tooltipClass="custom-tooltip-class" (click)="addNewBook(editBook)">
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              Book
+            </button>
+            <button type="button" class="btn btn-outline-primary"
+                    placement="right"
+                    [ngbTooltip]="editTip"
+                    tooltipClass="custom-tooltip-class"
+                    (click)="updateBook=true; addBooks(editBook)">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              Edit
+            </button>
+            <button type="button" class="btn btn-outline-danger"
+                    placement="right"
+                    [ngbTooltip]="deleteTip"
+                    tooltipClass="custom-tooltip-class"
+                    (click)="deleteBookItem(activeBook)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
           </div>
         </div>
@@ -70,8 +92,9 @@
         </div>
       </div>
     </div>
+
     <div class="col-md-6">
-      <app-book-item-details [activeBookItemDetails]="activeBook"></app-book-item-details>
+      <app-book-item-details [activeBookItemDetails]="activeBook" *ngIf="activeBook.id!=0"></app-book-item-details>
     </div>
   </div>
   <!--<div class="row justify-content-end">-->
@@ -83,20 +106,29 @@
 </div>
 
 <ng-template #addBooksTip>Add books using excel table</ng-template>
+<ng-template #addBookTip>Add book</ng-template>
+<ng-template #editTip>Edit active book</ng-template>
+<ng-template #deleteTip>Delete active book</ng-template>
+<ng-template #addPublisher>Add new publisher</ng-template>
+<ng-template #addCategory>Add new category</ng-template>
 
 <ng-template #addBooksModal let-modal>
   <div class="modal-body">
+    <a href="http://localhost:8080/static/Books111018.xls" download="">Download table sample</a>
+    <hr>
     <form (ngSubmit)="onSubmitTable(f3)" #f3="ngForm">
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="validatedCustomFile" required (change)="addTable($event)" accept="application/vnd.ms-excel"
-        name="table">
+        <input type="file" class="custom-file-input" id="validatedCustomFile" required (change)="addTable($event)"
+               accept="application/vnd.ms-excel"
+               name="table">
         <label class="custom-file-label" for="validatedCustomFile">Choose excel file...</label>
         <div class="invalid-feedback">Choose table</div>
       </div>
       <hr>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="validatedCustomFile2" required (change)="addCovers($event)" accept="application/zip"
-        name="covers">
+        <input type="file" class="custom-file-input" id="validatedCustomFile2" required (change)="addCovers($event)"
+               accept="application/zip"
+               name="covers">
         <label class="custom-file-label" for="validatedCustomFile2">Choose archive with book covers...</label>
         <div class="invalid-feedback">Choose archive with book covers</div>
       </div>
@@ -111,4 +143,242 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
   </div>
+</ng-template>
+
+<ng-template #editBook let-modal>
+  <div class="modal-header">Edit active order</div>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmitBookItem(f4,updateBook)" #f4="ngForm">
+      <div class="form-row">
+        <label for="bookName">Book name</label>
+        <textarea type="text"
+                  class="form-control"
+                  id="bookName"
+                  required
+                  name="bookName"
+                  placeholder="bookName"
+                  [ngModel]="activeBook.bookName"></textarea>
+      </div>
+      <hr>
+      <div class="form-row">
+        <label for="bookDescription">Description</label>
+        <textarea type="text"
+                  class="form-control"
+                  id="bookDescription"
+                  required
+                  name="description"
+                  placeholder="description"
+                  [ngModel]="activeBook.description"></textarea>
+      </div>
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <label for="author">Author</label>
+          <input type="text"
+                 class="form-control"
+                 id="author"
+                 required
+                 name="author"
+                 placeholder="author"
+                 [ngModel]="activeBook.author"
+                 list="authors">
+          <datalist id="authors">
+            <option value="{{author}}"
+                    *ngFor="let author of bookParams[1]"
+            >{{author}}
+            </option>
+          </datalist>
+        </div>
+        <div class="col">
+          <label for="publisher">Publisher
+            <span class="text-primary">
+            <i class="fa fa-plus-square" aria-hidden="true"
+               style="cursor: pointer"
+               placement="right"
+               [ngbTooltip]="addPublisher"
+               tooltipClass="custom-tooltip-class"
+               (click)="addBooks(newPublisher)"></i>
+          </span>
+          </label>
+          <select type="text"
+                  class="form-control"
+                  id="publisher"
+                  required
+                  name="publisher"
+                  placeholder="publisher"
+                  [ngModel]="activeBook.publisher"
+                  list="publishers">
+            <option value="{{publisher}}"
+                    *ngFor="let publisher of bookParams[2]"
+                    [selected]="publisher==activeBook.publisher">
+              {{publisher}}
+            </option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="category">Category
+            <span class="text-primary">
+            <i class="fa fa-plus-square" aria-hidden="true"
+               style="cursor: pointer"
+               placement="right"
+               [ngbTooltip]="addCategory"
+               tooltipClass="custom-tooltip-class"
+               (click)="addBooks(newCategory)"></i>
+            </span>
+          </label>
+          <select type="text"
+                  class="form-control"
+                  id="category"
+                  required
+                  name="category"
+                  placeholder="category"
+                  [ngModel]="activeBook.category"
+                  list="categories">
+            <option value="{{category}}"
+                    *ngFor="let category of bookParams[0]"
+                    [selected]="category==activeBook.category">{{category}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <hr>
+      <div class="form-row">
+        <div class="col">
+          <label for="ISBN">ISBN</label>
+          <input type="text"
+                 class="form-control"
+                 id="ISBN"
+                 required
+                 name="isbn"
+                 placeholder="ISBN"
+                 [ngModel]="activeBook.isbn">
+        </div>
+        <div class="col">
+          <label for="price">Price</label>
+          <input type="text"
+                 class="form-control"
+                 id="price"
+                 required
+                 name="price"
+                 placeholder="price"
+                 [ngModel]="activeBook.price">
+        </div>
+        <div class="col">
+          <label for="copiesInStock">Copies in stock</label>
+          <input type="number"
+                 class="form-control"
+                 id="copiesInStock"
+                 required
+                 name="copiesInStock"
+                 placeholder="copiesInStock"
+                 [ngModel]="activeBook.copiesInStock">
+        </div>
+      </div>
+      <hr>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="validatedCustomFile3" (change)="addCover($event)"
+               accept="image/*"
+               name="covers">
+        <label class="custom-file-label" for="validatedCustomFile3">Choose cover...</label>
+        <div class="invalid-feedback">Choose cover</div>
+      </div>
+      <hr>
+      <button type="submit" class="btn btn-outline-primary btn-sm"
+              [disabled]="!f4.valid">submit
+      </button>
+    </form>
+    <hr>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #newPublisher let-modal>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmitPublisher(f5)" #f5="ngForm">
+      <div class="form-row">
+        <div class="col">
+          <label for="publisherName">Publisher name</label>
+          <input type="text"
+                 class="form-control"
+                 id="publisherName"
+                 required
+                 name="publisherName"
+                 placeholder="publisherName"
+                 ngModel>
+        </div>
+        <div class="col">
+          <label for="publisherDescription">Publisher description</label>
+          <input type="text"
+                 class="form-control"
+                 id="publisherDescription"
+                 required
+                 name="publisherDescription"
+                 placeholder="publisherDescription"
+                 ngModel>
+        </div>
+        <div class="col">
+          <label for="publisherAddress">Publisher address</label>
+          <input type="text"
+                 class="form-control"
+                 id="publisherAddress"
+                 required
+                 name="publisherAddress"
+                 placeholder="publisherAddress"
+                 ngModel>
+        </div>
+      </div>
+
+      <hr>
+      <button type="submit" class="btn btn-outline-primary btn-sm"
+              [disabled]="!f5.valid">submit
+      </button>
+    </form>
+    <hr>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+
+</ng-template>
+
+<ng-template #newCategory let-modal>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmitCategory(f6)" #f6="ngForm">
+
+      <div class="form-row">
+        <div class="col">
+          <label for="categoryName">Category name</label>
+          <input type="text"
+                 class="form-control"
+                 id="categoryName"
+                 required
+                 name="categoryName"
+                 placeholder="categoryName"
+                 ngModel>
+        </div>
+        <div class="col">
+          <label for="categoryDescription">Category description</label>
+          <input type="text"
+                 class="form-control"
+                 id="categoryDescription"
+                 required
+                 name="categoryDescription"
+                 placeholder="categoryDescription"
+                 ngModel>
+        </div>
+      </div>
+
+      <hr>
+      <button type="submit" class="btn btn-outline-primary btn-sm"
+              [disabled]="!f6.valid">submit
+      </button>
+    </form>
+    <hr>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+
 </ng-template>
