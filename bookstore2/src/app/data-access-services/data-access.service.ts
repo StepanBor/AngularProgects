@@ -44,6 +44,7 @@ export class DataAccessService {
 
   accessToken: string;
   loggedUser: User;
+  authHeader: Headers;
 
   loggedUserOrders: Order[];
   loggedUserOrdersChanged = new Subject<Order[]>();
@@ -76,7 +77,7 @@ export class DataAccessService {
   }
 
   getUsersFromDb(reqUrl: string) {
-    this.http.get(reqUrl).subscribe((response: Response) => {
+    this.http.get(reqUrl, {headers: this.authHeader}).subscribe((response: Response) => {
       // console.log(response);
       const data = response.json();
       this.users = data;
@@ -85,7 +86,7 @@ export class DataAccessService {
   }
 
   getTotalUsersCount() {
-    this.http.get(this.serverURL + 'usersCount').subscribe((responce: Response) => {
+    this.http.get(this.serverURL + 'usersCount', {headers: this.authHeader}).subscribe((responce: Response) => {
       const data: number = responce.json();
       this.totalUserCount = data;
       // console.log('from get totalUserCount ' + data);
@@ -94,7 +95,7 @@ export class DataAccessService {
   }
 
   getUserDetailsOrders(reqUrl: string) {
-    this.http.get(reqUrl).subscribe((response: Response) => {
+    this.http.get(reqUrl, {headers: this.authHeader}).subscribe((response: Response) => {
       const data = response.json();
       this.userDetailsOrders = data;
       this.userDetailsOrdersChanged.next(data);
@@ -103,7 +104,7 @@ export class DataAccessService {
 
   getUserDetailsOrders2(reqUrl: string): Observable<Order[]> {
     console.log(reqUrl + '  get user orders!!!!!!!!');
-    return this.http.get(reqUrl).pipe(map((response: Response) => {
+    return this.http.get(reqUrl, {headers: this.authHeader}).pipe(map((response: Response) => {
       console.log(response + '  get orders');
       const orders: Order[] = response.json();
       return orders;
@@ -132,7 +133,7 @@ export class DataAccessService {
   }
 
   getOrders(reqUrl: string) {
-    this.http.get(reqUrl).subscribe((response: Response) => {
+    this.http.get(reqUrl, {headers: this.authHeader}).subscribe((response: Response) => {
       console.log(response + ' from get orders');
       const data = response.json();
       this.orders = data;
@@ -142,7 +143,7 @@ export class DataAccessService {
   }
 
   getTotalOrderCount() {
-    this.http.get(this.serverURL + 'orderCount').subscribe((responce: Response) => {
+    this.http.get(this.serverURL + 'orderCount', {headers: this.authHeader}).subscribe((responce: Response) => {
       const data: number = responce.json();
       this.totalOrderCount = data;
       // console.log('from get totalUserCount ' + data);
@@ -151,11 +152,11 @@ export class DataAccessService {
   }
 
   saveOrder(orderToSave: Order): Observable<Response> {
-    return this.http.post(this.serverURL + 'saveOrder', orderToSave);
+    return this.http.post(this.serverURL + 'saveOrder', orderToSave, {headers: this.authHeader});
   }
 
   getBookItems(reqUrl: string) {
-    this.http.get(reqUrl).subscribe((response: Response) => {
+    this.http.get(reqUrl, {headers: this.authHeader}).subscribe((response: Response) => {
       const data = response.json();
       this.bookItems = data;
       this.bookItemsChanged.next(this.bookItems);
@@ -163,15 +164,15 @@ export class DataAccessService {
   }
 
   getBookParameters(): Observable<Response> {
-    return this.http.get(this.serverURL + 'getBookParameters');
+    return this.http.get(this.serverURL + 'getBookParameters', {headers: this.authHeader});
   }
 
   getBookItemsByParam(paramName: string, paramValue: string): Observable<Response> {
-    return this.http.get(this.serverURL + 'bookItemsByParam?' + paramName + '=' + paramValue);
+    return this.http.get(this.serverURL + 'bookItemsByParam?' + paramName + '=' + paramValue, {headers: this.authHeader});
   }
 
   getTotalBookItemsCount() {
-    this.http.get(this.serverURL + 'bookCount').subscribe((responce: Response) => {
+    this.http.get(this.serverURL + 'bookCount', {headers: this.authHeader}).subscribe((responce: Response) => {
       const data: number = responce.json();
       this.totalBookItemCount = data;
       this.totalBookItemCountChanged.next(this.totalBookItemCount);
@@ -179,19 +180,19 @@ export class DataAccessService {
   }
 
   deleteOrder(orderToDelete: Order): Observable<Response> {
-    return this.http.post(this.serverURL + 'deleteBookItem', orderToDelete);
+    return this.http.post(this.serverURL + 'deleteBookItem', orderToDelete, {headers: this.authHeader});
   }
 
   createNewUser(data): Observable<Response> {
-    return this.http.post(this.serverURL + 'createNewUser', data);
+    return this.http.post(this.serverURL + 'createNewUser', data, {headers: this.authHeader});
   }
 
   createNewOrder(): Observable<Response> {
-    return this.http.get(this.serverURL + 'createNewOrder');
+    return this.http.get(this.serverURL + 'createNewOrder', {headers: this.authHeader});
   }
 
   getUnprocessedOrdersCount() {
-    this.http.get(this.serverURL + 'countOrdersByParam?paramName=status&paramValue=unProcessed')
+    this.http.get(this.serverURL + 'countOrdersByParam?paramName=status&paramValue=unProcessed', {headers: this.authHeader})
       .subscribe((responce: Response) => {
         const data: number = responce.json();
         this.totalUnProcessedOrderCount = data;
@@ -205,11 +206,11 @@ export class DataAccessService {
   }
 
   getAllOrders(): Observable<Response> {
-    return this.http.get(this.serverURL + 'orders?allOrders=true');
+    return this.http.get(this.serverURL + 'orders?allOrders=true', {headers: this.authHeader});
   }
 
   getRates() {
-    return this.http.get(this.serverURL + 'rates')
+    return this.http.get(this.serverURL + 'rates', {headers: this.authHeader})
       .subscribe((responce) => {
         const data = responce.json();
         this.USDUAH.next(Math.round(data.quotes.USDUAH * 1000) / 1000);
@@ -219,46 +220,46 @@ export class DataAccessService {
   }
 
   getTasks(): Observable<Response> {
-    return this.http.get(this.serverURL + 'getTasks');
+    return this.http.get(this.serverURL + 'getTasks', {headers: this.authHeader});
   }
 
   updateTask(task: Task1) {
-    this.http.post(this.serverURL + 'tasks', task).subscribe((response) => {
+    this.http.post(this.serverURL + 'tasks', task, {headers: this.authHeader}).subscribe((response) => {
       console.log(response);
     });
   }
 
   deleteTasks(task: Task1): Observable<Response> {
     task.status = 'closed';
-    return this.http.post(this.serverURL + 'tasks', task);
+    return this.http.post(this.serverURL + 'tasks', task, {headers: this.authHeader});
   }
 
   deleteUser(userId: number): Observable<Response> {
-    return this.http.get(this.serverURL + 'deleteUser?userId=' + userId);
+    return this.http.get(this.serverURL + 'deleteUser?userId=' + userId, {headers: this.authHeader});
   }
 
   saveBookItem(bookToSave: BookItem): Observable<Response> {
-    return this.http.post(this.serverURL + 'saveBookItem', bookToSave);
+    return this.http.post(this.serverURL + 'saveBookItem', bookToSave, {headers: this.authHeader});
   }
 
   deleteBookItem(bookToDelete: BookItem): Observable<Response> {
-    return this.http.post(this.serverURL + 'deleteBookItem', bookToDelete);
+    return this.http.post(this.serverURL + 'deleteBookItem', bookToDelete, {headers: this.authHeader});
   }
 
   createNewBookItem(data): Observable<Response> {
-    return this.http.post(this.serverURL + 'createNewBookItem', data);
+    return this.http.post(this.serverURL + 'createNewBookItem', data, {headers: this.authHeader});
   }
 
   addBooks(data): Observable<Response> {
-    return this.http.post(this.serverURL + 'addBooks', data);
+    return this.http.post(this.serverURL + 'addBooks', data, {headers: this.authHeader});
   }
 
   createNewPublisher(data): Observable<Response> {
-    return this.http.post(this.serverURL + 'createNewPublisher', data);
+    return this.http.post(this.serverURL + 'createNewPublisher', data, {headers: this.authHeader});
   }
 
   createNewCategory(data): Observable<Response> {
-    return this.http.post(this.serverURL + 'createNewCategory', data);
+    return this.http.post(this.serverURL + 'createNewCategory', data, {headers: this.authHeader});
   }
 
   login(data) {
@@ -267,8 +268,10 @@ export class DataAccessService {
       if (response.status === 200) {
         const serverReply = response.json();
         this.accessToken = serverReply.accessToken;
-        const header = new Headers({'Authorization': this.accessToken});
-        this.http.get(this.serverURL + 'userInfo?login=' + data.login, {headers: header}).subscribe((response2) => {
+        console.log(this.accessToken);
+        this.authHeader = new Headers({'Authorization': this.accessToken});
+        // const header = new Headers({'Authorization': this.accessToken});
+        this.http.get(this.serverURL + 'userInfo?login=' + data.login, {headers: this.authHeader}).subscribe((response2) => {
           if (response2.status === 200) {
             const serverReply2 = response2.json();
             this.loggedUser = serverReply2.clientDTO;
