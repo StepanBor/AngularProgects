@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {DataAccessService} from '../data-access-services/data-access.service';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-login-new-user',
@@ -8,6 +9,8 @@ import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./login-new-user.component.css']
 })
 export class LoginNewUserComponent implements OnInit, OnChanges {
+
+  serverURL = environment.serverURL;
 
   @ViewChild('userCreated') userCreated;
   files: any;

@@ -8,6 +8,7 @@ import {Order} from '../data-models/Order';
 import {ItemEntry} from '../data-models/ItemEntry';
 import {BookItem} from '../data-models/BookItem';
 import {Shipment2} from '../data-models/Shipment2';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-users',
@@ -15,6 +16,8 @@ import {Shipment2} from '../data-models/Shipment2';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   title = 'bookstore2';
   isSidebarOn = false;
@@ -53,7 +56,7 @@ export class UsersComponent implements OnInit {
       0, new User(0, '', '', '', '', '', '', '', '', ''),
       new Shipment2(0, '', '', 0), '', new Date)];
     this.activeUser = new User(0, '', '', '', '', '', '', '', '', '');
-    this.userService.getUsersFromDb('http://localhost:8080/userPage');
+    this.userService.getUsersFromDb(this.serverURL+'userPage');
     this.totalUserCount = this.userService.getTotalUserCount();
     this.subscriptionUsers = this.userService.usersChanged.subscribe((tempUsers: User[]) => {
       this.users = tempUsers;
@@ -74,7 +77,7 @@ export class UsersComponent implements OnInit {
     this.changeSortDirect = false;
     this.activeRow = -1;
     this.activeUserId = 0;
-    this.url = 'http://localhost:8080/userPage?sortBy=' + this.sortBy
+    this.url = this.serverURL+'userPage?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
     console.log(this.url + ' from init users URL');
   }
@@ -82,7 +85,7 @@ export class UsersComponent implements OnInit {
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
     this.sortBy = sortBy;
     this.currentPage = page;
-    this.url = 'http://localhost:8080/userPage?sortBy=' + this.sortBy
+    this.url = this.serverURL+'userPage?sortBy=' + this.sortBy
       + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage;
     this.userService.getUsersFromDb(this.url);
     this.totalUserCount = this.userService.getTotalUserCount();
@@ -101,7 +104,7 @@ export class UsersComponent implements OnInit {
       }
     }
     this.userActivated.emit(this.activeUser);
-    this.userService.getUserDetailsOrders('http://localhost:8080/orders?userId=' + this.activeUser.id);
+    this.userService.getUserDetailsOrders(this.serverURL+'orders?userId=' + this.activeUser.id);
   }
 
   openAddUserModal(addUserModal) {
@@ -160,7 +163,7 @@ export class UsersComponent implements OnInit {
       if (response.status === 200) {
         this.createUserReply = 'user deleted';
       }
-      this.userService.getUsersFromDb('http://localhost:8080/userPage');
+      this.userService.getUsersFromDb(this.serverURL+'userPage');
       this.openAddUserModal(this.userCreated);
     });
 

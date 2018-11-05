@@ -4,6 +4,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../data-models/User';
 import {DataAccessService} from '../data-access-services/data-access.service';
 import {Subscription} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-login-page',
@@ -11,6 +12,8 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   subscriptionLoggedUserChanged: Subscription;
   loggedUser: User;

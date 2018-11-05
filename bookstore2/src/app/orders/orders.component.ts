@@ -13,6 +13,7 @@ import {BookItem} from '../data-models/BookItem';
 import {Shipment2} from '../data-models/Shipment2';
 import {ItemEntry} from '../data-models/ItemEntry';
 import {User} from '../data-models/User';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-orders',
@@ -20,6 +21,8 @@ import {User} from '../data-models/User';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit, CanComponentDeactivate {
+
+  serverURL = environment.serverURL;
 
   title = 'bookstore2';
   isSidebarOn = false;
@@ -76,8 +79,8 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
     });
 
     this.totalOrderCount = 12;
-    this.orderService.getBookItems('http://localhost:8080/bookItems');
-    this.orderService.getOrders('http://localhost:8080/orders');
+    this.orderService.getBookItems(this.serverURL+'bookItems');
+    this.orderService.getOrders(this.serverURL+'orders');
     this.orderService.getTotalOrderCount();
 
 
@@ -90,7 +93,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
     this.changeSortDirect = false;
     this.activeRow = -1;
     this.activeOrderId = 0;
-    this.url = 'http://localhost:8080/orders?sortBy=' + this.sortBy
+    this.url = this.serverURL+'orders?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
 
     this.isModalActive = false;
@@ -101,7 +104,7 @@ export class OrdersComponent implements OnInit, CanComponentDeactivate {
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
     this.sortBy = sortBy;
     this.currentPage = page;
-    this.url = 'http://localhost:8080/orders?sortBy=' + this.sortBy
+    this.url = this.serverURL+'orders?sortBy=' + this.sortBy
       + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage;
     this.orderService.getOrders(this.url);
     this.orderService.getTotalOrderCount();

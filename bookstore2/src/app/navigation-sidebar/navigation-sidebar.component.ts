@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-navigation-sidebar',
@@ -6,6 +7,8 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./navigation-sidebar.component.css']
 })
 export class NavigationSidebarComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   @Input() isSidebarOnSidebar: boolean;
 

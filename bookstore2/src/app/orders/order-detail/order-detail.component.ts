@@ -9,6 +9,7 @@ import {NgForm} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../../data-models/User';
 import {Shipment2} from '../../data-models/Shipment2';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-order-detail',
@@ -16,6 +17,8 @@ import {Shipment2} from '../../data-models/Shipment2';
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit, OnChanges {
+
+  serverURL = environment.serverURL;
 
   @Input() activeOrder: Order;
 

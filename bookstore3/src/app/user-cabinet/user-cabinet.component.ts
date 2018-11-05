@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {DataAccessService} from '../data-access-services/data-access.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute} from '@angular/router';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-user-cabinet',
@@ -12,6 +13,8 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./user-cabinet.component.css']
 })
 export class UserCabinetComponent implements OnInit, OnChanges {
+
+  serverURL = environment.serverURL;
 
   activeUserDetails: User;
 
@@ -70,7 +73,7 @@ export class UserCabinetComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const activeUsId: number = this.activeUserDetails.id;
-    const reqUrl = 'http://localhost:8080/orders?userId=' + activeUsId;
+    const reqUrl = this.serverURL + 'orders?userId=' + activeUsId;
     this.dataAccessService.getUserDetailsOrders2(reqUrl).subscribe(
       (orders: Order[]) => {
         this.userDetailOrders = orders;

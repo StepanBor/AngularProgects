@@ -4,6 +4,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {User} from '../data-models/User';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -11,6 +12,8 @@ import {User} from '../data-models/User';
   styleUrls: ['./navigation-bar.component.css']
 })
 export class NavigationBarComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   subscriptionLoggedUserChanged: Subscription;
   loggedUser: User;

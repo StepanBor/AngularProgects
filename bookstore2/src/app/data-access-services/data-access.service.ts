@@ -8,9 +8,12 @@ import {Order} from '../data-models/Order';
 import {BookItem} from '../data-models/BookItem';
 import {Task1} from '../data-models/Task1';
 import {StorageBooks} from '../data-models/StorageBooks';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class DataAccessService {
+
+  serverURL = environment.serverURL;
 
   usersChanged = new Subject<User[]>();
   totalUserCountChanged = new Subject<number>();
@@ -62,13 +65,13 @@ export class DataAccessService {
   private userDetailsOrders: Order[];
 
   constructor(private http: Http) {
-    this.getUsersFromDb('http://localhost:8080/userPage');
+    this.getUsersFromDb(this.serverURL + 'userPage');
     this.getTotalUsersCount();
     this.getUnprocessedOrdersCount();
-    this.getUserDetailsOrders('http://localhost:8080/orders');
-    this.getOrders('http://localhost:8080/orders');
+    this.getUserDetailsOrders(this.serverURL + 'orders');
+    this.getOrders(this.serverURL + 'orders');
     this.getTotalOrderCount();
-    this.getBookItems('http://localhost:8080/bookItems');
+    this.getBookItems(this.serverURL + 'bookItems');
     this.getTotalBookItemsCount();
   }
 
@@ -82,7 +85,7 @@ export class DataAccessService {
   }
 
   getTotalUsersCount() {
-    this.http.get('http://localhost:8080/usersCount').subscribe((responce: Response) => {
+    this.http.get(this.serverURL + 'usersCount').subscribe((responce: Response) => {
       const data: number = responce.json();
       this.totalUserCount = data;
       // console.log('from get totalUserCount ' + data);
@@ -139,7 +142,7 @@ export class DataAccessService {
   }
 
   getTotalOrderCount() {
-    this.http.get('http://localhost:8080/orderCount').subscribe((responce: Response) => {
+    this.http.get(this.serverURL + 'orderCount').subscribe((responce: Response) => {
       const data: number = responce.json();
       this.totalOrderCount = data;
       // console.log('from get totalUserCount ' + data);
@@ -148,7 +151,7 @@ export class DataAccessService {
   }
 
   saveOrder(orderToSave: Order): Observable<Response> {
-    return this.http.post('http://localhost:8080/saveOrder', orderToSave);
+    return this.http.post(this.serverURL + 'saveOrder', orderToSave);
   }
 
   getBookItems(reqUrl: string) {
@@ -160,15 +163,15 @@ export class DataAccessService {
   }
 
   getBookParameters(): Observable<Response> {
-    return this.http.get('http://localhost:8080/getBookParameters');
+    return this.http.get(this.serverURL + 'getBookParameters');
   }
 
   getBookItemsByParam(paramName: string, paramValue: string): Observable<Response> {
-    return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
+    return this.http.get(this.serverURL + 'bookItemsByParam?' + paramName + '=' + paramValue);
   }
 
   getTotalBookItemsCount() {
-    this.http.get('http://localhost:8080/bookCount').subscribe((responce: Response) => {
+    this.http.get(this.serverURL + 'bookCount').subscribe((responce: Response) => {
       const data: number = responce.json();
       this.totalBookItemCount = data;
       this.totalBookItemCountChanged.next(this.totalBookItemCount);
@@ -176,19 +179,19 @@ export class DataAccessService {
   }
 
   deleteOrder(orderToDelete: Order): Observable<Response> {
-    return this.http.post('http://localhost:8080/deleteBookItem', orderToDelete);
+    return this.http.post(this.serverURL + 'deleteBookItem', orderToDelete);
   }
 
   createNewUser(data): Observable<Response> {
-    return this.http.post('http://localhost:8080/createNewUser', data);
+    return this.http.post(this.serverURL + 'createNewUser', data);
   }
 
   createNewOrder(): Observable<Response> {
-    return this.http.get('http://localhost:8080/createNewOrder');
+    return this.http.get(this.serverURL + 'createNewOrder');
   }
 
   getUnprocessedOrdersCount() {
-    this.http.get('http://localhost:8080/countOrdersByParam?paramName=status&paramValue=unProcessed')
+    this.http.get(this.serverURL + 'countOrdersByParam?paramName=status&paramValue=unProcessed')
       .subscribe((responce: Response) => {
         const data: number = responce.json();
         this.totalUnProcessedOrderCount = data;
@@ -197,16 +200,16 @@ export class DataAccessService {
   }
 
   countOrdersByParam(paramName: string, paramValue: string): Observable<Response> {
-    return this.http.get('http://localhost:8080/countOrdersByParam?paramName='
+    return this.http.get(this.serverURL + 'countOrdersByParam?paramName='
       + paramName + '&paramValue=' + paramValue);
   }
 
   getAllOrders(): Observable<Response> {
-    return this.http.get('http://localhost:8080/orders?allOrders=true');
+    return this.http.get(this.serverURL + 'orders?allOrders=true');
   }
 
   getRates() {
-    return this.http.get('http://localhost:8080/rates')
+    return this.http.get(this.serverURL + 'rates')
       .subscribe((responce) => {
         const data = responce.json();
         this.USDUAH.next(Math.round(data.quotes.USDUAH * 1000) / 1000);
@@ -216,56 +219,56 @@ export class DataAccessService {
   }
 
   getTasks(): Observable<Response> {
-    return this.http.get('http://localhost:8080/getTasks');
+    return this.http.get(this.serverURL + 'getTasks');
   }
 
   updateTask(task: Task1) {
-    this.http.post('http://localhost:8080/tasks', task).subscribe((response) => {
+    this.http.post(this.serverURL + 'tasks', task).subscribe((response) => {
       console.log(response);
     });
   }
 
   deleteTasks(task: Task1): Observable<Response> {
     task.status = 'closed';
-    return this.http.post('http://localhost:8080/tasks', task);
+    return this.http.post(this.serverURL + 'tasks', task);
   }
 
   deleteUser(userId: number): Observable<Response> {
-    return this.http.get('http://localhost:8080/deleteUser?userId=' + userId);
+    return this.http.get(this.serverURL + 'deleteUser?userId=' + userId);
   }
 
   saveBookItem(bookToSave: BookItem): Observable<Response> {
-    return this.http.post('http://localhost:8080/saveBookItem', bookToSave);
+    return this.http.post(this.serverURL + 'saveBookItem', bookToSave);
   }
 
   deleteBookItem(bookToDelete: BookItem): Observable<Response> {
-    return this.http.post('http://localhost:8080/deleteBookItem', bookToDelete);
+    return this.http.post(this.serverURL + 'deleteBookItem', bookToDelete);
   }
 
   createNewBookItem(data): Observable<Response> {
-    return this.http.post('http://localhost:8080/createNewBookItem', data);
+    return this.http.post(this.serverURL + 'createNewBookItem', data);
   }
 
   addBooks(data): Observable<Response> {
-    return this.http.post('http://localhost:8080/addBooks', data);
+    return this.http.post(this.serverURL + 'addBooks', data);
   }
 
   createNewPublisher(data): Observable<Response> {
-    return this.http.post('http://localhost:8080/createNewPublisher', data);
+    return this.http.post(this.serverURL + 'createNewPublisher', data);
   }
 
   createNewCategory(data): Observable<Response> {
-    return this.http.post('http://localhost:8080/createNewCategory', data);
+    return this.http.post(this.serverURL + 'createNewCategory', data);
   }
 
   login(data) {
-    this.http.post('http://localhost:8080/signinAdmin', data).subscribe((response) => {
+    this.http.post(this.serverURL + 'signinAdmin', data).subscribe((response) => {
       console.log(response);
       if (response.status === 200) {
         const serverReply = response.json();
         this.accessToken = serverReply.accessToken;
         const header = new Headers({'Authorization': this.accessToken});
-        this.http.get('http://localhost:8080/userInfo?login=' + data.login, {headers: header}).subscribe((response2) => {
+        this.http.get(this.serverURL + 'userInfo?login=' + data.login, {headers: header}).subscribe((response2) => {
           if (response2.status === 200) {
             const serverReply2 = response2.json();
             this.loggedUser = serverReply2.clientDTO;
@@ -309,7 +312,7 @@ export class DataAccessService {
   }
 
   getTableSample() {
-    this.http.get('http://localhost:8080/static/Books111018.xls').subscribe();
+    this.http.get(this.serverURL + 'static/Books111018.xls').subscribe();
   }
 
 }

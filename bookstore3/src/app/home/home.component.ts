@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {BookItem} from '../data-models/BookItem';
 import {Observable, Subscription} from 'rxjs';
 import {DataAccessService} from '../data-access-services/data-access.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,7 @@ import {DataAccessService} from '../data-access-services/data-access.service';
 })
 export class HomeComponent implements OnInit {
 
+  serverURL = environment.serverURL;
 
   bookItems: BookItem[] = [new BookItem(null, null, null, null, null, null, null, null, null, null, null)];
   // storageBooks: StorageBooks;
@@ -76,13 +78,13 @@ export class HomeComponent implements OnInit {
     this.currentPage = 1;
     this.sortBy = 'author';
     this.changeSortDirect = false;
-    this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
+    this.url = this.serverURL + 'bookItems?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
     this.activeRow = -1;
     this.activeBookId = 0;
     this.dataAccessService.getTotalBookItemsCount();
     this.dataAccessService.getBookItems(this.url);
-    /*'http://localhost:8080/bookItems?page=1&itemsPerPage=12&sortBy=author'*/
+    /*this.serverURL+'bookItems?page=1&itemsPerPage=12&sortBy=author'*/
 
   }
 
@@ -97,7 +99,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.sortBy = sortBy;
       this.currentPage = page;
-      this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
+      this.url = this.serverURL + 'bookItems?sortBy=' + this.sortBy
         + '&changeSortDirect=' + this.changeSortDirect + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
       console.log(this.url);
       this.dataAccessService.getBookItems(this.url);
@@ -232,7 +234,7 @@ export class HomeComponent implements OnInit {
       this.currentPage = 1;
       this.sortBy = 'author';
       this.changeSortDirect = false;
-      this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
+      this.url = this.serverURL + 'bookItems?sortBy=' + this.sortBy
         + '&changeSortDirect=' + true + '&page=' + this.currentPage + '&itemsPerPage=' + this.itemsPerPage;
       this.activeRow = -1;
       this.activeBookId = 0;

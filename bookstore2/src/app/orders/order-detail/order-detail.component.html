@@ -39,7 +39,7 @@
 
     <div style="overflow-y: scroll; height: 300px">
       <ng-template #popContent let-id="id">
-        <img class="img-fluid" src="http://localhost:8080/cover/{{id}}"/></ng-template>
+        <img class="img-fluid" src="{{serverURL}}cover/{{id}}"/></ng-template>
       <table class="table table-bordered  table-striped table-hover" style="margin-bottom: 0px">
         <thead class="thead-light">
         <tr>
@@ -55,7 +55,7 @@
         <tr *ngFor="let entry of activeOrder.orderList, let i=index">
           <td [ngClass]="{'item-deleted': entry.value==0}">{{i+1}}</td>
           <td [ngClass]="{'item-deleted': entry.value==0}">
-            <img src="http://localhost:8080/cover/{{entry.key.id}}"
+            <img src="{{serverURL}}cover/{{entry.key.id}}"
                  width="50px" height="50px"
                  [ngbPopover]="popContent"
                  #pop="ngbPopover"
@@ -216,7 +216,7 @@
           <tr *ngFor="let bookItem of bookItems, let i=index">
             <td>{{i+1}}</td>
             <td>
-              <img src="http://localhost:8080/cover/{{bookItem.id}}" width="50px" height="50px"/></td>
+              <img src="{{serverURL}}cover/{{bookItem.id}}" width="50px" height="50px"/></td>
             <td>{{bookItem.id}}</td>
             <td>{{bookItem.bookName}}</td>
             <td>{{bookItem.price}}</td>

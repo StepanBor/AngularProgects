@@ -4,6 +4,7 @@ import {BookItem} from '../data-models/BookItem';
 import {DataAccessService} from '../data-access-services/data-access.service';
 import {ActivatedRoute} from '@angular/router';
 import {ItemEntry} from '../data-models/ItemEntry';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-book-item-details',
@@ -22,6 +23,8 @@ import {ItemEntry} from '../data-models/ItemEntry';
   ]
 })
 export class BookItemDetailsComponent implements OnInit, OnChanges {
+
+  serverURL = environment.serverURL;
 
   @Input() activeBookItemDetails: BookItem = new BookItem(null, null, null,
     null, null, null, null, null, null, null, null);

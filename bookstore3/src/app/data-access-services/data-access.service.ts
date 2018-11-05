@@ -9,9 +9,12 @@ import {BookItem} from '../data-models/BookItem';
 import {Task1} from '../data-models/Task1';
 import {StorageBooks} from '../data-models/StorageBooks';
 import {ItemEntry} from '../data-models/ItemEntry';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class DataAccessService {
+
+  serverURL = environment.serverURL;
 
   usersChanged = new Subject<User[]>();
   totalUserCountChanged = new Subject<number>();
@@ -45,6 +48,7 @@ export class DataAccessService {
 
   accessToken: string;
   loggedUser: User;
+  authHeader: Headers;
 
   loggedUserOrders: Order[];
   loggedUserOrdersChanged = new Subject<Order[]>();
@@ -68,43 +72,43 @@ export class DataAccessService {
   private userDetailsOrders: Order[];
 
   constructor(private http: Http) {
-    this.getUsersFromDb('http://localhost:8080/userPage');
-    this.getTotalUsersCount();
-    this.getUnprocessedOrdersCount();
-    this.getUserDetailsOrders('http://localhost:8080/orders');
-    this.getOrders('http://localhost:8080/orders');
-    this.getTotalOrderCount();
-    this.getBookItems('http://localhost:8080/bookItems');
+    // this.getUsersFromDb(this.serverURL + 'userPage');
+    // this.getTotalUsersCount();
+    // this.getUnprocessedOrdersCount();
+    // this.getUserDetailsOrders(this.serverURL + 'orders');
+    // this.getOrders(this.serverURL + 'orders');
+    // this.getTotalOrderCount();
+    this.getBookItems(this.serverURL + 'bookItems');
     this.getTotalBookItemsCount();
     this.shoppingCart = [];
     this.totalShoppingCartSum = 0;
   }
 
-  getUsersFromDb(reqUrl: string) {
-    this.http.get(reqUrl).subscribe((response: Response) => {
-      // console.log(response);
-      const data = response.json();
-      this.users = data;
-      this.usersChanged.next(this.users);
-    });
-  }
+  // getUsersFromDb(reqUrl: string) {
+  //   this.http.get(reqUrl).subscribe((response: Response) => {
+  //     // console.log(response);
+  //     const data = response.json();
+  //     this.users = data;
+  //     this.usersChanged.next(this.users);
+  //   });
+  // }
 
-  getTotalUsersCount() {
-    this.http.get('http://localhost:8080/usersCount').subscribe((responce: Response) => {
-      const data: number = responce.json();
-      this.totalUserCount = data;
-      // console.log('from get totalUserCount ' + data);
-      this.totalUserCountChanged.next(this.totalUserCount);
-    });
-  }
+  // getTotalUsersCount() {
+  //   this.http.get(this.serverURL + 'usersCount').subscribe((responce: Response) => {
+  //     const data: number = responce.json();
+  //     this.totalUserCount = data;
+  //     // console.log('from get totalUserCount ' + data);
+  //     this.totalUserCountChanged.next(this.totalUserCount);
+  //   });
+  // }
 
-  getUserDetailsOrders(reqUrl: string) {
-    this.http.get(reqUrl).subscribe((response: Response) => {
-      const data = response.json();
-      this.userDetailsOrders = data;
-      this.userDetailsOrdersChanged.next(data);
-    });
-  }
+  // getUserDetailsOrders(reqUrl: string) {
+  //   this.http.get(reqUrl).subscribe((response: Response) => {
+  //     const data = response.json();
+  //     this.userDetailsOrders = data;
+  //     this.userDetailsOrdersChanged.next(data);
+  //   });
+  // }
 
   getUserDetailsOrders2(reqUrl: string): Observable<Order[]> {
     console.log(reqUrl + '  get user orders!!!!!!!!');
@@ -136,31 +140,31 @@ export class DataAccessService {
     this.totalUserCountChanged.next(this.totalUserCount);
   }
 
-  getOrders(reqUrl: string) {
-    this.http.get(reqUrl).subscribe((response: Response) => {
-      console.log(response + ' from get orders');
-      const data = response.json();
-      this.orders = data;
-      this.ordersChanged.next(this.orders);
-    });
-  }
+  // getOrders(reqUrl: string) {
+  //   this.http.get(reqUrl).subscribe((response: Response) => {
+  //     console.log(response + ' from get orders');
+  //     const data = response.json();
+  //     this.orders = data;
+  //     this.ordersChanged.next(this.orders);
+  //   });
+  // }
 
-  getTotalOrderCount() {
-    this.http.get('http://localhost:8080/orderCount').subscribe((responce: Response) => {
-      const data: number = responce.json();
-      this.totalOrderCount = data;
-      // console.log('from get totalUserCount ' + data);
-      this.totalOrderCountChanged.next(this.totalOrderCount);
-    });
-  }
+  // getTotalOrderCount() {
+  //   this.http.get(this.serverURL + 'orderCount').subscribe((responce: Response) => {
+  //     const data: number = responce.json();
+  //     this.totalOrderCount = data;
+  //     // console.log('from get totalUserCount ' + data);
+  //     this.totalOrderCountChanged.next(this.totalOrderCount);
+  //   });
+  // }
 
   saveOrder(orderToSave: Order): Observable<Response> {
-    return this.http.post('http://localhost:8080/saveOrder', orderToSave);
+    return this.http.post(this.serverURL + 'saveOrder', orderToSave);
   }
 
   getBookItems(reqUrl: string) {
     this.http.get(reqUrl).subscribe((response: Response) => {
-      // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
       const data = response.json();
       this.bookItems = data;
       this.bookItemsChanged.next(this.bookItems);
@@ -172,7 +176,7 @@ export class DataAccessService {
   }
 
   getBookItemsByParam(paramName: string, paramValue: string): Observable<Response> {
-    return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
+    return this.http.get(this.serverURL + 'bookItemsByParam?' + paramName + '=' + paramValue);
   }
 
   getBookItemsByParam2(filters: Map<string, string[]>,
@@ -180,7 +184,7 @@ export class DataAccessService {
                        itemsPerPage: number,
                        page: number,
                        changeSortDirect: boolean) {
-    let reqUrl = 'http://localhost:8080/bookItemsByParam?';
+    let reqUrl = this.serverURL + 'bookItemsByParam?';
     for (let key of Array.from(filters.keys())) {
       for (let j = 0; j < filters.get(key).length; j++) {
         reqUrl = reqUrl + key + '=' + filters.get(key)[j] + '&';
@@ -199,11 +203,11 @@ export class DataAccessService {
   }
 
   // getBookItemsBy(params: Object[]):Observable<Response>{
-  //   return this.http.get('http://localhost:8080/bookItemsByParam?' + paramName + '=' + paramValue);
+  //   return this.http.get(this.serverURL+'bookItemsByParam?' + paramName + '=' + paramValue);
   // }
 
   getTotalBookItemsCount() {
-    this.http.get('http://localhost:8080/bookCount').subscribe((responce: Response) => {
+    this.http.get(this.serverURL + 'bookCount').subscribe((responce: Response) => {
       const data: number = responce.json();
       this.totalBookItemCount = data;
       this.totalBookItemCountChanged.next(this.totalBookItemCount);
@@ -212,17 +216,18 @@ export class DataAccessService {
 
 
   createNewUser(data): Observable<Response> {
-    return this.http.post('http://localhost:8080/createNewUser', data);
+    return this.http.post(this.serverURL + 'createNewUser', data);
   }
 
   login(data) {
-    this.http.post('http://localhost:8080/signin', data).subscribe((response) => {
+    this.http.post(this.serverURL + 'signin', data).subscribe((response) => {
       // console.log(response);
       if (response.status === 200) {
         const serverReply = response.json();
         this.accessToken = serverReply.accessToken;
-        const header = new Headers({'Authorization': this.accessToken});
-        this.http.get('http://localhost:8080/userInfo?login=' + data.login, {headers: header}).subscribe((response2) => {
+        this.authHeader = new Headers({'Authorization': this.accessToken});
+        // const header = new Headers({'Authorization': this.accessToken});
+        this.http.get(this.serverURL + 'userInfo?login=' + data.login, {headers: this.authHeader}).subscribe((response2) => {
           if (response2.status === 200) {
             const serverReply2 = response2.json();
             this.loggedUser = serverReply2.clientDTO;
@@ -259,33 +264,33 @@ export class DataAccessService {
   }
 
   submitOrder(data): Observable<Response> {
-    return this.http.post('http://localhost:8080/submitOrder', data);
+    return this.http.post(this.serverURL + 'submitOrder', data);
   }
 
   createNewOrder(): Observable<Response> {
-    return this.http.get('http://localhost:8080/createNewOrder');
+    return this.http.get(this.serverURL + 'createNewOrder');
   }
 
-  getUnprocessedOrdersCount() {
-    this.http.get('http://localhost:8080/countOrdersByParam?paramName=status&paramValue=unProcessed')
-      .subscribe((responce: Response) => {
-        const data: number = responce.json();
-        this.totalUnProcessedOrderCount = data;
-        this.totalUnProcessedOrdersChanged.next(this.totalUnProcessedOrderCount);
-      });
-  }
+  // getUnprocessedOrdersCount() {
+  //   this.http.get(this.serverURL + 'countOrdersByParam?paramName=status&paramValue=unProcessed')
+  //     .subscribe((responce: Response) => {
+  //       const data: number = responce.json();
+  //       this.totalUnProcessedOrderCount = data;
+  //       this.totalUnProcessedOrdersChanged.next(this.totalUnProcessedOrderCount);
+  //     });
+  // }
 
   countOrdersByParam(paramName: string, paramValue: string): Observable<Response> {
-    return this.http.get('http://localhost:8080/countOrdersByParam?paramName='
+    return this.http.get(this.serverURL + 'countOrdersByParam?paramName='
       + paramName + '&paramValue=' + paramValue);
   }
 
   getAllOrders(): Observable<Response> {
-    return this.http.get('http://localhost:8080/orders?allOrders=true');
+    return this.http.get(this.serverURL + 'orders?allOrders=true');
   }
 
   getRates() {
-    return this.http.get('http://localhost:8080/rates')
+    return this.http.get(this.serverURL + 'rates')
       .subscribe((responce) => {
         const data = responce.json();
         this.USDUAH.next(Math.round(data.quotes.USDUAH * 1000) / 1000);
@@ -295,38 +300,38 @@ export class DataAccessService {
   }
 
   getTasks(): Observable<Response> {
-    return this.http.get('http://localhost:8080/getTasks');
+    return this.http.get(this.serverURL + 'getTasks');
   }
 
   updateTask(task: Task1) {
-    this.http.post('http://localhost:8080/tasks', task).subscribe((response) => {
+    this.http.post(this.serverURL + 'tasks', task).subscribe((response) => {
       console.log(response);
     });
   }
 
   deleteTasks(task: Task1): Observable<Response> {
     task.status = 'closed';
-    return this.http.post('http://localhost:8080/tasks', task);
+    return this.http.post(this.serverURL + 'tasks', task);
   }
 
   deleteUser(userId: number): Observable<Response> {
-    return this.http.get('http://localhost:8080/deleteUser?userId=' + userId);
+    return this.http.get(this.serverURL + 'deleteUser?userId=' + userId);
   }
 
   saveBookItem(bookToSave: BookItem): Observable<Response> {
-    return this.http.post('http://localhost:8080/saveBookItem', bookToSave);
+    return this.http.post(this.serverURL + 'saveBookItem', bookToSave);
   }
 
   deleteBookItem(bookItemId: number): Observable<Response> {
-    return this.http.post('http://localhost:8080/saveBookItem', bookItemId);
+    return this.http.post(this.serverURL + 'saveBookItem', bookItemId);
   }
 
   createNewBookItem(data): Observable<Response> {
-    return this.http.post('http://localhost:8080/createNewBookItem', data);
+    return this.http.post(this.serverURL + 'createNewBookItem', data);
   }
 
   // getStorageBooks() {
-  //   this.http.get('http://localhost:8080/storageBook').subscribe((response: Response) => {
+  //   this.http.get(this.serverURL+'storageBook').subscribe((response: Response) => {
   //     // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
   //     const data = response.json();
   //     this.storageBooks = data;
@@ -335,7 +340,7 @@ export class DataAccessService {
   // }
 
   getBookParameters(): Observable<Response> {
-    return this.http.get('http://localhost:8080/getBookParameters');
+    return this.http.get(this.serverURL + 'getBookParameters');
   }
 
   addToCart(bookItem: BookItem, quantity: number) {

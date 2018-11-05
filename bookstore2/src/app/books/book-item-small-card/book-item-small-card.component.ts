@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BookItem} from '../../data-models/BookItem';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-book-item-small-card',
@@ -7,6 +8,8 @@ import {BookItem} from '../../data-models/BookItem';
   styleUrls: ['./book-item-small-card.component.css']
 })
 export class BookItemSmallCardComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   @Input() activeBookItemDetails: BookItem;
 

@@ -114,7 +114,7 @@
 
 <ng-template #addBooksModal let-modal>
   <div class="modal-body">
-    <a href="http://localhost:8080/static/Books111018.xls" download="">Download table sample</a>
+    <a href="{{serverURL}}static/Books111018.xls" download="">Download table sample</a>
     <hr>
     <form (ngSubmit)="onSubmitTable(f3)" #f3="ngForm">
       <div class="custom-file">

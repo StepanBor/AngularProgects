@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {BookItem} from '../data-models/BookItem';
 import {Router} from '@angular/router';
 import {DataAccessService} from '../data-access-services/data-access.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-book-item-small-card',
@@ -9,6 +10,8 @@ import {DataAccessService} from '../data-access-services/data-access.service';
   styleUrls: ['./book-item-small-card.component.css']
 })
 export class BookItemSmallCardComponent implements OnInit, OnChanges {
+
+  serverURL = environment.serverURL;
 
   @Input() activeBookItemDetails: BookItem;
 

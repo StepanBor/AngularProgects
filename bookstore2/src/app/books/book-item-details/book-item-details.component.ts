@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {BookItem} from '../../data-models/BookItem';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DataAccessService} from '../../data-access-services/data-access.service';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-book-item-details',
@@ -20,6 +21,8 @@ import {DataAccessService} from '../../data-access-services/data-access.service'
   ]
 })
 export class BookItemDetailsComponent implements OnInit, OnChanges {
+
+  serverURL = environment.serverURL;
 
   @Input() activeBookItemDetails: BookItem;
 

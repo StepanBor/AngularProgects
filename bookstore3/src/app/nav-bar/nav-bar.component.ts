@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../data-models/User';
 import {Order} from '../data-models/Order';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,6 +15,8 @@ import {Order} from '../data-models/Order';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   @Output() sideBarTogle = new EventEmitter<boolean>();
 

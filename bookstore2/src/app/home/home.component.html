@@ -99,7 +99,7 @@
               <h1 style="text-align: end" *ngIf="activeCarrency==='USD'">{{USDUAH}}</h1>
               <h1 style="text-align: end" *ngIf="activeCarrency==='EUR'">{{EURUAH}}</h1>
               <h1 style="text-align: end" *ngIf="activeCarrency==='RUB'">{{RUBUAH}}</h1>
-              <p style="text-align: end"><img src="http://localhost:8080/static/ukraine.png" alt="..."
+              <p style="text-align: end"><img src="{{serverURL}}static/ukraine.png" alt="..."
                                               class="img-fluid"
                                               width="25px" height="25px"></p>
             </div>
@@ -170,7 +170,7 @@
             <li class="list-group-item border-primary" *ngFor="let bookItem of bookItems">
               <div class="row">
                 <div class="col-md-4" style="border-right: 2px solid blue">
-                  <img src="http://localhost:8080/cover/{{bookItem.id}}" class="img-fluid"/>
+                  <img src="{{serverURL}}cover/{{bookItem.id}}" class="img-fluid"/>
                 </div>
                 <div class="col-md">
                   <h4 class="text-center">{{bookItem.bookName}}</h4>

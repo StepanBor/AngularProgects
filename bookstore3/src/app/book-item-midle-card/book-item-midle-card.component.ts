@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BookItem} from '../data-models/BookItem';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataAccessService} from '../data-access-services/data-access.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-book-item-midle-card',
@@ -9,6 +10,8 @@ import {DataAccessService} from '../data-access-services/data-access.service';
   styleUrls: ['./book-item-midle-card.component.css']
 })
 export class BookItemMidleCardComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   @Input() activeBookItemDetails: BookItem;
 

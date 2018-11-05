@@ -5,6 +5,7 @@ import {Observable, Subscription} from 'rxjs';
 import {Order} from '../data-models/Order';
 import {StorageBooks} from '../data-models/StorageBooks';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-books',
@@ -12,6 +13,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./books.component.css']
 })
 export class BooksComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   title = 'bookstore2';
   isSidebarOn = false;
@@ -69,12 +72,12 @@ export class BooksComponent implements OnInit {
           .fill(0).map((x, i) => i);
       });
     this.dataAccessService.getTotalBookItemsCount();
-    this.dataAccessService.getBookItems('http://localhost:8080/bookItems?page=1');
+    this.dataAccessService.getBookItems(this.serverURL + 'bookItems?page=1');
 
     this.currentPage = 1;
     this.sortBy = 'id';
     this.changeSortDirect = false;
-    this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
+    this.url = this.serverURL + 'bookItems?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
     this.itemsPerPage = 6;
     this.activeRow = -1;
@@ -86,7 +89,7 @@ export class BooksComponent implements OnInit {
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
     this.sortBy = sortBy;
     this.currentPage = page;
-    this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
+    this.url = this.serverURL + 'bookItems?sortBy=' + this.sortBy
       + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage;
     this.dataAccessService.getBookItems(this.url);
     this.dataAccessService.getTotalBookItemsCount();
@@ -204,7 +207,7 @@ export class BooksComponent implements OnInit {
     this.dataAccessService.createNewBookItem(final_data).subscribe((response) => {
       console.log(response);
       this.dataAccessService.getTotalBookItemsCount();
-      this.dataAccessService.getBookItems('http://localhost:8080/bookItems?page=1');
+      this.dataAccessService.getBookItems(this.serverURL + 'bookItems?page=1');
     });
   }
 

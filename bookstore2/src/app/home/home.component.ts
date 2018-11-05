@@ -9,6 +9,7 @@ import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {BookItem} from '../data-models/BookItem';
 import {NgbDateAdapter, NgbDateStruct, NgbDateNativeAdapter, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Response} from '@angular/http';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,8 @@ import {Response} from '@angular/http';
   providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 export class HomeComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   title = 'bookstore2';
   isSidebarOn = false;
@@ -116,7 +119,7 @@ export class HomeComponent implements OnInit {
     this.taskCount = 10;
     this.newClientsCount = 10;
     this.activeCarrency = 'USD';
-    this.dataAccessService.getBookItems('http://localhost:8080/bookItems');
+    this.dataAccessService.getBookItems(this.serverURL+'bookItems');
     this.dataAccessService.getTasks().subscribe((responce) => {
       this.newTasks = responce.json();
     });
