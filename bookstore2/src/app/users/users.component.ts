@@ -56,7 +56,7 @@ export class UsersComponent implements OnInit {
       0, new User(0, '', '', '', '', '', '', '', '', ''),
       new Shipment2(0, '', '', 0), '', new Date)];
     this.activeUser = new User(0, '', '', '', '', '', '', '', '', '');
-    this.userService.getUsersFromDb(this.serverURL+'userPage');
+    this.userService.getUsersFromDb(this.serverURL + 'userPage');
     this.totalUserCount = this.userService.getTotalUserCount();
     this.subscriptionUsers = this.userService.usersChanged.subscribe((tempUsers: User[]) => {
       this.users = tempUsers;
@@ -66,18 +66,16 @@ export class UsersComponent implements OnInit {
       this.totalUserCount = count;
     });
 
-    // this.users = this.userService.getUsers ();
     this.itemsPerPage = 6;
     this.paginationArr = Array((this.totalUserCount % this.itemsPerPage) === 0 ?
       Math.floor(this.totalUserCount / this.itemsPerPage) : Math.floor(this.totalUserCount / this.itemsPerPage) + 1)
       .fill(0).map((x, i) => i);
     this.currentPage = 1;
     this.sortBy = 'id';
-    // this.url = '';
     this.changeSortDirect = false;
     this.activeRow = -1;
     this.activeUserId = 0;
-    this.url = this.serverURL+'userPage?sortBy=' + this.sortBy
+    this.url = this.serverURL + 'userPage?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
     console.log(this.url + ' from init users URL');
   }
@@ -85,7 +83,7 @@ export class UsersComponent implements OnInit {
   onSortGet(sortBy: string, changeSortDirect: boolean, page: number) {
     this.sortBy = sortBy;
     this.currentPage = page;
-    this.url = this.serverURL+'userPage?sortBy=' + this.sortBy
+    this.url = this.serverURL + 'userPage?sortBy=' + this.sortBy
       + '&changeSortDirect=' + changeSortDirect + '&page=' + this.currentPage;
     this.userService.getUsersFromDb(this.url);
     this.totalUserCount = this.userService.getTotalUserCount();
@@ -104,7 +102,7 @@ export class UsersComponent implements OnInit {
       }
     }
     this.userActivated.emit(this.activeUser);
-    this.userService.getUserDetailsOrders(this.serverURL+'orders?userId=' + this.activeUser.id);
+    this.userService.getUserDetailsOrders(this.serverURL + 'orders?userId=' + this.activeUser.id);
   }
 
   openAddUserModal(addUserModal) {
@@ -163,7 +161,7 @@ export class UsersComponent implements OnInit {
       if (response.status === 200) {
         this.createUserReply = 'user deleted';
       }
-      this.userService.getUsersFromDb(this.serverURL+'userPage');
+      this.userService.getUsersFromDb(this.serverURL + 'userPage');
       this.openAddUserModal(this.userCreated);
     });
 

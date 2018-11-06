@@ -133,6 +133,7 @@ export class DataAccessService {
   }
 
   getOrders(reqUrl: string) {
+    console.log(this.authHeader);
     this.http.get(reqUrl, {headers: this.authHeader}).subscribe((response: Response) => {
       console.log(response + ' from get orders');
       const data = response.json();
@@ -269,9 +270,9 @@ export class DataAccessService {
         const serverReply = response.json();
         this.accessToken = serverReply.accessToken;
         console.log(this.accessToken);
-        this.authHeader = new Headers({'Authorization': this.accessToken});
-        // const header = new Headers({'Authorization': this.accessToken});
-        this.http.get(this.serverURL + 'userInfo?login=' + data.login, {headers: this.authHeader}).subscribe((response2) => {
+        this.authHeader = new Headers({'Authorization': 'Bearer ' + this.accessToken});
+        const header = new Headers({'Authorization': this.accessToken});
+        this.http.get(this.serverURL + 'userInfo?login=' + data.login, {headers: header}).subscribe((response2) => {
           if (response2.status === 200) {
             const serverReply2 = response2.json();
             this.loggedUser = serverReply2.clientDTO;
