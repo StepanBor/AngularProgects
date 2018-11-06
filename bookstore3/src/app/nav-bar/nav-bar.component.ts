@@ -136,6 +136,10 @@ export class NavBarComponent implements OnInit {
 
   }
 
+  goToAdminPage(){
+    this.dataAccessService.goToAdminPage();
+  }
+
   logout() {
     this.dataAccessService.logout();
     this.router.navigate(['/']);

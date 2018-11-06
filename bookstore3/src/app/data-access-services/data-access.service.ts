@@ -263,6 +263,10 @@ export class DataAccessService {
     }
   }
 
+  goToAdminPage() {
+    this.http.get(this.serverURL + 'adminPage').subscribe();
+  }
+
   submitOrder(data): Observable<Response> {
     return this.http.post(this.serverURL + 'submitOrder', data);
   }

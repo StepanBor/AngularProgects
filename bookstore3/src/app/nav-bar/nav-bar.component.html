@@ -23,7 +23,7 @@
           [autoClose]="'outside'">
         <a class="nav-link" routerLink="/cart"
            aria-disabled="true"
-           [ngClass]="{disabled:dataAccessService.shoppingCart.length===0}">
+           [ngClass]="{disabled: shoppingCart.length===0}">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping cart
         </a>
       </li>
@@ -51,7 +51,7 @@
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
              User cabinet
           </button>
-          <button class="dropdown-item" (click)="goToCabinet()"
+          <button class="dropdown-item" (click)="goToAdminPage()"
                   [disabled]="loggedUser==null || loggedUser.role!=='ADMIN'">
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
             Admin page
