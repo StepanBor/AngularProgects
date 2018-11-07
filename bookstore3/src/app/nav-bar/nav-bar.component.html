@@ -51,11 +51,14 @@
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
              User cabinet
           </button>
-          <button class="dropdown-item" (click)="goToAdminPage()"
-                  [disabled]="loggedUser==null || loggedUser.role!=='ADMIN'">
+          <a class="dropdown-item" href="{{this.serverURL}}adminPage">
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            Admin page
-          </button>
+            Admin page</a>
+
+          <!--<button class="dropdown-item" (click)="goToAdminPage()"-->
+                  <!--[disabled]="loggedUser==null || loggedUser.role!=='ADMIN'">-->
+            <!---->
+          <!--</button>-->
           <div class="dropdown-divider"></div>
           <button class="dropdown-item"
                   (click)="logout()">

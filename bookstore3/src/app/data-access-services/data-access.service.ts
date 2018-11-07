@@ -72,43 +72,12 @@ export class DataAccessService {
   private userDetailsOrders: Order[];
 
   constructor(private http: Http) {
-    // this.getUsersFromDb(this.serverURL + 'userPage');
-    // this.getTotalUsersCount();
-    // this.getUnprocessedOrdersCount();
-    // this.getUserDetailsOrders(this.serverURL + 'orders');
-    // this.getOrders(this.serverURL + 'orders');
-    // this.getTotalOrderCount();
     this.getBookItems(this.serverURL + 'bookItems');
     this.getTotalBookItemsCount();
     this.shoppingCart = [];
     this.totalShoppingCartSum = 0;
   }
 
-  // getUsersFromDb(reqUrl: string) {
-  //   this.http.get(reqUrl).subscribe((response: Response) => {
-  //     // console.log(response);
-  //     const data = response.json();
-  //     this.users = data;
-  //     this.usersChanged.next(this.users);
-  //   });
-  // }
-
-  // getTotalUsersCount() {
-  //   this.http.get(this.serverURL + 'usersCount').subscribe((responce: Response) => {
-  //     const data: number = responce.json();
-  //     this.totalUserCount = data;
-  //     // console.log('from get totalUserCount ' + data);
-  //     this.totalUserCountChanged.next(this.totalUserCount);
-  //   });
-  // }
-
-  // getUserDetailsOrders(reqUrl: string) {
-  //   this.http.get(reqUrl).subscribe((response: Response) => {
-  //     const data = response.json();
-  //     this.userDetailsOrders = data;
-  //     this.userDetailsOrdersChanged.next(data);
-  //   });
-  // }
 
   getUserDetailsOrders2(reqUrl: string): Observable<Order[]> {
     console.log(reqUrl + '  get user orders!!!!!!!!');
@@ -140,23 +109,6 @@ export class DataAccessService {
     this.totalUserCountChanged.next(this.totalUserCount);
   }
 
-  // getOrders(reqUrl: string) {
-  //   this.http.get(reqUrl).subscribe((response: Response) => {
-  //     console.log(response + ' from get orders');
-  //     const data = response.json();
-  //     this.orders = data;
-  //     this.ordersChanged.next(this.orders);
-  //   });
-  // }
-
-  // getTotalOrderCount() {
-  //   this.http.get(this.serverURL + 'orderCount').subscribe((responce: Response) => {
-  //     const data: number = responce.json();
-  //     this.totalOrderCount = data;
-  //     // console.log('from get totalUserCount ' + data);
-  //     this.totalOrderCountChanged.next(this.totalOrderCount);
-  //   });
-  // }
 
   saveOrder(orderToSave: Order): Observable<Response> {
     return this.http.post(this.serverURL + 'saveOrder', orderToSave);
@@ -202,9 +154,6 @@ export class DataAccessService {
     });
   }
 
-  // getBookItemsBy(params: Object[]):Observable<Response>{
-  //   return this.http.get(this.serverURL+'bookItemsByParam?' + paramName + '=' + paramValue);
-  // }
 
   getTotalBookItemsCount() {
     this.http.get(this.serverURL + 'bookCount').subscribe((responce: Response) => {
@@ -234,16 +183,10 @@ export class DataAccessService {
             this.loggedUserOrders = serverReply2.clientOrders;
             this.loggedUserChanged.next(this.loggedUser);
             this.loggedUserOrdersChanged.next(this.loggedUserOrders);
-            // console.log(response2);
-            // console.log(serverReply2.clientDTO);
-            // console.log(serverReply2.clientOrders);
           }
         });
-        // console.log(this.accessToken);
       } else {
-        // const serverReply: string[] = response.json();
         this.serverReply = 'wrong login or password';
-        // this.openModal(this.userCreated);
       }
     });
   }
@@ -275,14 +218,6 @@ export class DataAccessService {
     return this.http.get(this.serverURL + 'createNewOrder');
   }
 
-  // getUnprocessedOrdersCount() {
-  //   this.http.get(this.serverURL + 'countOrdersByParam?paramName=status&paramValue=unProcessed')
-  //     .subscribe((responce: Response) => {
-  //       const data: number = responce.json();
-  //       this.totalUnProcessedOrderCount = data;
-  //       this.totalUnProcessedOrdersChanged.next(this.totalUnProcessedOrderCount);
-  //     });
-  // }
 
   countOrdersByParam(paramName: string, paramValue: string): Observable<Response> {
     return this.http.get(this.serverURL + 'countOrdersByParam?paramName='
@@ -334,14 +269,6 @@ export class DataAccessService {
     return this.http.post(this.serverURL + 'createNewBookItem', data);
   }
 
-  // getStorageBooks() {
-  //   this.http.get(this.serverURL+'storageBook').subscribe((response: Response) => {
-  //     // console.log(response + ' from get books!!!!!!!!!!!!!!!!!!!!!!!!');
-  //     const data = response.json();
-  //     this.storageBooks = data;
-  //     this.storageBooksChanged.next(this.storageBooks);
-  //   });
-  // }
 
   getBookParameters(): Observable<Response> {
     return this.http.get(this.serverURL + 'getBookParameters');
