@@ -4,6 +4,7 @@ import {Order} from '../../data-models/Order';
 import {DataAccessService} from '../../data-access-services/data-access.service';
 import {Subscription} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-users-details',
@@ -11,6 +12,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./users-details.component.css']
 })
 export class UsersDetailsComponent implements OnInit, OnChanges {
+
+  serverURL = environment.serverURL;
 
   @Input() activeUserDetails: User;
 
@@ -54,7 +57,7 @@ export class UsersDetailsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const activeUsId: number = this.activeUserDetails.id;
-    const reqUrl = 'http://localhost:8080/orders?userId=' + activeUsId;
+    const reqUrl = this.serverURL + 'orders?userId=' + activeUsId;
     this.userService.getUserDetailsOrders2(reqUrl).subscribe(
       (orders: Order[]) => {
         this.userDetailOrders = orders;

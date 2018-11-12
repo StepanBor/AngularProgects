@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {BookItem} from '../../data-models/BookItem';
 import {DataAccessService} from '../../data-access-services/data-access.service';
 import {Subscription} from 'rxjs';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-book-item-line',
@@ -9,6 +10,8 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./book-item-line.component.css']
 })
 export class BookItemLineComponent implements OnInit, OnChanges {
+
+  serverURL = environment.serverURL;
 
   bookItems: BookItem[];
 
@@ -35,7 +38,7 @@ export class BookItemLineComponent implements OnInit, OnChanges {
           Math.floor(this.totalBookCount / this.itemsPerPage) : Math.floor(this.totalBookCount / this.itemsPerPage) + 1)
           .fill(0).map((x, i) => i);
       });
-    this.dataAccessService.getBookItems2('http://localhost:8080/bookItems?sortBy=rating&page=1&sortDirect=DESC')
+    this.dataAccessService.getBookItems2(this.serverURL + 'bookItems?sortBy=rating&page=1&sortDirect=DESC')
       .subscribe((response) => {
         const data = response.json();
         this.bookItems = data;
@@ -45,7 +48,7 @@ export class BookItemLineComponent implements OnInit, OnChanges {
     this.currentPage = 1;
     this.sortBy = 'id';
     this.changeSortDirect = false;
-    this.url = 'http://localhost:8080/bookItems?sortBy=' + this.sortBy
+    this.url = this.serverURL + 'bookItems?sortBy=' + this.sortBy
       + '&changeSortDirect=' + true + '&page=' + this.currentPage;
     this.itemsPerPage = 6;
 

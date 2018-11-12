@@ -9,6 +9,7 @@ import {LoginNewUserComponent} from '../login-new-user/login-new-user.component'
 import {User} from '../data-models/User';
 import {Shipment2} from '../data-models/Shipment2';
 import {Order} from '../data-models/Order';
+import {environment} from '../../environments/environment';
 
 
 @Component({
@@ -17,6 +18,8 @@ import {Order} from '../data-models/Order';
   styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent implements OnInit {
+
+  serverURL = environment.serverURL;
 
   subscriptionShoppingCartSum: Subscription;
   subscriptionLoggedUserChanged: Subscription;

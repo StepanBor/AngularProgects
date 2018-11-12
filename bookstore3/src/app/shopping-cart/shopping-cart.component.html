@@ -45,7 +45,7 @@
             <hr>
             <div>
               <ng-template #popContent let-id="id">
-                <img class="img-fluid" src="http://localhost:8080/cover/{{id}}"/></ng-template>
+                <img class="img-fluid" src="{{serverURL}}cover/{{id}}"/></ng-template>
               <table class="table table-bordered  table-striped table-hover" style="margin-bottom: 0px">
                 <thead class="thead-light">
                 <tr>
@@ -62,7 +62,7 @@
                     [ngClass]="{'bg-info': i == activeRowIndex}">
                   <td [ngClass]="{'item-deleted': entry.value==0}">{{i+1}}</td>
                   <td [ngClass]="{'item-deleted': entry.value==0}">
-                    <img src="http://localhost:8080/cover/{{entry.key.id}}"
+                    <img src="{{serverURL}}/cover/{{entry.key.id}}"
                          width="50px" height="80px"
                          [ngbPopover]="popContent"
                          #pop="ngbPopover"
