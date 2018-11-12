@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
 
-  serverURL:  'https://book-s.herokuapp.com/'
+  serverURL:  'https://book-st.herokuapp.com/'
 };
